@@ -18,10 +18,7 @@ class PostController extends Controller implements HasMiddleware
     public static function middleware()
     {
       return [
-        new Middleware(
-          ['auth'],
-          except:['index','show']
-        )
+        new Middleware('auth')
       ];
     }
 

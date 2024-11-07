@@ -8,7 +8,7 @@ export default function Home({posts}) {
 
   return (
     <>
-    {auth.user && <h1 className="text-2xl text-black text-center">Welcome, <span className='font-semibold'>{auth.user.name}</span></h1>}
+    {auth.user && <h1 className="text-2xl text-black dark:text-slate-200 text-center">Welcome, <span className='font-semibold'>{auth.user.name}</span></h1>}
     <div className='container mx-auto w-[80%] grid grid-cols-3 gap-4 mt-5'>
     {posts.data && posts.data.map((post) => (
         <div key={post.id}>

@@ -3,6 +3,7 @@ import '../css/app.css'
 import { createInertiaApp } from '@inertiajs/react'
 import { createRoot } from 'react-dom/client'
 import Layout from '@/layouts/Layout'
+import { SetThemeOnLoad } from './theme';
 
 createInertiaApp({
   resolve: name => {
@@ -22,3 +23,4 @@ createInertiaApp({
     showSpinner: true,
   },
 })
+SetThemeOnLoad()

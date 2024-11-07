@@ -18,7 +18,7 @@ export default function Show({ posts,canmodify }) {
       <div className=' flex justify-center'>
 
         <div className="flex flex-col bg-white border border-gray-200 rounded-lg shadow md:flex-row md:w-[50%] hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-          <img className="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-[40%] md:rounded-none md:rounded-s-lg"
+          <img className="p-5 roubded-lg object-cover w-full rounded-t-lg h-96 md:h-auto md:w-[40%] md:rounded-none md:rounded-s-lg"
             src={posts.image
               ? `/images/${posts.image}`
               : "/storage/images/default.jpg"

@@ -4,7 +4,7 @@ import { route } from "ziggy-js";
 
 export default function Blogcard({ post }) {
   return (
-    <div className="bg-white rounded-md shadow-lg overflow-hidden h-full flex flex-col justify-between">
+    <div className="bg-white dark:bg-slate-800 rounded-md shadow-lg overflow-hidden h-full flex flex-col justify-between">
       <div>
         <Link href={route('posts.show',post.id)}>
           <img

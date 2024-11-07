@@ -1,10 +1,11 @@
 import { Link } from "@inertiajs/react";
+import moment from "moment";
 import React from "react";
 import { route } from "ziggy-js";
 
 export default function Blogcard({ post }) {
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-md shadow-lg overflow-hidden h-full flex flex-col justify-between">
+    <div className="bg-white dark:border-2 border-slate-600 dark:bg-slate-800 rounded-md shadow-lg overflow-hidden h-full flex flex-col justify-between">
       <div>
         <Link href={route('posts.show',post.id)}>
           <img
@@ -22,8 +23,7 @@ export default function Blogcard({ post }) {
             {post.title.slice(0, 60)}...
           </h3>
           <p>
-            Listed on{" "}
-            {new Date(post.created_at).toLocaleDateString()}
+            Posted : {moment(post.created_at).fromNow()}
           </p>
           <p>BY: {post.user.name}</p>
           {post.tags && (

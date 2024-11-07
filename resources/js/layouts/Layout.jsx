@@ -23,8 +23,13 @@ export default function Layout({children}) {
             </div>
             ) :(
               <>
-              <Link href={route('register')}>Register</Link>
-              <Link href={route('login')}>Login</Link>
+              <div className="flex gap-3">
+              <button onClick={SwitchTheme}>
+                  <img  src="/night-mode.png" width={24} alt="" />
+                </button>
+                <Link href={route('register')}>Register</Link>
+                <Link href={route('login')}>Login</Link>
+              </div>
               </>
             )}
 

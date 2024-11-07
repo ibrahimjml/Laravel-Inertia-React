@@ -36,7 +36,7 @@ export default function Login() {
                         </label>
 
                         <input id="email" type="email"
-                            className="rounded-sm p-2 border-2 form-input w-full " name="email"
+                            className="rounded-sm p-2 border-2 text-black w-full " name="email"
                              autoComplete="email" value={data.email} onChange={(eo)=>{setData('email',eo.target.value)}}/>
 
                               {errors.email && <small className="text-sm text-red-500">{errors.email}</small>}  
@@ -48,7 +48,7 @@ export default function Login() {
                         </label>
 
                         <input id="password" type="password"
-                            className="rounded-sm p-2 border-2 form-input w-full " name="password"
+                            className="rounded-sm p-2 border-2 text-black w-full " name="password"
                              autoComplete="new-password" value={data.password} onChange={(eo)=>{setData('password',eo.target.value)}}/>
 
                               {errors.password && <small className="text-sm text-red-500">{errors.password}</small>}

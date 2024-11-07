@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 
 class AuthController extends Controller
 {
@@ -17,6 +20,7 @@ class AuthController extends Controller
          'password'=>'required|string|confirmed',
         ]);
         $user = User::create($credantials);
+        event(new Registered($user));
         Auth::login($user);
         return to_route('home');
     }
@@ -39,5 +43,22 @@ class AuthController extends Controller
     public function logout(){
       Auth::logout();
       return to_route('login');
+    }
+
+    public function verify_notice()
+    {
+      return Inertia::render('auth/Verifyemail',['message'=>session('message')]);
+    }
+
+    public function verify_email(EmailVerificationRequest $request)
+    {
+      $request->fulfill();
+      return to_route('home');
+    }
+    public function verify_notification(Request $request) 
+    {
+      $request->user()->sendEmailVerificationNotification();
+    
+      return back()->with('message', 'Verification link sent!');
     }
 }

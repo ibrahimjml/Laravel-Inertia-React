@@ -9,7 +9,7 @@
 
 
 ![schooldash-dahboard-page](https://i.postimg.cc/5tzVTgDT/Screenshot-2024-11-06-192824.png)
-![Dashboard Screenshot](public/Screenshot-2024-11-07-161941.png)
+![Dashboard Screenshot](public/dark-home-screenshot.png)
 ![Dashboard Screenshot](public/Screenshot-2024-11-07-160802.png)
 
 

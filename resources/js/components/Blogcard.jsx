@@ -1,9 +1,19 @@
-import { Link } from "@inertiajs/react";
+import { Link, useForm } from "@inertiajs/react";
 import moment from "moment";
 import React from "react";
 import { route } from "ziggy-js";
 
-export default function Blogcard({ post }) {
+export default function Blogcard({post,request}) {
+  
+  const {get}=useForm();
+  const selectTag = (tag) => {
+
+      get(route("home",{ 
+        search: request,
+         tag: tag 
+        }));
+    
+  }
   return (
     <div className="bg-white dark:border-2 border-slate-600 dark:bg-slate-800 rounded-md shadow-lg overflow-hidden h-full flex flex-col justify-between">
       <div>
@@ -25,12 +35,13 @@ export default function Blogcard({ post }) {
           <p>
             Posted : {moment(post.created_at).fromNow()}
           </p>
-          <p>BY: {post.user.name}</p>
+          <p >BY: {post.user.name}</p>
           {post.tags && (
             <div className="flex items-center justify-start gap-3 px-4 pb-3 mt-2">
-              {post.tags.split(",").map((tag, index) => (
+              {post.tags.split(",").map((tag) => (
                 <button
-                  key={index}
+                onClick={() => selectTag(tag)}
+                  key={tag}
                   className="bg-slate-600 px-2 py-px text-white text-sm rounded-full"
                 >
                   {tag.trim()}

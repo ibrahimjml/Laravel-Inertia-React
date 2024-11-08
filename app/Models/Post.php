@@ -21,4 +21,15 @@ class Post extends Model
     {
       return $this->belongsTo(User::class);
     }
+
+    public function scopeSearch($query, array $search)
+    {
+        if ($search['search'] ?? false) {
+            $query->where('title', 'like', '%' . request('search') . '%')
+                  ->orWhere('description', 'like', '%' . request('search') . '%');
+        }
+        if ($search['tag'] ?? false) {
+          $query->where('tags', 'like', '%' . request('tag') . '%');
+      }
+    }
 }

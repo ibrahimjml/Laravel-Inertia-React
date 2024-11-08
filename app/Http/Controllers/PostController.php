@@ -22,12 +22,20 @@ class PostController extends Controller implements HasMiddleware
       ];
     }
 
-  public function index()
+  public function index(Request $request)
   {
-$post = Post::with('user')->orderBy('created_at','DESC')->paginate(6);
+
+$post = Post::with('user')
+->search(request(['search','tag']))
+->orderBy('created_at','DESC')
+->paginate(6)
+->withQueryString();
+
     return Inertia::render(
       'Home',
-      ['posts' => $post]
+      ['posts' => $post,
+      'requestsearch'=>$request->search
+      ]
     );
   }
 

@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Inertia\Inertia;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 class AuthController extends Controller
 {
@@ -61,4 +62,23 @@ class AuthController extends Controller
     
       return back()->with('message', 'Verification link sent!');
     }
+
+    public function index()
+    {
+      return Inertia::render('auth/Confirmpassword');
+    }
+
+    public function confirm(Request $request)
+    {
+      
+        if (! Hash::check($request->password, $request->user()->password)) {
+            return back()->withErrors([
+                'password' => ['The provided password does not match our records.']
+            ]);
+        }
+     
+        $request->session()->passwordConfirmed();
+     
+        return redirect()->intended();
+      }
 }

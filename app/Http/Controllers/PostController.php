@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Http\Middleware\Suspended;
 use App\Models\Post;
-use Illuminate\Database\Eloquent\Builder; 
+use Illuminate\Database\Eloquent\Builder;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -18,14 +18,18 @@ class PostController extends Controller implements HasMiddleware
     public static function middleware()
     {
       return [
-        new Middleware(['auth','verified'])
+        new Middleware(['auth','verified',Suspended::class])
       ];
     }
 
   public function index(Request $request)
   {
 
-$post = Post::with('user')
+$post = Post::whereHas('user',function(Builder $q){
+  $q->where('role','!=','suspended');
+})
+->with('user')
+->where('approved',true)
 ->search(request(['search','tag']))
 ->orderBy('created_at','DESC')
 ->paginate(6)
@@ -41,10 +45,8 @@ $post = Post::with('user')
 
 public function create( )
 {
-
-  return Inertia::render("Create",
-
-  );
+   Gate::authorize('create',Post::class);
+  return Inertia::render("Create");
 }
 
 
@@ -74,12 +76,12 @@ public function create( )
     $fields['tags'] = implode(',', array_map('trim', explode(',', $request->tags)));
 
     $request->user()->posts()->create($fields);
-    return to_route('home')->with('success', 'posst created');
+    return to_route('dashboard')->with('success', 'posst created');
   }
 
   public function show(Post $post) 
   {
-  
+     Gate::authorize('view',$post);
       return Inertia::render('Show',
       ['posts'=>$post,
       'canmodify'=>Auth::user()? Auth::user()->can('modify',$post) : false
@@ -123,7 +125,7 @@ public function create( )
     $fields['tags'] = implode(',', array_map('trim', explode(',', $request->tags)));
 
     $post->update($fields);
-    return to_route('home')->with('success', 'posst updated');
+    return to_route('dashboard')->with('success', 'posst updated');
    }
 
 
@@ -138,6 +140,6 @@ public function create( )
       } 
     }
     $post->delete();
-    return to_route('home')->with('success','post deleted');
+    return to_route('dashboard')->with('success','post deleted');
   }
 }

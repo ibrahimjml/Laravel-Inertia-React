@@ -21,7 +21,8 @@ class User extends Authenticatable implements MustVerifyEmail
       'username',
         'name',
         'email',
-        'password'
+        'password',
+        'role'
     ];
 
 public function posts()
@@ -50,5 +51,16 @@ public function posts()
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function scopeSearch($query, array $search)
+    {
+        if ($search['search'] ?? false) {
+            $query->where('name', 'like', '%' . request('search') . '%')
+                  ->orWhere('email', 'like', '%' . request('search') . '%');
+        }
+        if ($search['user_role'] ?? false) {
+          $query->where('role', request('user_role'));
+      }
     }
 }

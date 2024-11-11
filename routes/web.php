@@ -1,37 +1,35 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-
-
-
-
-
-
-Route::post('/logout',[AuthController::class,'logout'])->name('logout')->middleware('auth');
-
-Route::get('/email/verify', [AuthController::class,'verify_notice'])
-->middleware('auth')
-->name('verification.notice');
-
-Route::get('/email/verify/{id}/{hash}', [AuthController::class,'verify_email'])
-->middleware(['auth', 'signed'])
-->name('verification.verify');
-
-Route::post('/email/verification-notification', [AuthController::class,'verify_notification'])
-->middleware(['auth', 'throttle:6,1'])
-->name('verification.send');
-
-Route::middleware('guest')->group(function(){
-  Route::inertia('/register','auth/Register')->name('register');
-  Route::post('/register',[AuthController::class,'register']);
-  Route::inertia('/login','auth/Login')->name('login');
-  Route::post('/login',[AuthController::class,'login']);
-});
-
+// posts routes
 Route::get('/',[PostController::class,'index'])->name('home');
 Route::resource('posts', PostController::class)->except('index','update');
 Route::post('/update/{post}',[PostController::class,'update']);
-Route::inertia('/about','About')->name('about') ;
+
+  // user routes
+  Route::middleware('auth')->group(function(){
+  Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
+
+  // prodile edit
+  Route::get('/editprofile',[ProfileController::class,'index'])
+  ->middleware('password.confirm')
+  ->name('edit.profile');
+  Route::patch('/editprofile',[ProfileController::class,'update'])->name('update.profile');
+  Route::put('/editprofile',[ProfileController::class,'password'])->name('update.password');
+  Route::delete('/editprofile',[ProfileController::class,'delete'])->name('delete.account');
+});
+
+// admin routes
+Route::get('/admin',[AdminController::class,'index'])->name('admin.page');
+Route::get('/show/{user}',[AdminController::class,'show'])->name('show.posts');
+Route::put('/admin/{user}/update-role', [AdminController::class, 'updaterole'])->name('user.updaterole');
+Route::put('/approve/post{post}',[AdminController::class,'approve'])->name('approve.update');
+
+
+// auth routes
+require __DIR__."/auth.php";

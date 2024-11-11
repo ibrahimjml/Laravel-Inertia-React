@@ -21,6 +21,7 @@ class PostFactory extends Factory
             'user_id' => $this->faker->randomElement([1, 2]), 
             'title' => $this->faker->sentence(10),
             'description' => $this->faker->paragraph(12),
+            'approved'=>true,
             'tags' => $this->faker->randomElement([
                 'laravel',
                 'tailwind,php,C',

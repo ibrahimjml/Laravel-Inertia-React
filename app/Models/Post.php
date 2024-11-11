@@ -14,7 +14,8 @@ class Post extends Model
       'description',
       'image',
       'tags',
-      'user_id'
+      'user_id',
+      'approved'
     ];
 
     public function user()

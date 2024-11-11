@@ -1,6 +1,7 @@
 import {  Link, useForm, usePage } from '@inertiajs/react'
 import Blogcard from '../components/Blogcard';
 import { route } from 'ziggy-js';
+import Paginatelinks from '../components/Paginatelinks';
 
 export default function Home({posts,requestsearch}) {
   const tag = new URLSearchParams(window.location.search).get('tag'); 
@@ -53,16 +54,7 @@ get(route('home'),{
       
       </div>
       <div className='flex justify-center mt-4 '>
-      {posts.links && posts.links.map((link, index) => (
-          <Link 
-          key={index} 
-          href={link.url}  
-          dangerouslySetInnerHTML={{__html: link.label}}
-          className={`p-1 mx-1 ${link.active ? "text-red-700 font-extrabold":""} font-semibold`}
-          />
-          
-        
-        ))}
+      <Paginatelinks posts={posts}/>
       </div>
       
     

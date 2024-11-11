@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('tags')->nullable();
             $table->string('image')->nullable();
+            $table->boolean('approved')->default(false);
             $table->timestamps();
         });
     }

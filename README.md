@@ -14,8 +14,17 @@
 ![Dashboard Screenshot](public/dark-homescreen.png)
 ![Dashboard Screenshot](public/show-post.png)
 
+### Features
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+#### User Authentication/Authorization and Admin/profile Management and Homepage
+- **User Registration and Login:** Secure user authentication register/login for full customization and best experience,email verification included.
+- **Admin Dashboard:** Admin management system with pagination and filtering, where admin can manage users suspense users,make users admin or subscriber,manage posts approve/disapprove delete/view/edit posts.
+- **Profile Edit:** Users must confirm their password before access this page form more secure,access info edit name/email change current password,and delete account with password confirmation.
+- **Profile Dashboard:** Users can access their dashboard see their pending posts and approved posts they can't view pending posts until admin approve it , they can delete,edit.
+- **Homepage:** Posts will be pending until admin approve it and see it in homescreen,homepage with advance filtering by search and tags and pagination.
+- **Middleware/Policies/Gate:** Implemented secure application with middleware and policies/gate.
+
+
 
 - [Simple, fast routing engine](https://laravel.com/docs/routing).
 - [Powerful dependency injection container](https://laravel.com/docs/container).

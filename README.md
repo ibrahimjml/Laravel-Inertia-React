@@ -9,8 +9,10 @@
 
 
 ![schooldash-dahboard-page](https://i.postimg.cc/5tzVTgDT/Screenshot-2024-11-06-192824.png)
+![Dashboard Screenshot](public/user-dashboard.png)
+![Dashboard Screenshot](public/admin-dashboard.png)
 ![Dashboard Screenshot](public/dark-homescreen.png)
-![Dashboard Screenshot](public/Screenshot-2024-11-07-160802.png)
+![Dashboard Screenshot](public/show-post.png)
 
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:

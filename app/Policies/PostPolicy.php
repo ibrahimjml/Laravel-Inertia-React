@@ -19,6 +19,9 @@ class PostPolicy
 
   public function view(?User $user, Post $post): bool
     {
+      if($user->role === 'admin'){
+        return true;
+      }
         return $post->user->role !== 'suspended' && $post->approved;
     }
 

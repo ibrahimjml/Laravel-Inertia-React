@@ -12,18 +12,18 @@ class AdminController extends Controller
 {
     public function index(Request $request)
     {
-      $search = ['search' => $request->search] ;
+    
 
       if(Gate::allows('makeAdminActions')){
         $user = User::with('posts')
-        ->search($search)
+        ->search(request(['search']))
         ->paginate(5)
         ->withQueryString();
 
         return Inertia::render('admin/Adminpage',
         ['users'=>$user,
         'status'=>session('status'),
-        
+        'requestsearch'=>$request->search
       ]);
       }else{
         abort(403);
@@ -43,10 +43,20 @@ class AdminController extends Controller
     return redirect()->back()->with('status', 'User role updated successfully.');
 }
 
-public function show(User $user)
+public function show(User $user,Request $request)
 {
-  $posts = $user->posts()->latest()->paginate(6);
-  return Inertia::render('admin/Userposts',['user'=>$user,'posts'=>$posts]);
+  
+  $posts = $user->posts()
+  ->filter(request(['search']))
+  ->latest()
+  ->paginate(6)
+  ->withQueryString();
+
+  return Inertia::render('admin/Userposts',
+  ['user'=>$user,
+  'posts'=>$posts,
+  'requestsearch'=>$request->search
+]);
 }
     public function approve(Post $post)
     {

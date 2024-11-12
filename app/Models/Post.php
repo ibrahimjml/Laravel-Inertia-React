@@ -33,4 +33,13 @@ class Post extends Model
           $query->where('tags', 'like', '%' . request('tag') . '%');
       }
     }
+
+    public function scopeFilter($query, array $filter)
+    {
+        if ($filter['search'] ?? false) {
+            $query->where('title', 'like', '%' . request('search') . '%');
+                
+        }
+      
+    }
 }

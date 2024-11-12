@@ -25,10 +25,15 @@ Route::post('/update/{post}',[PostController::class,'update']);
 });
 
 // admin routes
-Route::get('/admin',[AdminController::class,'index'])->name('admin.page');
-Route::get('/show/{user}',[AdminController::class,'show'])->name('show.posts');
-Route::put('/admin/{user}/update-role', [AdminController::class, 'updaterole'])->name('user.updaterole');
-Route::put('/approve/post{post}',[AdminController::class,'approve'])->name('approve.update');
+Route::middleware(['auth','verified','can:makeAdminActions'])
+->controller(AdminController::class)
+->group(function(){
+  Route::get('/admin','index')->name('admin.page');
+  Route::get('/show/{user}','show')->name('show.posts');
+  Route::put('/admin/{user}/update-role','updaterole')->name('user.updaterole');
+  Route::put('/approve/post{post}','approve')->name('approve.update');
+});
+
 
 
 // auth routes

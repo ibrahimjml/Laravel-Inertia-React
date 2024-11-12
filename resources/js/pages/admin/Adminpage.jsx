@@ -3,7 +3,7 @@ import { Link} from '@inertiajs/react'
 import Selectrole from '../../components/Selectrole'
 import Searchinput from '../../components/Searchinput'
 
-export default function Adminpage({users,status}) {
+export default function Adminpage({users,status,requestsearch}) {
 
   return (
     <>
@@ -12,7 +12,7 @@ export default function Adminpage({users,status}) {
       </div>
       {/* search */}
 <div className='mb-3'>
-  <Searchinput/>
+  <Searchinput search={requestsearch}/>
 </div>
       {status && <p className='text-sm bg-green-500'>{status}</p>}
       <div className='bg-white flex items-center justify-between mx-auto p-8 rounded-lg shadow-lg dark:bg-slate-800 mb-4'>

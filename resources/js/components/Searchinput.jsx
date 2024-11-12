@@ -2,10 +2,10 @@ import { useForm } from '@inertiajs/react';
 import React from 'react'
 import { route } from 'ziggy-js';
 
-export default function Searchinput() {
+export default function Searchinput({search}) {
   const{data,setData,get} = useForm({
 
-    search: ''
+    search: search || ""
   
   })
   const Search =(eo)=>{

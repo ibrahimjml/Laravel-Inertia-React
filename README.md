@@ -9,11 +9,22 @@
 
 
 ![schooldash-dahboard-page](https://i.postimg.cc/5tzVTgDT/Screenshot-2024-11-06-192824.png)
+![Dashboard Screenshot](public/user-dashboard.png)
+![Dashboard Screenshot](public/admin-dashboard.png)
 ![Dashboard Screenshot](public/dark-homescreen.png)
-![Dashboard Screenshot](public/Screenshot-2024-11-07-160802.png)
+![Dashboard Screenshot](public/show-post.png)
+
+### Features
+
+#### User Authentication/Authorization and Admin/profile Management and Homepage
+- **User Registration and Login:** Secure user authentication register/login for full customization and best experience,email verification included.
+- **Admin Dashboard:** Admin management system with pagination and filtering, where admin can manage users make suspended users,users with suspended they will redirect to dashboard they can't make any certian action until admin remove suspended,make users admin or subscriber,manage posts approve/disapprove delete/view/edit posts.
+- **Profile Edit:** Users must confirm their password before access this page form more secure,access info edit name/email change current password,and delete account with password confirmation.
+- **Profile Dashboard:** Users can access their dashboard see their pending posts and approved posts they can't view pending posts until admin approve it , they can delete,edit.
+- **Homepage:** Posts will be pending until admin approve it and see it in homescreen,homepage with advance filtering by search and tags and pagination.
+- **Middleware/Policies/Gate:** Implemented secure application with middleware and policies/gate.
 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
 - [Simple, fast routing engine](https://laravel.com/docs/routing).
 - [Powerful dependency injection container](https://laravel.com/docs/container).

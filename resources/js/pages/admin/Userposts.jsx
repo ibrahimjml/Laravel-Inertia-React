@@ -1,26 +1,45 @@
-import { Link, useForm } from '@inertiajs/react';
-import React from 'react'
+import { Link, router, useForm } from '@inertiajs/react';
+import React, { useState } from 'react'
 import { route } from 'ziggy-js';
 import Paginatelinks from '../../components/Paginatelinks';
 
 
-export default function Userposts({user,posts,requestsearch}) {
-
-  const{data,setData,put,get}=useForm({
-    search:requestsearch || '',
-  
+export default function Userposts({user,posts,filters}) {
+  const [isChecked, setIsChecked] = useState(filters.unapproved || false);
+  const{data,setData,put}=useForm({
+    search:filters.search || '',
+    unapproved:filters.unapproved || false
   });
   const handleclick=(postid)=>{
     put(route('approve.update',postid));
   }
 
-  const Search = (eo)=>{
+  const Search = (eo) => {
     eo.preventDefault();
-    get(route('show.posts',user.id),{
-    search:data.search,
+    const params = {
+      search: data.search,
+      unapproved: isChecked ? true : null
+    };
+    router.get(route('show.posts', user.id),params,{
+      preserveState: true,
+      replace: true,
+    });
+  };
+  const handleCheckboxChange = () => {
+    const checkedState = !isChecked;
+    setIsChecked(checkedState);
 
-    })
-  }
+    const params = {
+      search: data.search,
+      unapproved: checkedState ? true : null
+    };
+
+    router.get(route('show.posts', user.id),params, {
+  
+      preserveState: true,
+      replace: true,
+    });
+  };
 
   return (
     <>
@@ -28,6 +47,7 @@ export default function Userposts({user,posts,requestsearch}) {
     <p className='text-3xl text-black dark:text-slate-200 capitalize'>{user.name} posts</p>
     </div>
     <div className='mb-3'>
+  {/* search box */}
     <form className=' w-1/5 ' onSubmit={Search}>   
     <label htmlFor="search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
     <div className="relative">
@@ -42,7 +62,11 @@ export default function Userposts({user,posts,requestsearch}) {
 </form>
 </div>
       <div className='bg-white mx-auto p-8 flex flex-col items-end gap-2 rounded-lg shadow-lg dark:bg-slate-800 mb-4'>
-    
+  {/* checkbox */}
+    <div className='flex gap-2 w-fit bg-slate-600 p-2 rounded-md mb-2'>
+        <input id='unapproved' type="checkbox" checked={isChecked} onChange={handleCheckboxChange}/>
+          <label htmlFor="unapproved">Unapproved</label>
+    </div>
       <table className='w-full mx-auto table-fixed border-collapse overflow-hidden rounded-md text-sm ring-1 ring-slate-300 dark:ring-slate-600 bg-white shadow-lg'>
        <thead className='bg-slate-600 text-slate-300 uppercase text-xs text-left'>
        <tr className="bg-slate-600 text-slate-300 uppercase text-xs text-left">
@@ -76,9 +100,10 @@ export default function Userposts({user,posts,requestsearch}) {
            </tbody>
            </table>
            </div>
+        {/* pagination */}
            <div className='flex justify-start mt-4 '>
-      <Paginatelinks posts={posts}/>
-      </div>
+           <Paginatelinks posts={posts}/>
+          </div>
            </>
   )
 }

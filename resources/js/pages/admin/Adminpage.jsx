@@ -1,10 +1,26 @@
-import React from 'react'
-import { Link} from '@inertiajs/react'
+import React, { useState } from 'react'
+import { Link, router} from '@inertiajs/react'
 import Selectrole from '../../components/Selectrole'
 import Searchinput from '../../components/Searchinput'
+import { route } from 'ziggy-js';
 
-export default function Adminpage({users,status,requestsearch}) {
+export default function Adminpage({users,status,filters}) {
+  const [isChecked, setIsChecked] = useState(filters.suspended || false);
+  const handleCheckbox = () => {
+    const checkedState = !isChecked;
+    setIsChecked(checkedState);
 
+    const params = {
+      search: filters.search ?? "",
+      suspended: checkedState ? true : null
+    };
+
+    router.get(route('admin.page'),params, {
+  
+      preserveState: true,
+      replace: true,
+    });
+  };
   return (
     <>
     <div className='bg-white flex items-center justify-center mx-auto p-8 rounded-lg shadow-lg dark:bg-slate-800 mb-4'>
@@ -12,10 +28,14 @@ export default function Adminpage({users,status,requestsearch}) {
       </div>
       {/* search */}
 <div className='mb-3'>
-  <Searchinput search={requestsearch}/>
+  <Searchinput search={filters.search ?? ""} suspend={filters.suspended ?? null}/>
 </div>
       {status && <p className='text-sm bg-green-500'>{status}</p>}
-      <div className='bg-white flex items-center justify-between mx-auto p-8 rounded-lg shadow-lg dark:bg-slate-800 mb-4'>
+      <div className='bg-white  mx-auto p-8 rounded-lg shadow-lg dark:bg-slate-800 mb-4'>
+      <div className='flex gap-2 w-fit bg-slate-600 p-2 rounded-md mb-2'>
+        <input id='suspended' type="checkbox" checked={isChecked} onChange={handleCheckbox}/>
+          <label htmlFor="suspended">suspended</label>
+    </div>
        <table className='w-full mx-auto table-fixed border-collapse overflow-hidden rounded-md text-sm ring-1 ring-slate-300 dark:ring-slate-600 bg-white shadow-lg'>
         <thead className='bg-slate-600 text-slate-300 uppercase text-xs text-left'>
         <tr className="bg-slate-600 text-slate-300 uppercase text-xs text-left">

@@ -16,14 +16,14 @@ class AdminController extends Controller
 
       if(Gate::allows('makeAdminActions')){
         $user = User::with('posts')
-        ->search(request(['search']))
+        ->search($request->only(['search','suspended']))
         ->paginate(5)
         ->withQueryString();
 
         return Inertia::render('admin/Adminpage',
         ['users'=>$user,
         'status'=>session('status'),
-        'requestsearch'=>$request->search
+        'filters'=>$request->only(['search','suspended'])
       ]);
       }else{
         abort(403);
@@ -33,21 +33,21 @@ class AdminController extends Controller
 
     public function updaterole(Request $request,User $user)
 {
+
     $request->validate([
-        'role' => 'required|in:admin,subscriber,suspended',
+        'role' => 'required|string|in:admin,subscriber,suspended',
     ]);
 
-    $user->role = $request->input('role');
-    $user->save();
+    $user->update(['role'=>$request->role]);
 
-    return redirect()->back()->with('status', 'User role updated successfully.');
+    return redirect()->back()->with('status', "User role {$request->role} updated successfully.");
 }
 
 public function show(User $user,Request $request)
 {
-  
+
   $posts = $user->posts()
-  ->filter(request(['search']))
+  ->filter($request->only(['search','unapproved']))
   ->latest()
   ->paginate(6)
   ->withQueryString();
@@ -55,7 +55,7 @@ public function show(User $user,Request $request)
   return Inertia::render('admin/Userposts',
   ['user'=>$user,
   'posts'=>$posts,
-  'requestsearch'=>$request->search
+  'filters'=>$request->only(['search','unapproved'])
 ]);
 }
     public function approve(Post $post)

@@ -1,30 +1,26 @@
-import React from 'react';
-import { useForm } from '@inertiajs/react';
+import { useState } from 'react';
+import { router } from '@inertiajs/react';
+import { route } from 'ziggy-js';
 
-export default function Selectrole({ user }) {
-  const { setData, put } = useForm({
-    role: user.role, 
-  });
+export default function SelectRole({ user }) {
+  const [selectedRole, setSelectedRole] = useState(user.role);
 
-  const handleChange = (eo) => {
-    const newRole = eo.target.value;
-    setData('role', newRole); 
+  const handleChange = (e) => {
+    const newRole = e.target.value;
+    setSelectedRole(newRole); 
 
   
-    put(route('user.updaterole',user.id), {
-      data: { role: newRole },
-      preserveScroll: true,
-    
-    
+    router.put(route('user.updaterole', user.id), {
+      role: newRole,  
+      preserveState: true,  
     });
   };
 
   return (
     <select
       className="bg-gray-100 rounded p-2 dark:bg-slate-700 dark:text-slate-200"
-      value={user.role} 
-      onChange={handleChange}
-    
+      value={selectedRole} 
+      onChange={handleChange} 
     >
       <option value="admin">Admin</option>
       <option value="subscriber">Subscriber</option>

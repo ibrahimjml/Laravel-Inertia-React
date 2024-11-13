@@ -1,20 +1,21 @@
-import { useForm } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import React from 'react'
 import { route } from 'ziggy-js';
 
-export default function Searchinput({search}) {
-  const{data,setData,get} = useForm({
+export default function Searchinput({search,suspend}) {
+  const{data,setData} = useForm({
 
-    search: search || ""
-  
-  })
-  const Search =(eo)=>{
+    search: search || "",
+    suspend: suspend?? false
+  });
+  const Search = (eo) => {
     eo.preventDefault();
-    get(route('admin.page'),{
-    search:data.search
-    
-    })
-    }
+
+    router.get(route('admin.page'),{
+      search: data.search,
+      suspend: suspend?? false
+    });
+  };
   return (
     <form className='w-1/4 ' onSubmit={Search}>   
     <label htmlFor="search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>

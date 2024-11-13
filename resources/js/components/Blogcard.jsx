@@ -1,14 +1,13 @@
-import { Link, useForm } from "@inertiajs/react";
+import { Link, router, useForm } from "@inertiajs/react";
 import moment from "moment";
 import React from "react";
 import { route } from "ziggy-js";
 
 export default function Blogcard({post,request}) {
   
-  const {get}=useForm();
   const selectTag = (tag) => {
 
-      get(route("home",{ 
+      router.get(route("home",{ 
         search: request,
          tag: tag 
         }));

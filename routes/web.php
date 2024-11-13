@@ -30,7 +30,7 @@ Route::middleware(['auth','verified','can:makeAdminActions'])
 ->group(function(){
   Route::get('/admin','index')->name('admin.page');
   Route::get('/show/{user}','show')->name('show.posts');
-  Route::put('/admin/{user}/update-role','updaterole')->name('user.updaterole');
+  Route::put('/admin/{user}/role','updaterole')->name('user.updaterole');
   Route::put('/approve/post{post}','approve')->name('approve.update');
 });
 

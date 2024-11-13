@@ -59,8 +59,8 @@ public function posts()
             $query->where('name', 'like', '%' . request('search') . '%')
                   ->orWhere('email', 'like', '%' . request('search') . '%');
         }
-        if ($search['user_role'] ?? false) {
-          $query->where('role', request('user_role'));
+        if ($search['suspended'] ?? false) {
+          $query->where('role', 'suspended');
       }
     }
 }

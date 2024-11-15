@@ -30,7 +30,7 @@ $post = Post::whereHas('user',function(Builder $q){
 })
 ->with('user')
 ->where('approved',true)
-->search($request->only(['search','tag']))
+->search($request->only(['search','tag','user_id']))
 ->orderBy('created_at','DESC')
 ->paginate(6)
 ->withQueryString();
@@ -38,7 +38,7 @@ $post = Post::whereHas('user',function(Builder $q){
     return Inertia::render(
       'Home',
       ['posts' => $post,
-      'filters'=>$request->only(['search','tag'])
+      'filters'=>$request->only(['search','tag','user_id'])
       ]
     );
   }

@@ -33,6 +33,9 @@ class Post extends Model
         if ($search['tag'] ?? false) {
           $query->where('tags', 'like', '%' . request('tag') . '%');
       }
+      if($search['user_id'] ?? false){
+        $query->where('user_id','like','%'.request('user_id').'%');
+      }
     }
 
     public function scopeFilter($query, array $filter)

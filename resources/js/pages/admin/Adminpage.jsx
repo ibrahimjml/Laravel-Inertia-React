@@ -41,7 +41,7 @@ export default function Adminpage({users,status,filters}) {
         <tr className="bg-slate-600 text-slate-300 uppercase text-xs text-left">
                 <th className="w-3/6 p-3">User</th>
                 <th className="w-2/6 p-3">Role</th>
-                <th className="w-1/6 p-3">Posts</th>
+                <th className="w-1/6 p-3 text-center">Posts</th>
                 <th className="w-1/6 p-3 text-right">View</th>
             </tr>
             </thead>
@@ -56,8 +56,8 @@ export default function Adminpage({users,status,filters}) {
                 <Selectrole user={user}/>
                 
                 </td>
-                <td className='w-1/6 py-5 px-3'>
-                <div className=' flex items-center gap-6'>
+                <td className='w-1/6 py-5 px-3 text-center'>
+                <div className=' flex items-center justify-center gap-6'>
                   <div className='flex gap-2'>
                   {user.posts.filter((l)=>l.approved).length}
                   <img src="/approve.png" alt="" />

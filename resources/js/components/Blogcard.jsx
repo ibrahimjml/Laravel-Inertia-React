@@ -1,18 +1,25 @@
-import { Link, router, useForm } from "@inertiajs/react";
+import { Link, router} from "@inertiajs/react";
 import moment from "moment";
 import React from "react";
 import { route } from "ziggy-js";
 
 export default function Blogcard({post,request}) {
   
-  const selectTag = (tag) => {
-
-      router.get(route("home",{ 
-        search: request,
-         tag: tag 
-        }));
+  const params={
+    ...(request.search && {search:request.search}),
+    ...(request.user_id && {user_id:request.user_id}),
+    ...(request.tag && {tag:request.tag})
     
+  };
+  const selectTag = (tag) => {
+    router.get(route("home", { ...params, tag: tag }));
+
   }
+
+  const selectname = (userID)=>{
+    router.get(route("home",{...params,user_id:userID}));
+  }
+  
   return (
     <div className="bg-white dark:border-2 border-slate-600 dark:bg-slate-800 rounded-md shadow-lg overflow-hidden h-full flex flex-col justify-between">
       <div>
@@ -34,7 +41,7 @@ export default function Blogcard({post,request}) {
           <p>
             Posted : {moment(post.created_at).fromNow()}
           </p>
-          <p >BY: {post.user.name}</p>
+          <span>BY: <button onClick={()=>selectname(post.user.id)} className="font-semibold text-green-500 dark:text-blue-500">{post.user.name}</button></span>
           {post.tags && (
             <div className="flex items-center justify-start gap-3 px-4 pb-3 mt-2">
               {post.tags.split(",").map((tag) => (

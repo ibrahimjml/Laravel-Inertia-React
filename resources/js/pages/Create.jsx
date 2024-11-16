@@ -1,4 +1,4 @@
-import { useForm } from "@inertiajs/react"
+import { Head, useForm } from "@inertiajs/react"
 
 
 export default function Create() {
@@ -18,6 +18,7 @@ post('/posts',{
   }
   return (
     <>
+    <Head title="Create"/>
     <div className="container mx-auto pt-[40px]">
   <h1 className=" text-3xl font-bold text-center py-5 capitalize">create post</h1>
 </div>

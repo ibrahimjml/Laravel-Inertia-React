@@ -6,6 +6,7 @@ import Layout from '@/layouts/Layout'
 import { SetThemeOnLoad } from './theme';
 
 createInertiaApp({
+  title: title => title ? `${title} - Laravel+Inertia` :'Laravel+Inertia',
   resolve: name => {
     const pages = import.meta.glob('./Pages/**/*.jsx', { eager: true });
     let page = pages[`./Pages/${name}.jsx`];

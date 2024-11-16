@@ -1,4 +1,4 @@
-import {  Link, router, useForm, usePage } from '@inertiajs/react'
+import {  Head, Link, router, useForm, usePage } from '@inertiajs/react'
 import Blogcard from '../components/Blogcard';
 import { route } from 'ziggy-js';
 import Paginatelinks from '../components/Paginatelinks';
@@ -6,8 +6,8 @@ import { useEffect } from 'react';
 
 export default function Home({posts,filters}) {
 
-  const {auth} = usePage().props;
-  
+  const {auth,component} = usePage().props;
+
   const{data,setData} = useForm({
 
     search: filters.seacrh || ''
@@ -32,6 +32,7 @@ router.get(route('home',{...params}));
 
   return (
     <>
+    <Head title='Home' />
     {auth.user && <h1 className="text-2xl text-black dark:text-slate-200 text-center">Welcome, <span className='font-semibold'>{auth.user.name}</span></h1>}
     <div className="container flex gap-3 mt-3 mx-auto w-[80%] ">
 {/* search */}
@@ -103,7 +104,7 @@ router.get(route('home',{...params}));
       ))}
       
       </div>
-      <div className='flex justify-center mt-4 '>
+      <div className='flex justify-center items-center mt-4 '>
       <Paginatelinks posts={posts}/>
       </div>
       

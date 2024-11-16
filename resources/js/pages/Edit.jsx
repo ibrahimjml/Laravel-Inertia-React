@@ -1,4 +1,4 @@
-import { useForm } from '@inertiajs/react';
+import { Head, useForm } from '@inertiajs/react';
 import React from 'react'
 
 
@@ -20,6 +20,7 @@ post(`/update/${posts.id}`, {
   }
   return (
     <>
+    <Head title={`Edit-${posts.title.slice(0,5)}`}/>
     <div className="container mx-auto pt-[40px] ">
   <h1 className=" text-3xl font-bold text-center py-5 capitalize">Update Post</h1>
 </div>

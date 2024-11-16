@@ -18,14 +18,15 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => $this->faker->randomElement([1, 2]), 
+            'user_id' => $this->faker->randomElement([1,2]), 
             'title' => $this->faker->sentence(10),
             'description' => $this->faker->paragraph(12),
             'approved'=>true,
             'tags' => $this->faker->randomElement([
-                'laravel',
-                'tailwind,php,C',
-                'java,html'
+                'Laravel',
+                'Tailwind,Php',
+                'Java',
+                'React'
             ]),
         ];
     }

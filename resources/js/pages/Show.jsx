@@ -1,4 +1,4 @@
-import { Link, useForm } from '@inertiajs/react'
+import { Head, Link, useForm } from '@inertiajs/react'
 import React from 'react'
 import { route } from 'ziggy-js'
 
@@ -15,6 +15,7 @@ export default function Show({ posts,canmodify }) {
   }
   return (
     <>
+    <Head title={posts.title.slice(0,5)}/>
       <div className=' flex justify-center'>
 
         <div className="flex flex-col bg-white border border-gray-200 rounded-lg shadow md:flex-row md:w-[50%] hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">

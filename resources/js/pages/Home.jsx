@@ -18,13 +18,13 @@ export default function Home({posts,filters}) {
     ...(filters.tag && { tag: filters.tag }),
     ...(filters.user_id && {user_id:filters.user_id})
   };
+
+  const username = filters.user_id ? posts.data.find((l)=>l.user_id === Number(filters.user_id)).user.name : null;
+
 const Search =(eo)=>{
 eo.preventDefault();
 
-router.get(route('home',{...params}),{
-    preserveState: true, 
-     
-  });
+router.get(route('home',{...params}));
 }
   useEffect(()=>{
     setData('search',filters.search)
@@ -48,38 +48,46 @@ router.get(route('home',{...params}),{
     </div>
 </form>
 {/* removing filters */}
-<div className='flex gap-3'>
-      {filters.tag && (
+<div className='flex items-center gap-3'>
+
+{filters.tag && (
         <Link 
-        className='dark:bg-blue-500 bg-green-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
+        className='dark:bg-blue-500 flex gap-3 bg-green-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
         href={route('home',{
           ...params,
           tag:null,
           page:null
         }
-      )}>{filters.tag}</Link>
+      )}><span>{filters.tag}</span>
+      <img src="/close.png" alt="" /></Link>
       )}
 
-      {filters.search && 
+
+
+{filters.search && 
         <Link 
-        className='dark:bg-blue-500 bg-green-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
+        className='dark:bg-blue-500 flex gap-3 bg-green-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
         href={route('home',{
         ...params,
         search:null,
         page:null
         }
-      )}>{filters.search}</Link>
+      )}>{filters.search}<img src="/close.png" alt="" /></Link>
       }
+
+    
       {filters.user_id &&
       <Link 
-      className='dark:bg-blue-500 bg-green-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
+      className='dark:bg-blue-500 flex gap-3 bg-green-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
       href={route('home',{
       ...params,
       user_id:null,
       page:null
       }
-    )}>{filters.user_id}</Link>
+    )}>{username}<img  src="/close.png" alt="" /></Link>
       }
+    
+      
     
   
     </div>

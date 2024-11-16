@@ -26,18 +26,20 @@ class Post extends Model
 
     public function scopeSearch($query, array $search)
     {
-        if ($search['search'] ?? false) {
-            $query->where('title', 'like', '%' . request('search') . '%')
-                  ->orWhere('description', 'like', '%' . request('search') . '%');
-        }
-        if ($search['tag'] ?? false) {
-          $query->where('tags', 'like', '%' . request('tag') . '%');
-      }
-      if($search['user_id'] ?? false){
-        $query->where('user_id','like','%'.request('user_id').'%');
-      }
-    }
+      $query->when(!empty($search['search']), function ($query) use ($search) {
+        $query->where(function ($query) use ($search) {
+            $query->where('title', 'like', '%' . $search['search'] . '%')
+                  ->orWhere('description', 'like', '%' . $search['search'] . '%');
+        });
+    });
 
+    if (!empty($search['tag'])) {
+      $query->where('tags', 'like', '%' . $search['tag'] . '%');
+  }
+     if (!empty($search['user_id'])) {
+        $query->where('user_id', $search['user_id']);
+    }
+  }
     public function scopeFilter($query, array $filter)
     {
         if ($filter['search'] ?? false) {

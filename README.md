@@ -22,7 +22,7 @@
 - **Admin Dashboard:** Admin management system with pagination and advance filtering, where admin can manage users make suspended users filter suspended users and serach for them in same time,users with suspended  will redirect to dashboard prevent them from CRUD operation, until admin remove suspended,make users admin or subscriber,manage posts toggle approve/disapprove filter posts by unapproved and search for them, ability delete/view/edit posts.
 - **Profile Edit:** Users must confirm their password before access this page form more secure,access info edit name/email change current password,and delete account with password confirmation.
 - **Profile Dashboard:** Users can access their dashboard see their pending posts and approved posts they can't view pending posts until admin approve it , they can delete,edit.
-- **Homepage:** Posts will be pending until admin approve it to let user be able to see in homescreen,homepage with advance filtering users can search for posts and filter posts by tags in same time without loosing the query included pagination.
+- **Homepage:** Posts with pending or suspended users will not show on homepage,homepage with advance filtering user can search for posts and filter by tags and auhtor id  all in one query with ability to paginate with those results and ability to remove those filters.
 - **Middleware/Policies/Gate:** Implemented secure application with middleware and policies/gate.
 
 

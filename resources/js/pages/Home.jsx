@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 export default function Home({posts,filters}) {
 
-  const {auth,component} = usePage().props;
+  const {auth} = usePage().props;
 
   const{data,setData} = useForm({
 

@@ -35,7 +35,7 @@ export default function Dashboard({posts,suspended,success}) {
             <thead className='bg-slate-300 text-xs uppercase text-slate-600 dark:text-slate-400 dark:bg-slate-900'>
               <tr>
                 <th className="w-3/4 p-3 text-left">Post Title</th>
-                <th className="w-1/4 py-3 pr-3 text-right">View</th>
+                <th className="w-1/5 py-3 pr-3 text-right">View</th>
                 <th className="w-1/5 py-3 pr-3 text-right">Edit</th>
                 <th className="w-1/5 py-3 pr-3 text-right">Delete</th>
               </tr>
@@ -60,7 +60,9 @@ export default function Dashboard({posts,suspended,success}) {
                       </div>
                     </td>
                     <td className='w-1/4 py-3 pr-3 text-right text-indigo-500'>
+                      {post.approved == true  && 
                       <Link href={route('posts.show', post.id)}>View</Link>
+                      }
                     </td>
                     <td className='w-1/4 py-3 pr-3 text-right text-indigo-500'>
                       <Link href={route('posts.edit', post.id)}>Edit</Link>

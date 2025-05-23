@@ -8,11 +8,11 @@
 </p>
 
 
-![schooldash-dahboard-page](public/login-page.png)
-![Dashboard Screenshot](public/user-dashboard.png)
-![Dashboard Screenshot](public/admin-dashboard.png)
-![Dashboard Screenshot](public/admin-2.png)
-![Dashboard Screenshot](public/dark-homescreen.png)
+![schooldash-dahboard-page](https://i.postimg.cc/4d3Ydcnt/Screenshot-2025-05-23-201933.png)
+![Dashboard Screenshot](https://i.postimg.cc/6qXpDbF9/Screenshot-2025-05-23-191142.png)
+![Dashboard Screenshot](https://i.postimg.cc/KjfxCGnN/Screenshot-2025-05-23-204316.png)
+![Dashboard Screenshot](https://i.postimg.cc/bryjx7K2/127-0-0-1-8000-show-2-search-unapproved.png)
+![Dashboard Screenshot](https://i.postimg.cc/sfTFF0kw/127-0-0-1-8000-8.png)
 ![Dashboard Screenshot](public/show-post.png)
 
 ### Features

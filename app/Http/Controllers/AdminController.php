@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
@@ -15,13 +16,17 @@ class AdminController extends Controller
     
 
       if(Gate::allows('makeAdminActions')){
-        $user = User::with('posts')
+        $users = User::with('posts')
         ->search($request->only(['search','suspended']))
         ->paginate(5)
         ->withQueryString();
-
+  
+        $authUser = Auth::user();
+        foreach ($users as $user) {
+        $user->canmodify = $authUser?->can('modify', $user) ?? false;
+        }
         return Inertia::render('admin/Adminpage',
-        ['users'=>$user,
+        ['users'=>$users,
         'status'=>session('status'),
         'filters'=>$request->only(['search','suspended'])
       ]);

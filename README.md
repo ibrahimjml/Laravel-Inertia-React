@@ -15,6 +15,46 @@
 ![Dashboard Screenshot](https://i.postimg.cc/sfTFF0kw/127-0-0-1-8000-8.png)
 ![Dashboard Screenshot](https://i.postimg.cc/9F1yYyq4/Screenshot-2025-05-23-205746.png)
 
+## INSTALLATION
+1.📦 Install dependencies
+```
+composer install
+```
+2.🛠️ Create a copy of the .env file
+```
+cp .env.example .env
+```
+3.🔑 Generate the application key
+```
+php artisan key:generate
+```
+4.📦 install node_modules
+```
+npm install
+```
+5.🚀 Compile assets with Tailwind CSS
+```
+npm run dev
+```
+6.🗄️ Set up the database
+```
+php artisan migrate
+```
+7.🔗 Create symbolic link for storage
+```
+rm public/storage
+php artisan storage:link
+```
+8.🗄️ seed admin user 
+```
+php artisan db:seed AdminSeeder
+```
+9.💻 Run the application
+```
+php artisan serve
+```
+
+
 ### Features
 - **Login with Recaptcha v2** 
 - **Toggle dark/light mode** 

@@ -20,9 +20,9 @@ export default function Dashboard({posts,suspended,success}) {
       <p className='text-3xl text-black dark:text-slate-200 capitalize'>{auth.user.name} dashboard</p>
       <div className='flex items-center gap-4'>
         <p>Approved</p>
-        <img src="/approve.png" alt="" />
+        <i className='fa-solid fa-check text-green-500'></i>
         <p>Pending</p>
-        <img src="/clock.png" alt="" />
+      <i class="fa-solid fa-hourglass-start text-yellow-500"></i>
       </div>
     </div>
     {success && <p className='text-sm text-green-500 mb-3 font-semibold'>{success}</p>}
@@ -53,9 +53,9 @@ export default function Dashboard({posts,suspended,success}) {
                         />
                         <h3>{post.title.slice(0,50)}</h3>
                         {post.approved ? (
-                          <img src="/approve.png" alt="approved" />
+                        <i className='fa-solid fa-check text-green-500'></i>
                         ) : (
-                          <img src="/clock.png" alt="pending" />
+                          <i class="fa-solid fa-hourglass-start text-yellow-500"></i>
                         )}
                       </div>
                     </td>

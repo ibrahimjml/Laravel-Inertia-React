@@ -4,7 +4,7 @@ import { route } from 'ziggy-js';
 import Paginatelinks from '../components/Paginatelinks';
 import { useEffect } from 'react';
 
-export default function Home({posts,filters}) {
+export default function Home({posts,filters,hashtags}) {
 
   const {auth} = usePage().props;
 
@@ -53,39 +53,41 @@ router.get(route('home',{...params}));
 
 {filters.tag && (
         <Link 
-        className='dark:bg-blue-500 flex gap-3 bg-green-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
+        className='dark:bg-slate-600 flex items-center gap-3 bg-green-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
         href={route('home',{
           ...params,
           tag:null,
           page:null
         }
-      )}><span>{filters.tag}</span>
-      <img src="/close.png" alt="" /></Link>
+      )}>{filters.tag}
+      <i className='fa-solid fa-close'></i></Link>
       )}
 
 
 
 {filters.search && 
         <Link 
-        className='dark:bg-blue-500 flex gap-3 bg-green-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
+        className='dark:bg-slate-600 flex items-center gap-3 bg-green-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
         href={route('home',{
         ...params,
         search:null,
         page:null
         }
-      )}>{filters.search}<img src="/close.png" alt="" /></Link>
+      )}>{filters.search}  
+      <i className='fa-solid fa-close'></i></Link>
       }
 
     
       {filters.user_id &&
       <Link 
-      className='dark:bg-blue-500 flex gap-3 bg-green-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
+      className='dark:bg-slate-600 flex items-center gap-3 bg-green-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
       href={route('home',{
       ...params,
       user_id:null,
       page:null
       }
-    )}>{username}<img  src="/close.png" alt="" /></Link>
+    )}>{username}  
+    <i className='fa-solid fa-close'></i></Link>
       }
     
       
@@ -97,7 +99,7 @@ router.get(route('home',{...params}));
 
     {posts.data && posts.data.map((post) => (
         <div key={post.id}>
-          <Blogcard post={post} request={filters}/>
+          <Blogcard post={post} request={filters} />
         </div>
             
         

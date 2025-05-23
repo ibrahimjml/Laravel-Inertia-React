@@ -22,12 +22,12 @@ class PostFactory extends Factory
             'title' => $this->faker->sentence(10),
             'description' => $this->faker->paragraph(12),
             'approved'=>true,
-            'tags' => $this->faker->randomElement([
-                'Laravel',
-                'Tailwind,Php',
-                'Java',
-                'React'
-            ]),
+            // 'tags' => $this->faker->randomElement([
+            //     'Laravel',
+            //     'Tailwind,Php',
+            //     'Java',
+            //     'React'
+            // ]),
         ];
     }
 }

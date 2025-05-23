@@ -8,8 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 // posts routes
 Route::get('/',[PostController::class,'index'])->name('home');
-Route::resource('posts', PostController::class)->except('index','update');
-Route::post('/update/{post}',[PostController::class,'update']);
+Route::resource('posts', PostController::class);
 
   // user routes
   Route::middleware('auth')->group(function(){

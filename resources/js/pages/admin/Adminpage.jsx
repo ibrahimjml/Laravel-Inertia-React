@@ -58,13 +58,13 @@ export default function Adminpage({users,status,filters}) {
                 </td>
                 <td className='w-1/6 py-5 px-3 text-center'>
                 <div className=' flex items-center justify-center gap-6'>
-                  <div className='flex gap-2'>
+                  <div className='flex items-center gap-2'>
                   {user.posts.filter((l)=>l.approved).length}
-                  <img src="/approve.png" alt="" />
+                <i className='fa-solid fa-check text-green-500'></i>
                   </div>
-                  <div className='flex gap-2'>
+                  <div className='flex items-center gap-2'>
                   {user.posts.filter((l)=>!l.approved).length}
-                  <img src="/clock.png" alt="" />
+                <i class="fa-solid fa-hourglass-start text-yellow-500"></i>
                   </div>
                 </div>
                   

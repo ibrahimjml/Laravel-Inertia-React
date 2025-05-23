@@ -3,7 +3,7 @@ import React from 'react'
 import { route } from 'ziggy-js'
 
 
-export default function Show({ posts,canmodify }) {
+export default function Show({ posts,canmodify,tags}) {
   const { delete: destroy } = useForm();
 
   const handleDelete = (postId) => {
@@ -42,7 +42,7 @@ export default function Show({ posts,canmodify }) {
               <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{posts.description}</p>
             </div>
             <div className='flex items-center justify-start gap-3 px-4 pb-3 mt-2'>
-              {posts.tags && posts.tags.split(",").map((tag, index) => (
+              {tags && tags.split(",").map((tag, index) => (
                 <button
                   key={index}
                   className="bg-slate-600 px-2 py-px text-white text-sm rounded-full"

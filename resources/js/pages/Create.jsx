@@ -28,38 +28,38 @@ post('/posts',{
     
   
     <div className="flex flex-wrap">
-      <label htmlFor="title" className="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
-        title:
+      <label htmlFor="title" className="block text-gray-700 dark:text-white text-sm font-bold mb-2 sm:mb-4">
+        Title:
       </label>
   
-      <input id="title" type="text" className="rounded-sm p-2 border-2 form-input w-full "
+      <input id="title" type="text" className="rounded-sm p-2 text-black dark:bg-Gray border-2 form-input w-full "
           name="title"  value={data.title} onChange={(eo)=>{setData('title',eo.target.value)}}/>
   
   {errors.title && <small className="text-sm text-red-500">{errors.title}</small>} 
   </div>
     <div>
-      <label htmlFor="description" className="mt-2 block text-gray-700 text-sm font-bold mb-2 sm:mb-4">description :</label>
+      <label htmlFor="description" className="mt-2 block text-gray-700 dark:text-white text-sm font-bold mb-2 sm:mb-4">description :</label>
       <textarea id="description" name="description" 
-      className="rounded-sm p-2 border-2 form-input w-full "
+      className="rounded-sm p-2 border-2 text-black form-input w-full dark:bg-Gray"
       value={data.description} 
       onChange={(eo)=>{setData('description',eo.target.value)}}
       ></textarea>
     {errors.description && <small className="text-sm text-red-500">{errors.description}</small>} 
     </div>
     <div>
-      <label htmlFor="image" className="mt-2 block text-gray-700 text-sm font-bold mb-2 sm:mb-4">image :</label>
+      <label htmlFor="image" className="mt-2 block text-gray-700 dark:text-white  text-sm font-bold mb-2 sm:mb-4">image :</label>
       <input type="file" name="image" 
-      className="rounded-sm p-2 border-2 form-input w-full "
+      className="rounded-sm p-2 border-2 form-input w-full text-black dark:bg-Gray"
       onChange={(eo)=>{setData('image',eo.target.files[0])}}
       />
       {errors.image && <small className="text-sm text-red-500">{errors.image}</small>} 
     </div>
     <div className="flex flex-wrap">
-      <label htmlFor="tags" className="block text-gray-700 text-sm font-bold mb-2 mt-2 sm:mb-4">
+      <label htmlFor="tags" className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2 sm:mb-4">
         hashtag:
       </label>
   
-      <input id="tags" type="text" className="rounded-sm p-2 border-2 form-input w-full "
+      <input id="tags" type="text" className="rounded-sm p-2 border-2 form-input w-full text-black dark:bg-Gray"
           name="tags" value={data.tags} onChange={(eo)=>{setData('tags',eo.target.value)}}/>
   {errors.tags && <small className="text-sm text-red-500">{errors.tags}</small>} 
 
@@ -68,7 +68,7 @@ post('/posts',{
       <button type="submit"
       disabled={processing}
       className="w-[200px]  select-none font-bold  p-3 rounded-lg text-xl  no-underline text-gray-100 bg-gray-700 hover:bg-gray-500 sm:py-4">
-      create
+      Create
       </button>
     </div>
   </form>

@@ -2,18 +2,19 @@ import { Head, useForm } from '@inertiajs/react';
 import React from 'react'
 
 
-export default function Edit({posts}) {
+export default function Edit({posts,tags}) {
   const { data, setData,post, processing, errors } = useForm({
     title: posts.title,
     description: posts.description,
     image: null,
-    tags: posts.tags,
+    tags: tags,
+    _method : 'PUT'
   })
   const handleupdate=(eo)=>{
 eo.preventDefault();
 
 
-post(`/update/${posts.id}`, {
+post(`/posts/${posts.id}`, {
   ...data,
   preserveScroll: true,
 })

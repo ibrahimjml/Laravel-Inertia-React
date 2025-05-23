@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\Suspended;
+use App\Models\Hashtag;
 use App\Models\Post;
+use App\Services\HashtagService;
 use Illuminate\Database\Eloquent\Builder;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
@@ -26,18 +28,19 @@ class PostController extends Controller implements HasMiddleware
   {
 
 $post = Post::whereHas('user',function(Builder $q){
-  $q->where('role','!=','suspended');
-})
-->with('user')
-->where('approved',true)
-->search($request->only(['search','tag','user_id']))
-->orderBy('created_at','DESC')
-->paginate(6)
-->withQueryString();
+               $q->where('role','!=','suspended');
+             })
+             ->with(['user','hashtags'])
+             ->where('approved',true)
+             ->search($request->only(['search','tag','user_id']))
+             ->orderBy('created_at','DESC')
+             ->paginate(6)
+             ->withQueryString();
 
     return Inertia::render(
       'Home',
-      ['posts' => $post,
+      [
+        'posts' => $post,
       'filters'=>$request->only(['search','tag','user_id'])
       ]
     );
@@ -51,14 +54,13 @@ public function create( )
 
 
 
-  public function store(Request $request)
+  public function store(Request $request,HashtagService $tags)
   {
 
 
     $fields = $request->validate([
       'title' => 'required|string|max:50',
       'description' => 'required|string',
-      'tags' => 'nullable|string',
       'image' => 'nullable|mimes:jpg,png,jpeg|max:5000000',
 
     ]);
@@ -73,17 +75,22 @@ public function create( )
 
       $fields['image'] =  $imageName;
     }
-    $fields['tags'] = implode(',', array_map('trim', explode(',', $request->tags)));
+  
 
-    $request->user()->posts()->create($fields);
+  $post =  $request->user()->posts()->create($fields);
+    if($request->filled('tags')){
+       $tags->attachhashtags($post,$request->input('tags'));
+    }
     return to_route('dashboard')->with('success', 'posst created');
   }
 
   public function show(Post $post) 
   {
      Gate::authorize('view',$post);
+     $alltags = $post->hashtags()->pluck('name')->implode(', ');
       return Inertia::render('Show',
       ['posts'=>$post,
+      'tags'=>$alltags,
       'canmodify'=>Auth::user()? Auth::user()->can('modify',$post) : false
       ]
     );
@@ -95,8 +102,9 @@ public function create( )
 
   public function edit(Post $post) {
   Gate::authorize('modify',$post);
+  $alltags = $post->hashtags()->pluck('name')->implode(', ');
     return Inertia::render("Edit",
-    ['posts'=>$post]
+    ['posts'=>$post,'tags'=>$alltags]
   );
   }
 
@@ -108,8 +116,8 @@ public function create( )
     $fields = $request->validate([
       'title' => 'required|string|max:50',
       'description' => 'required|string',
-      'tags' => 'nullable|string',
       'image' => 'nullable|mimes:jpg,png,jpeg|max:5000', 
+      'tags' => 'nullable|string',
   ]);
 
 
@@ -122,8 +130,19 @@ public function create( )
 
     $fields['image'] = $post->image;
 }
-    $fields['tags'] = implode(',', array_map('trim', explode(',', $request->tags)));
+    
+  if (!empty($fields['tags'])) {
+      $hashtagNames = array_unique(array_filter(array_map('trim', explode(',', $fields['tags']))));
+      $hashtagIds = [];
 
+      foreach ($hashtagNames as $name) {
+          $hashtag = Hashtag::firstOrCreate(['name' => strip_tags(trim($name))]);
+          $hashtagIds[] = $hashtag->id;
+      }
+      $post->hashtags()->sync($hashtagIds);
+    } else {
+      $post->hashtags()->detach();
+    }
     $post->update($fields);
     return to_route('dashboard')->with('success', 'posst updated');
    }
@@ -133,12 +152,6 @@ public function create( )
   {
   Gate::authorize('modify',$post);
 
-    if ($post->image) {
-      $imagePath = public_path('images/' . $post->image);
-      if (file_exists($imagePath)) {
-          unlink($imagePath);  
-      } 
-    }
     $post->delete();
     return to_route('dashboard')->with('success','post deleted');
   }

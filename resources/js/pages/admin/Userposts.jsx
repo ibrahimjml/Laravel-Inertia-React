@@ -84,9 +84,9 @@ export default function Userposts({user,posts,filters}) {
 <td className='w-3/6 py-5 px-3 text-center'>
 <button onClick={()=>handleclick(post.id)}>
 {post.approved ? (
-  <img src="/approve.png" alt="" />
+  <i className='fa-solid fa-check text-green-500'></i>
 ):(
-  <img src="/clock.png" alt="" />
+    <i class="fa-solid fa-hourglass-start text-yellow-500"></i>
 )}
 </button>
 

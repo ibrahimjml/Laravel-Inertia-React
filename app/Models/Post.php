@@ -14,7 +14,6 @@ class Post extends Model
       'title',
       'description',
       'image',
-      'tags',
       'user_id',
       'approved'
     ];
@@ -23,7 +22,9 @@ class Post extends Model
     {
       return $this->belongsTo(User::class);
     }
-
+    public function hashtags(){
+      return $this->belongsToMany(Hashtag::class,'post_hashtag');
+    }
     public function scopeSearch($query, array $search)
     {
       $query->when(!empty($search['search']), function ($query) use ($search) {
@@ -34,7 +35,9 @@ class Post extends Model
     });
 
     if (!empty($search['tag'])) {
-      $query->where('tags', 'like', '%' . $search['tag'] . '%');
+       $query->whereHas('hashtags', function ($q) use ($search) {
+        $q->where('name', $search['tag']);
+    });
   }
      if (!empty($search['user_id'])) {
         $query->where('user_id', $search['user_id']);

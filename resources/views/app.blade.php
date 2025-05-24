@@ -13,10 +13,6 @@
   </head>
   <body class="bg-slate-100 text-black dark:bg-dark dark:text-slate-200">
     @inertia
-<script>
-      window.Laravel = {
-        csrfToken: '{{ csrf_token() }}'
-      };
-    </script>
+
   </body>
 </html>

@@ -6,6 +6,9 @@ import { route } from "ziggy-js";
 export default function Blogcard({ post, request, type, id }) {
   const userCount = post.user_like ?? 0;  
   const totalLikesCount = post.likes_sum_count ?? 0; 
+  
+  const [userLikeCount, setUserLikeCount] = useState(userCount);
+  const [likeTotal, setLikeTotal] = useState(totalLikesCount);
   const [showmodel,setshowmodel] = useState(false);
 
   const togglemodel = ()=> setshowmodel(!showmodel); 
@@ -15,21 +18,55 @@ export default function Blogcard({ post, request, type, id }) {
     ...(request.user && { user: request.user }),
     ...(request.tag && { tag: request.tag }),
   };
- const handleLike = () => {
-    if (userCount >= 10) return;
 
-    router.post('/like', { type, id }, {
-      preserveScroll: true,
+const handleLike = async () => {
+  if (userLikeCount >= 10) return;
+ const token = document.querySelector('meta[name="csrf-token"]')?.content;
+  
+  try {
+    const response = await fetch('/like', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': token,
+      },
+      body: JSON.stringify({ type, id }),
     });
-  };
 
-  const handleUndo = () => {
-    router.post('/undo-like', { type, id }, {
-      preserveScroll: true,
+  if (response.ok) {
+      const data = await response.json();
+      setUserLikeCount(data.userLikes);
+      setLikeTotal(data.totalLikes);
+    }
+  } catch (error) {
+    console.error('Like failed', error);
+  }
+};
+
+const handleUndo = async () => {
+   const token = document.querySelector('meta[name="csrf-token"]')?.content;
+
+  try {
+    const response = await fetch('/undo-like', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-TOKEN': token,
+      },
+      body: JSON.stringify({ type, id }),
+    });
+
+  
+     if (response.ok) {
+      const data = await response.json();
+      setUserLikeCount(data.userLikes);
+      setLikeTotal(data.totalLikes);
+    }
     
-    });
-  };
-
+  } catch (error) {
+    console.error('Undo failed', error);
+  }
+};
   const selectTag = (tag) => {
     router.get(route("home", { ...params, tag: tag.trim() }));
   };
@@ -80,13 +117,13 @@ export default function Blogcard({ post, request, type, id }) {
         <div className="flex items-center justify-between">
         <button
         onClick={handleLike}
-        disabled={userCount >= 10}
-        className={`px-2 py-1  rounded ${userCount >= 10 ? "opacity-50 cursor-not-allowed" : ""}`}>
-        <i className={`fa-heart mr-2 ${userCount > 0 ? "fa-solid text-red-500" : "fa-regular text-red-600 dark:text-red-800"}`}></i>
-        {totalLikesCount}
+        disabled={userLikeCount  >= 10}
+        className={`px-2 py-1  rounded ${userLikeCount  >= 10 ? "opacity-50 cursor-not-allowed" : ""}`}>
+        <i className={`fa-heart mr-2 ${userLikeCount  > 0 ? "fa-solid text-red-500" : "fa-regular text-red-600 dark:text-red-800"}`}></i>
+        {likeTotal}
         </button>
 
-  {userCount > 0 && (
+  {userLikeCount  > 0 && (
   <div className="relative flex items-center">
     <button onClick={togglemodel}>
       <i className="fa-solid fa-ellipsis"></i>
@@ -96,7 +133,7 @@ export default function Blogcard({ post, request, type, id }) {
       <div  className="absolute z-50 top-[-70px] right-[-6px] border dark:border-slate-200 bg-slate-600 dark:bg-slate-800 text-white rounded-lg overflow-hidden w-40">
         <button  onClick={(e) => { handleUndo(); setshowmodel(false); }}
           className="block w-full px-6 py-3 hover:bg-slate-700 text-left"  >
-          Undo <small className="text-red-500">+{userCount}</small> Likes
+          Undo <small className="text-red-500">+{userLikeCount }</small> Likes
         </button>
       </div>
     )}

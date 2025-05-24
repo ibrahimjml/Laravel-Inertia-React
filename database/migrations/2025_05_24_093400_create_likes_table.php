@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->morphs('likeable'); 
-            $table->integer('count')->default(1);
+            $table->integer('count')->default(0);
             $table->unique(['user_id', 'likeable_id', 'likeable_type']);
             $table->index(['user_id', 'likeable_type', 'likeable_id']);
             $table->timestamps();

@@ -26,7 +26,13 @@ class LikeController extends Controller
         $like->increment('count');
     }
 
-    return back();
+    $totalLikes = $model->likes()->sum('count');
+    $userLikes = $model->likes()->where('user_id', $user->id)->sum('count');
+
+    return response()->json([
+        'totalLikes' => $totalLikes,
+        'userLikes' => $userLikes
+    ]);
     
 }
 
@@ -41,7 +47,12 @@ public function undo(Request $request)
         'likeable_type' => get_class($model),
     ])->delete();
 
-      return back();
+       $totalLikes = $model->likes()->sum('count');
+
+    return response()->json([
+        'totalLikes' => $totalLikes,
+        'userLikes' => 0
+    ]);
 }
 
 private function resolveLikeable($type, $id)

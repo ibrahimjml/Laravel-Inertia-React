@@ -36,6 +36,9 @@ const recaptchaRef = useRef(null);
 
     post('/login',{
       preserveScroll: true,
+      onSuccess: () => {
+      window.location.reload(); 
+    },
     })
 
   }

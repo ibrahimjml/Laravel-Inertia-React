@@ -1,4 +1,4 @@
-import { Link, usePage } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import { route } from 'ziggy-js';
 import { useState,useEffect } from "react";
 
@@ -13,7 +13,14 @@ export default function Layout({children}) {
     document.documentElement.classList.toggle("dark", darkMode);
     localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode]);
-
+  
+ const handleLogout = () => {
+  router.post(route('logout'), {}, {
+    onSuccess: () => {
+      window.location.reload(); 
+    },
+  });
+};
   const togglemodel = ()=> setshowmodel(!showmodel);  
   const switchTheme = () => setDarkMode(prev => !prev);
   
@@ -47,7 +54,7 @@ export default function Layout({children}) {
                   <Link href={route('posts.create')} className="block w-full px-6 py-3 hover:bg-slate-700 text-left">Create Post</Link>
                   <Link href={route('dashboard')} className="block w-full px-6 py-3 hover:bg-slate-700 text-left">Dashboard</Link>
                   <Link href={route('edit.profile')} className="block w-full px-6 py-3 hover:bg-slate-700 text-left">Edit Profile</Link>
-                  <Link href={route('logout')} method="post" as="button" type="submit" className="block w-full px-6 py-3 hover:bg-slate-700 text-left">Logout</Link>
+                  <button  onClick={handleLogout}  className="block w-full px-6 py-3 hover:bg-slate-700 text-left">Logout</button>
                </div>
                }
               </div>

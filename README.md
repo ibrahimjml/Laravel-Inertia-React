@@ -12,7 +12,7 @@
 ![Dashboard Screenshot](https://i.postimg.cc/6qXpDbF9/Screenshot-2025-05-23-191142.png)
 ![Dashboard Screenshot](https://i.postimg.cc/KjfxCGnN/Screenshot-2025-05-23-204316.png)
 ![Dashboard Screenshot](https://i.postimg.cc/bryjx7K2/127-0-0-1-8000-show-2-search-unapproved.png)
-![Dashboard Screenshot](https://i.postimg.cc/sfTFF0kw/127-0-0-1-8000-8.png)
+![Dashboard Screenshot](https://i.postimg.cc/J7g9FpDm/127-0-0-1-8000-9.png)
 ![Dashboard Screenshot](https://i.postimg.cc/9F1yYyq4/Screenshot-2025-05-23-205746.png)
 
 ## INSTALLATION
@@ -65,6 +65,7 @@ php artisan serve
 - **Edit profile user**
 - **Full text search** 
 - **Advanced Filtering Chained filter query**
+- **Users can likes up to 10 times on each post**
 
 
 

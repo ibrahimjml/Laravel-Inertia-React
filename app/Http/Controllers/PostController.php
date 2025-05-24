@@ -30,18 +30,24 @@ class PostController extends Controller implements HasMiddleware
 $post = Post::whereHas('user',function(Builder $q){
                $q->where('role','!=','suspended');
              })
-             ->with(['user','hashtags'])
+             ->with(['user','hashtags','likes'])
+             ->withSum('likes', 'count')
              ->where('approved',true)
-             ->search($request->only(['search','tag','user_id']))
+             ->search($request->only(['search','tag','user']))
              ->orderBy('created_at','DESC')
              ->paginate(6)
              ->withQueryString();
 
+$auth = Auth::id();
+$post->getCollection()->transform(function ($item) use( $auth) {
+         $item->user_like = $item->likes->where('user_id', $auth)->sum('count');
+       return $item;
+});
     return Inertia::render(
       'Home',
       [
         'posts' => $post,
-      'filters'=>$request->only(['search','tag','user_id'])
+      'filters'=>$request->only(['search','tag','user'])
       ]
     );
   }

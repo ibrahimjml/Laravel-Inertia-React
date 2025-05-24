@@ -1,9 +1,12 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\{
+       AdminController,
+       DashboardController,
+       LikeController,
+       PostController,
+       ProfileController
+};
 use Illuminate\Support\Facades\Route;
 
 // posts routes
@@ -21,6 +24,9 @@ Route::resource('posts', PostController::class);
   Route::patch('/editprofile',[ProfileController::class,'update'])->name('update.profile');
   Route::put('/editprofile',[ProfileController::class,'password'])->name('update.password');
   Route::delete('/editprofile',[ProfileController::class,'delete'])->name('delete.account');
+  // likes
+  Route::post('/like', [LikeController::class, 'like'])->name('like');
+  Route::post('/undo-like', [LikeController::class, 'undo'])->name('undo.like');
 });
 
 // admin routes

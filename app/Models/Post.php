@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
@@ -25,6 +25,11 @@ class Post extends Model
     public function hashtags(){
       return $this->belongsToMany(Hashtag::class,'post_hashtag');
     }
+    public function likes()
+    {
+      return $this->morphMany(Like::class, 'likeable');
+    }
+  
     public function scopeSearch($query, array $search)
     {
       $query->when(!empty($search['search']), function ($query) use ($search) {
@@ -39,8 +44,8 @@ class Post extends Model
         $q->where('name', $search['tag']);
     });
   }
-     if (!empty($search['user_id'])) {
-        $query->where('user_id', $search['user_id']);
+     if (!empty($search['user'])) {
+        $query->where('user_id', $search['user']);
     }
   }
     public function scopeFilter($query, array $filter)

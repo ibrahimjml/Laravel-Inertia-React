@@ -4,7 +4,7 @@ import Selectrole from '../../components/Selectrole'
 import Searchinput from '../../components/Searchinput'
 import { route } from 'ziggy-js';
 
-export default function Adminpage({users,status,filters,canmodify}) {
+export default function Adminpage({users,status,filters}) {
   const [isChecked, setIsChecked] = useState(filters.suspended || false);
   const handleCheckbox = () => {
     const checkedState = !isChecked;
@@ -53,11 +53,10 @@ export default function Adminpage({users,status,filters,canmodify}) {
                     <p className="font-light text-xs">{ user.email }</p>
                 </td>
                 <td className='w-2/6 py-5 px-3 text-left'>
-                {user.canmodify ? (
+                
                <Selectrole user={user}/>
-                ) : (
-              <i class="fa-solid fa-xmark text-red-500"></i>
-                )}
+              
+              
                 
                 </td>
                 <td className='w-1/6 py-5 px-3 text-center'>

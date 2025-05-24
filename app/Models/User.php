@@ -30,6 +30,15 @@ public function posts()
   return $this->hasMany(Post::class);
 }
 
+public function scopeIsSubscriber($query)
+{
+  return $query->where('role','subscriber')
+               ->orWhere('role','suspended');
+}
+public function likes()
+{
+    return $this->hasMany(Like::class);
+}
     /**
      * The attributes that should be hidden for serialization.
      *

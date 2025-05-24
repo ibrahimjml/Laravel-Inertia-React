@@ -18,13 +18,10 @@ class AdminController extends Controller
       if(Gate::allows('makeAdminActions')){
         $users = User::with('posts')
         ->search($request->only(['search','suspended']))
+        ->isSubscriber()
         ->paginate(5)
         ->withQueryString();
   
-        $authUser = Auth::user();
-        foreach ($users as $user) {
-        $user->canmodify = $authUser?->can('modify', $user) ?? false;
-        }
         return Inertia::render('admin/Adminpage',
         ['users'=>$users,
         'status'=>session('status'),

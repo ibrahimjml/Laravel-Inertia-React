@@ -4,7 +4,7 @@ import { route } from 'ziggy-js';
 import Paginatelinks from '../components/Paginatelinks';
 import { useEffect } from 'react';
 
-export default function Home({posts,filters,hashtags}) {
+export default function Home({posts,filters}) {
 
   const {auth} = usePage().props;
 
@@ -16,10 +16,10 @@ export default function Home({posts,filters,hashtags}) {
   const params = {
     search: data.search,
     ...(filters.tag && { tag: filters.tag }),
-    ...(filters.user_id && {user_id:filters.user_id})
+    ...(filters.user && {user:filters.user})
   };
 
-  const username = filters.user_id ? posts.data.find((l)=>l.user_id === Number(filters.user_id)).user.name : null;
+  const username = filters.user ? posts.data.find((l)=>l.user_id === Number(filters.user))?.user.name : null;
 
 const Search =(eo)=>{
 eo.preventDefault();
@@ -78,12 +78,12 @@ router.get(route('home',{...params}));
       }
 
     
-      {filters.user_id &&
+      {filters.user &&
       <Link 
       className='dark:bg-slate-600 flex items-center gap-3 bg-green-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
       href={route('home',{
       ...params,
-      user_id:null,
+      user:null,
       page:null
       }
     )}>{username}  
@@ -99,7 +99,7 @@ router.get(route('home',{...params}));
 
     {posts.data && posts.data.map((post) => (
         <div key={post.id}>
-          <Blogcard post={post} request={filters} />
+          <Blogcard post={post} request={filters}  type="post" id={post.id}/>
         </div>
             
         

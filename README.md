@@ -13,6 +13,7 @@
 ![Dashboard Screenshot](https://i.postimg.cc/KjfxCGnN/Screenshot-2025-05-23-204316.png)
 ![Dashboard Screenshot](https://i.postimg.cc/bryjx7K2/127-0-0-1-8000-show-2-search-unapproved.png)
 ![Dashboard Screenshot](https://i.postimg.cc/HW3C7LVY/127-0-0-1-8000-sort-latest.png)
+![Dashboard Screenshot](https://i.postimg.cc/jSRWs2wz/Screenshot-2025-05-25-212807.png)
 ![Dashboard Screenshot](https://i.postimg.cc/9F1yYyq4/Screenshot-2025-05-23-205746.png)
 
 ## INSTALLATION

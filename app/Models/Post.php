@@ -58,4 +58,12 @@ class Post extends Model
       $query->where('approved',false);
     }
     }
+    public function getImageAttribute($value)
+{
+    if ($value) {
+        return asset("images/{$value}");
+    }
+
+    return asset('storage/images/default.jpg');
+}
 }

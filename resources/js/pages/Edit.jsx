@@ -6,7 +6,7 @@ export default function Edit({posts,tags}) {
   const { data, setData,post, processing, errors } = useForm({
     title: posts.title,
     description: posts.description,
-    image: null,
+    image: '',
     tags: tags,
     _method : 'PUT'
   })
@@ -51,7 +51,7 @@ post(`/posts/${posts.id}`, {
     </div>
     <div>
       {posts.image && 
-        <img src={`/images/${posts.image}`} alt={posts.title} className='object-cover object-center h-40'/>
+        <img src={posts.image} alt={posts.title} className='object-cover object-center h-40'/>
       }
     
       <label htmlFor="image" className="mt-2 block text-gray-700 dark:text-slate-200 text-sm font-bold mb-2 sm:mb-4">image :</label>

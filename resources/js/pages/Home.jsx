@@ -67,7 +67,7 @@ router.get(route('home',{...params}));
           tag:null,
           page:null
         }
-      )}>{filters.tag}
+      )}><small>tag:</small>{filters.tag}
       <i className='fa-solid fa-close'></i></Link>
       )}
 
@@ -81,7 +81,7 @@ router.get(route('home',{...params}));
         search:null,
         page:null
         }
-      )}>{filters.search}  
+      )}><small>search:</small>{filters.search}  
       <i className='fa-solid fa-close'></i></Link>
       }
 
@@ -94,7 +94,7 @@ router.get(route('home',{...params}));
       user:null,
       page:null
       }
-    )}>{username}  
+    )}><small>user:</small>{username}  
     <i className='fa-solid fa-close'></i></Link>
       }
   {sortValue && sortValue !== 'latest' &&(
@@ -105,7 +105,7 @@ router.get(route('home',{...params}));
           sort:null,
           page:null
         }
-      )}>{sortValue}
+      )}><small>sort:</small>{sortValue}
       <i className='fa-solid fa-close'></i></Link>
       )}
     </div>

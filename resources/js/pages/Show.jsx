@@ -1,10 +1,19 @@
-import { Head, Link, useForm } from '@inertiajs/react'
-import React from 'react'
+import { Head, Link, router, useForm } from '@inertiajs/react'
+import React, { useState } from 'react'
 import { route } from 'ziggy-js'
+import moment from "moment";
+import Morearticles from '../components/Morearticles';
 
 
-export default function Show({ posts,canmodify,tags}) {
+export default function Show({ posts,canmodify,tags,morearticles}) {
+
+  const [userLikeCount, setUserLikeCount] = useState(posts.user_like ?? 0);
+  const [likeTotal, setLikeTotal] = useState(posts.likes_sum_count ?? 0);
+  const [isFollowing, setIsFollowing] = useState(posts.user.is_followed ?? false);
+  const [showmodel,setshowmodel] = useState(false);
   const { delete: destroy } = useForm();
+
+ const togglemodel = ()=> setshowmodel(!showmodel);
 
   const handleDelete = (postId) => {
     if (confirm('Are you sure you want to delete this post?')) {
@@ -13,47 +22,97 @@ export default function Show({ posts,canmodify,tags}) {
       });
     }
   }
+  const handleFollowToggle = () => {
+  router.post(route('togglefollow', posts.user.id), {}, {
+    preserveState: true,
+    preserveScroll: true,
+    onSuccess: () => {
+      setIsFollowing((prev) => !prev);
+      setshowmodel(false);
+    },
+  });
+};
   return (
     <>
     <Head title={posts.title.slice(0,5)}/>
       <div className=' flex justify-center'>
 
-        <div className="flex flex-col bg-white border border-gray-200 rounded-lg shadow md:flex-row md:w-[50%] hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
-          <img className="p-5 roubded-lg object-cover w-full rounded-t-lg h-96 md:h-auto md:w-[40%] md:rounded-none md:rounded-s-lg"
-            src={posts.image
-              ? `/images/${posts.image}`
-              : "/storage/images/default.jpg"
-            } alt={posts.title}
-          />
-          <div className="flex flex-col w-full">
-            {/* post detail  */}
-            <div className='flex justify-between items-center'>
-            <p className='text-slate-400 border-b border-b-slate-400 px-4  w-full py-4'>Post Details</p>
-              {canmodify &&
-              <div className='flex gap-3 text-slate-400 px-5'>
-              <Link href={route('posts.edit',posts.id)}>Edit</Link>
-              <button onClick={() => handleDelete(posts.id)}>Delete</button>
-            </div>
-              }
+        <div className=" bg-white border border-gray-200 rounded-lg shadow md:flex-row md:w-[50%] hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700">
+          <img className="p-5 roubded-lg object-cover w-full rounded-t-lg h-96 md:h-auto  md:rounded-none md:rounded-s-lg"
+            src={posts.image} 
+            alt={posts.title}/>
+             <div className='py-5 px-4 leading-normal'>
+              <div className='flex items-center justify-center'>
+                <h5 className="mb-2 text-3xl text-center font-bold tracking-tight text-gray-900 dark:text-white">{posts.title}</h5>
+                <span className="ml-2">
+                <b>·</b>
+                <small className="ml-2">
+                  <i className="fa-solid fa-clock mr-2"></i>{moment(posts.created_at).fromNow()}</small>
+              </span>
+              </div>
+              <span className='flex justify-center items-center pb-3'>
+            <i className="fa-solid fa-user text-gray-600 dark:text-white"></i>
+            <button
+              className="font-semibold ml-2 text-green-500 dark:text-blue-500"
+            >
+              {posts.user.name}
+            </button>
+            {isFollowing && (
+            <span className="ml-2">
+              <b>·</b>
+            <small className="ml-2">Following</small>
+              </span>
+            )}
               
+            
+          </span>
             </div>
-            <div className='py-10 px-4 leading-normal'>
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{posts.title}</h5>
-              <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">{posts.description}</p>
-            </div>
-            <div className='flex items-center justify-start gap-3 px-4 pb-3 mt-2'>
-              {tags && tags.split(",").map((tag, index) => (
+            <div className='flex justify-between mr-3'>
+             <div className='flex items-center justify-start gap-3 px-4 pb-3 '>
+              {tags && tags.map((tag) => (
                 <button
-                  key={index}
+                  key={tag}
                   className="bg-slate-600 px-2 py-px text-white text-sm rounded-full"
                 >
-                  {tag.trim()}
+                  {tag}
                 </button>
               ))}
-            </div>
+            </div> 
+            <div className='relative'>
+             <button onClick={togglemodel}>
+             <i className="fa-solid fa-ellipsis"></i>
+              </button>
+                {/* show model  */}
+            {showmodel && (
+          <div className={`absolute z-50 ${!canmodify ? 'top-[-70px]':'top-[-170px]'} right-[-6px] border dark:border-slate-200 bg-slate-600 dark:bg-slate-800 text-white rounded-lg overflow-hidden w-40`}>
+            {canmodify &&(
+              <>
+              <Link href={route('posts.edit',posts.id)} className='block w-full px-6 py-3 hover:bg-slate-700 text-left '>Edit</Link>
+              <button onClick={() => handleDelete(posts.id)} className='block w-full px-6 py-3 hover:bg-slate-700 text-left '>Delete</button>
+              </>
+            )}
+        <button
+        onClick={handleFollowToggle}
+          className="block w-full px-6 py-3 hover:bg-slate-700 text-left ">
+          {isFollowing ? "Unfollow" : "Follow"}
+        </button>
+      </div>
+        )}
+        </div>
           </div>
+          
         </div>
 
+      </div>
+        <div className='md:w-[50%] mx-auto mt-5 leading-4'>
+            <p className="mb-3 font-normal lg:text-xl text-gray-700 dark:text-gray-400">{posts.description}</p>
+        </div>
+      {/* more articles */}
+      <p className="text-gray-500 text-lg text-center font-semibold mt-5 uppercase">More Articles</p>
+      <div className='flex justify-center gap-14 items-center mt-4 '>
+      {morearticles && morearticles.map((post) => (
+      <Morearticles key={post.id} post={post}/>
+      ))}
       </div>
     </>
   )

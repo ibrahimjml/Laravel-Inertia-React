@@ -13,7 +13,7 @@ use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-
+use App\Services\PostService;
 
 class PostController extends Controller implements HasMiddleware
 {
@@ -24,7 +24,7 @@ class PostController extends Controller implements HasMiddleware
       ];
     }
 
-  public function index(Request $request)
+  public function index(Request $request,PostService $service)
   {
 $auth = Auth::user();
 $sortOption = $request->get('sort','latest');
@@ -76,28 +76,14 @@ $posts = Post::whereHas('user',function(Builder $q){
 
  $post = $posts->paginate(6)->withQueryString();
 // Add user_like  per post
-$post->getCollection()->transform(function ($item) use( $auth) {
-         $item->user_like = $item->likes->where('user_id', $auth->id)->sum('count');
-         $item->user->is_followed = $auth && $item->user->followers->contains($auth->id);
-       return $item;
+$post->getCollection()->transform(function ($post) use ($service) {
+        return $service->transformPost($post);
 });
 
 // get likers
-$userlikes = $post->getCollection()->mapWithKeys(function ($post) {
-    $likers = $post->likes
-        ->groupBy('user_id')
-        ->map(function ($likes) {
-            $user = $likes->first()->user;
-            return [
-                'id' => $user->id,
-                'name' => $user->name,
-                'username' => $user->username,
-                'count' => $likes->sum('count'),
-            ];
-        })
-        ->values();
+$userlikes = $post->getCollection()->mapWithKeys(function ($post) use ($service) {
+  return [$post->id => $service->getLikersGrouped($post)];
 
-    return [$post->id => $likers];
 });
     return Inertia::render(
       'Home',
@@ -147,13 +133,33 @@ public function create( )
     return to_route('dashboard')->with('success', 'posst created');
   }
 
-  public function show(Post $post) 
+  public function show(Post $post,PostService $service) 
   {
      Gate::authorize('view',$post);
-     $alltags = $post->hashtags()->pluck('name')->implode(', ');
+     $post->load(['user.followers', 'likes.user', 'hashtags']);
+
+     $post = $service->transformPost($post);
+     $likers = $service->getLikersGrouped($post);
+    
+     $alltags = $post->hashtags()->pluck('name')->toArray();
+
+     $morearticles = Post::query()
+           ->with(['user'=> function ($query){
+             $query->select('id','name','username');
+           }])
+          ->where('user_id',$post->user_id)
+          ->where('id','!=',$post->id)
+          ->take(3)
+          ->get()
+          ->map(function ($p) use ($service) {
+        return $service->transformPost($p);
+          });
+          
       return Inertia::render('Show',
       ['posts'=>$post,
       'tags'=>$alltags,
+      'likers' => $likers,
+      'morearticles' => $morearticles,
       'canmodify'=>Auth::user()? Auth::user()->can('modify',$post) : false
       ]
     );

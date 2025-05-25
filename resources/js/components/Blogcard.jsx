@@ -143,10 +143,8 @@ const buttonsCount =(userLikeCount > 0 ? 1 : 0) + (authUser && authUser.id !== p
         <Link href={route("posts.show", post.id)}>
           <img
             className="w-full h-48 object-cover object-center"
-            src={
-              post.image ? `/images/${post.image}` : "storage/images/default.jpg"
-            }
-            alt=""
+            src={post.image}
+            alt={post.title}
           />
         </Link>
         <div className="p-4">

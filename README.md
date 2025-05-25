@@ -12,7 +12,7 @@
 ![Dashboard Screenshot](https://i.postimg.cc/6qXpDbF9/Screenshot-2025-05-23-191142.png)
 ![Dashboard Screenshot](https://i.postimg.cc/KjfxCGnN/Screenshot-2025-05-23-204316.png)
 ![Dashboard Screenshot](https://i.postimg.cc/bryjx7K2/127-0-0-1-8000-show-2-search-unapproved.png)
-![Dashboard Screenshot](https://i.postimg.cc/J7g9FpDm/127-0-0-1-8000-9.png)
+![Dashboard Screenshot](https://i.postimg.cc/HW3C7LVY/127-0-0-1-8000-sort-latest.png)
 ![Dashboard Screenshot](https://i.postimg.cc/9F1yYyq4/Screenshot-2025-05-23-205746.png)
 
 ## INSTALLATION
@@ -63,9 +63,12 @@ php artisan serve
 - **Suspend user action**
 - **Approve/Disapprove posts action**
 - **Edit profile user**
-- **Full text search** 
+- **Full text search**  
 - **Advanced Filtering Chained filter query**
+- **Sort options popular,following,trendtag**
 - **Users can likes up to 10 times on each post**
+- **Users can view who liked**
+- **Toggle Follow/Unfollow**
 
 
 

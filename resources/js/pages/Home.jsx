@@ -2,22 +2,21 @@ import {  Head, Link, router, useForm, usePage } from '@inertiajs/react'
 import Blogcard from '../components/Blogcard';
 import { route } from 'ziggy-js';
 import Paginatelinks from '../components/Paginatelinks';
-import { useEffect } from 'react';
 
-export default function Home({posts,filters}) {
-
+export default function Home({ posts, filters }) {
   const {auth} = usePage().props;
 
   const{data,setData} = useForm({
-
-    search: filters.seacrh || ''
-  
+    search: filters.search || '',
+    sort: filters.sort || 'latest',
   })
-  const params = {
-    search: data.search,
-    ...(filters.tag && { tag: filters.tag }),
-    ...(filters.user && {user:filters.user})
-  };
+
+const params = {
+  ...(data.search?.trim() ? { search: data.search.trim() } : {}),
+  ...(data.sort? {sort:data.sort} : {}),
+  ...(filters.tag ? { tag: filters.tag } : {}),
+  ...(filters.user ? { user: filters.user } : {}),
+};
 
   const username = filters.user ? posts.data.find((l)=>l.user_id === Number(filters.user))?.user.name : null;
 
@@ -26,9 +25,18 @@ eo.preventDefault();
 
 router.get(route('home',{...params}));
 }
-  useEffect(()=>{
-    setData('search',filters.search)
-  },[filters.search]);
+ const handleChange = (e) => {
+    const newSort = e.target.value;
+    setData('sort', newSort);
+    router.get(route('home'), {
+      ...params,
+      sort: newSort
+    }, {
+      preserveState: true,
+      replace: true
+    });
+  };
+  const sortValue = typeof filters.sort === 'string' ? filters.sort.trim() : '';
 
   return (
     <>
@@ -89,17 +97,39 @@ router.get(route('home',{...params}));
     )}>{username}  
     <i className='fa-solid fa-close'></i></Link>
       }
-    
-      
-    
-  
+  {sortValue && sortValue !== 'latest' &&(
+        <Link 
+        className='dark:bg-slate-600 flex items-center gap-3 bg-green-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
+        href={route('home',{
+          ...params,
+          sort:null,
+          page:null
+        }
+      )}>{sortValue}
+      <i className='fa-solid fa-close'></i></Link>
+      )}
     </div>
+    <div className="mt-4 ml-auto">
+
+  <select
+    id="sort"
+    value={String(data.sort || 'latest')}
+    onChange={handleChange}
+    className="block w-full px-4 py-2 border border-gray-300 rounded-lg dark:bg-gray-700 dark:text-white dark:border-gray-600"
+  >
+    <option value="latest">Latest</option>
+    <option value="oldest">Oldest</option>
+    <option value="popular">Popular</option>
+    <option value="followings">Followings</option>
+    <option value="trend">Trending</option>
+  </select>
+</div>
       </div>
     <div className='container mx-auto w-[80%] grid grid-cols-3 gap-4 mt-5'>
 
     {posts.data && posts.data.map((post) => (
         <div key={post.id}>
-          <Blogcard post={post} request={filters}  type="post" id={post.id}/>
+          <Blogcard post={post} request={filters}  type="post" id={post.id} auth={auth}/>
         </div>
             
         

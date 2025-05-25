@@ -29,7 +29,16 @@ public function posts()
 {
   return $this->hasMany(Post::class);
 }
-
+  public function followings(){
+    return $this->belongsToMany(User::class,'followers','follower_id','user_id');
+  }
+  public function followers(){
+    return $this->belongsToMany(User::class,'followers','user_id','follower_id');
+  }
+  public function isFollowing(User $user)
+  {
+      return $this->followings()->where('user_id', $user->id)->exists();
+  }
 public function scopeIsSubscriber($query)
 {
   return $query->where('role','subscriber')

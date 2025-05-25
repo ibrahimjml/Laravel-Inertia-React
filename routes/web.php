@@ -3,7 +3,8 @@
 use App\Http\Controllers\{
        AdminController,
        DashboardController,
-       LikeController,
+    FollowController,
+    LikeController,
        PostController,
        ProfileController
 };
@@ -27,6 +28,8 @@ Route::resource('posts', PostController::class);
   // likes
   Route::post('/like', [LikeController::class, 'like'])->name('like');
   Route::post('/undo-like', [LikeController::class, 'undo'])->name('undo.like');
+  // follow
+  Route::post('/togglefollow/{user}',[FollowController::class,'toggle'])->name('togglefollow');
 });
 
 // admin routes

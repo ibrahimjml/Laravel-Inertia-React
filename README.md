@@ -10,10 +10,11 @@
 
 ![schooldash-dahboard-page](https://i.postimg.cc/4d3Ydcnt/Screenshot-2025-05-23-201933.png)
 ![Dashboard Screenshot](https://i.postimg.cc/6qXpDbF9/Screenshot-2025-05-23-191142.png)
-![Dashboard Screenshot](https://i.postimg.cc/KjfxCGnN/Screenshot-2025-05-23-204316.png)
-![Dashboard Screenshot](https://i.postimg.cc/bryjx7K2/127-0-0-1-8000-show-2-search-unapproved.png)
+![Dashboard Screenshot](https://i.postimg.cc/zGp4HVC1/Screenshot-2025-05-26-222954.png)
+![Dashboard Screenshot](https://i.postimg.cc/W4nCrt0v/127-0-0-1-8000-show-2.png)
+![Dashboard Screenshot](https://i.postimg.cc/D0ZTmLNH/127-0-0-1-8000-admin-tags.png)
 ![Dashboard Screenshot](https://i.postimg.cc/HW3C7LVY/127-0-0-1-8000-sort-latest.png)
-![Dashboard Screenshot](https://i.postimg.cc/jSRWs2wz/Screenshot-2025-05-25-212807.png)
+![Dashboard Screenshot](https://i.postimg.cc/m2sndQVs/Screenshot-2025-05-26-223512.png)
 ![Dashboard Screenshot](https://i.postimg.cc/d3p23F4J/127-0-0-1-8000-posts-10-1.png)
 
 ## INSTALLATION

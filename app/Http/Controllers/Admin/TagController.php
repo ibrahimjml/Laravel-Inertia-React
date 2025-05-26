@@ -13,9 +13,17 @@ class TagController extends Controller
     {
       $sort = $request->get('sort','latest');
 
-      $tags = Hashtag::with(['posts' => fn($q) => $q->select('posts.id', 'title', 'image')->take(5)])
-                 ->withCount('posts')
-                 ->search(request()->only('tag'));
+    $tags = Hashtag::with([
+               'posts' => fn($q) =>
+                $q->select('posts.id', 'title', 'image','post_hashtag.hashtag_id')
+              ->take(5)
+              ])
+              ->withCount([
+                  'posts', 
+                  'posts as approved_posts_count' => fn($q) => $q->where('approved', true),
+                  'posts as unapproved_posts_count' => fn($q) => $q->where('approved', false),
+                  ])
+             ->search(request()->only('tag'));
         switch ($sort) {
         case 'oldest':
             $tags->oldest();

@@ -111,6 +111,8 @@ public function create( )
       'title' => 'required|string|max:50',
       'description' => 'required|string',
       'image' => 'nullable|mimes:jpg,png,jpeg|max:5000000',
+      'tags' => 'nullable|array|max:4',
+      'tags.*' => 'string|max:30',
 
     ]);
 

@@ -7,11 +7,9 @@ use App\Models\Post;
 
 class HashtagService
 {
-  public function attachhashtags(Post $post, string $hashtag)
+  public function attachhashtags(Post $post, array $hashtag)
   {
-    $tags = explode(',', $hashtag);
-
-        foreach ($tags as $tag) {
+        foreach ($hashtag as $tag) {
             $tag = strip_tags(trim($tag));
 
             if ($tag) {

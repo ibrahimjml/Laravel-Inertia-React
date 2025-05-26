@@ -129,9 +129,18 @@ export default function Tagspage({tags,filter}) {
     />
   ))}
   {tag.posts_count >0 ? (
-  <span className="ml-1 text-sm text-gray-700 dark:text-gray-300">
-    <b>+{tag.posts_count}</b>
-  </span>
+  <div className='flex items-center gap-1 ml-3'>
+        <b>+{tag.approved_posts_count}</b> 
+        <i className='fa-solid fa-check text-green-500 mr-2'></i>
+        {tag.unapproved_posts_count > 0 && (
+          <>
+        {' / '}
+        <b className='ml-2'>+{tag.unapproved_posts_count}</b> 
+          <i className="fa-solid fa-hourglass-start text-yellow-500"></i>
+          </>
+        )}
+        
+      </div>
   ):(
   <span className='ml-3'><i className='fa-solid fa-times text-green-500 dark:text-red-500'></i></span>
   )}

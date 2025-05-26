@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\{
-       AdminController,
        DashboardController,
-    FollowController,
-    LikeController,
+       FollowController,
+       LikeController,
        PostController,
        ProfileController
+};
+use App\Http\Controllers\Admin\{
+  AdminController,
+  TagController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -34,12 +37,18 @@ Route::resource('posts', PostController::class);
 
 // admin routes
 Route::middleware(['auth','verified','can:makeAdminActions'])
-->controller(AdminController::class)
 ->group(function(){
+  Route::controller(AdminController::class)->group(function(){
   Route::get('/admin','index')->name('admin.page');
+  Route::get('/admin/users','users')->name('users.page');
   Route::get('/show/{user}','show')->name('show.posts');
   Route::put('/admin/{user}/role','updaterole')->name('user.updaterole');
   Route::put('/approve/post{post}','approve')->name('approve.update');
+  });
+  Route::get('/admin/tags',[TagController::class,'tags'])->name('tags.page');
+  Route::post('/admin/add-tag',[TagController::class,'create'])->name('tag.create');
+  Route::patch('/admin/edit-tag/{hashtag}',[TagController::class,'edit'])->name('tag.edit');
+  Route::delete('/admin/delete-tag/{hashtag}',[TagController::class,'destroy'])->name('tag.delete');
 });
 
 

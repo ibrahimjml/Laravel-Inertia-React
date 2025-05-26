@@ -42,7 +42,7 @@ export default function Layout({children}) {
                 </button>
               <Link href={route('home')}>Home</Link>
               {auth.user.role === 'admin' && 
-                <Link href={route('admin.page')}>Admin</Link>
+                <Link href={route('admin.page')}>Dashboard</Link>
                 }
               <div className="relative flex items-center">
                 <button onClick={togglemodel} className="mr-1">{auth.user.name}</button>

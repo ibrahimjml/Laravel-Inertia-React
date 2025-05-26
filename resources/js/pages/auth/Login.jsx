@@ -7,7 +7,7 @@ const recaptchaRef = useRef(null);
   const { data, setData, post, processing, errors } = useForm({
     email: "",
     password: "",
-    g_recaptcha_response: "",
+    // g_recaptcha_response: "",
     
   })
  useEffect(() => {

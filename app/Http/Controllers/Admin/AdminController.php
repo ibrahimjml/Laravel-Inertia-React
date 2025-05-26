@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,16 +14,18 @@ class AdminController extends Controller
 {
     public function index(Request $request)
     {
-    
-
-      if(Gate::allows('makeAdminActions')){
+    return Inertia::render("admin/Adminpage");
+    }
+   public function users(Request $request)
+   {
+     if(Gate::allows('makeAdminActions')){
         $users = User::with('posts')
         ->search($request->only(['search','suspended']))
         ->isSubscriber()
         ->paginate(5)
         ->withQueryString();
   
-        return Inertia::render('admin/Adminpage',
+        return Inertia::render('admin/Userspage',
         ['users'=>$users,
         'status'=>session('status'),
         'filters'=>$request->only(['search','suspended'])
@@ -30,9 +33,7 @@ class AdminController extends Controller
       }else{
         abort(403);
       }
-  
-    }
-
+   }
     public function updaterole(Request $request,User $user)
 {
 

@@ -108,12 +108,16 @@ export default function Show({ posts,canmodify,tags,morearticles}) {
             <p className="mb-3 font-normal lg:text-xl text-gray-700 dark:text-gray-400">{posts.description}</p>
         </div>
       {/* more articles */}
+      {morearticles.length >0 && (
+        <>
       <p className="text-gray-500 text-lg text-center font-semibold mt-5 uppercase">More Articles</p>
       <div className='flex justify-center gap-14 items-center mt-4 '>
-      {morearticles && morearticles.map((post) => (
-      <Morearticles key={post.id} post={post}/>
+      { morearticles.map((post) => (
+        <Morearticles key={post.id} post={post}/>
       ))}
       </div>
+      </>
+    )}
     </>
   )
 }

@@ -33,6 +33,7 @@ export default function Blogcard({ post, request, type, id ,auth}) {
     ...(request.search && { search: request.search }),
     ...(request.user && { user: request.user }),
     ...(request.tag && { tag: request.tag }),
+    ...(request.sort && { sort: request.sort }),
   };
 
 const handleLike = async () => {

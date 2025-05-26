@@ -14,4 +14,10 @@ class Hashtag extends Model
     {
       return $this->belongsToMany(Post::class,'post_hashtag');
     }
+      public function scopeSearch($query, array $search)
+      {
+        if(isset($search['tag'])){
+          $query->where('name','LIKE','%'. $search['tag'] .'%');
+        }
+      }
 }

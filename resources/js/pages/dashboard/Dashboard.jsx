@@ -48,8 +48,8 @@ export default function Dashboard({posts,suspended,success}) {
                       <div className='flex items-center gap-3'>
                         <img   
                           className='h-10 w-10 rounded-full object-cover object-center'
-                          src={post.image ? `/images/${post.image}` : "storage/images/default.jpg"}
-                          alt=""
+                          src={post.image}
+                          alt={post.title}
                         />
                         <h3>{post.title.slice(0,50)}</h3>
                         {post.approved ? (

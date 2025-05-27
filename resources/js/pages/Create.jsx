@@ -25,12 +25,12 @@ post(route('posts.store'),{
       if (!data.tags.includes(newTag)) {
         setData("tags", [...data.tags, newTag]);
       }
-      setTagInput(""); // Clear input after adding
+      setTagInput(""); 
     }
   };
 
   const removeTag = (indexToRemove) => {
-    setData("tags", data.tags.filter((_, i) => i !== indexToRemove));
+    setData("tags", data.tags.filter((tag, i) => i !== indexToRemove));
   };
   return (
     <>
@@ -99,7 +99,7 @@ post(route('posts.store'),{
       <button type="submit"
       disabled={processing}
       className="w-[200px]  select-none font-bold  p-3 rounded-lg text-xl  no-underline text-gray-100 bg-gray-700 hover:bg-gray-500 sm:py-4">
-      {processing ? 'Creating...' : 'Create'}
+      {processing ? (<i className="fa-solid fa-spinner fa-spin text-white"></i>) : 'Create'}
       </button>
     </div>
   </form>

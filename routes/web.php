@@ -44,6 +44,7 @@ Route::middleware(['auth','verified','can:makeAdminActions'])
   Route::get('/show/{user}','show')->name('show.posts');
   Route::put('/admin/{user}/role','updaterole')->name('user.updaterole');
   Route::put('/approve/post{post}','approve')->name('approve.update');
+  Route::delete('/admin/post-user/{post}','delete')->name('post.delete');
   });
   Route::get('/admin/tags',[TagController::class,'tags'])->name('tags.page');
   Route::post('/admin/add-tag',[TagController::class,'create'])->name('tag.create');

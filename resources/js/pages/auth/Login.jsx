@@ -86,7 +86,7 @@ const recaptchaRef = useRef(null);
                         <button type="submit"
                         disabled={processing}
                             className="w-full select-none font-bold whitespace-no-wrap p-3 rounded-lg text-base leading-normal no-underline text-gray-100 bg-gray-700 hover:bg-gray-500 sm:py-4">
-                          Login
+                        {processing ? (<i className="fa-solid fa-spinner fa-spin text-white"></i>) : 'Login'}
                         </button>
                         
                         <p className="w-full text-xs text-center text-gray-700 my-6 sm:text-sm sm:my-8">

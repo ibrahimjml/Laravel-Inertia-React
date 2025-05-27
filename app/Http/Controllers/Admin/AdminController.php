@@ -20,6 +20,7 @@ class AdminController extends Controller
    {
      if(Gate::allows('makeAdminActions')){
         $users = User::with('posts')
+        ->withCount(['followers','followings'])
         ->search($request->only(['search','suspended']))
         ->isSubscriber()
         ->paginate(5)
@@ -50,6 +51,7 @@ public function show(User $user,Request $request)
 {
 
   $posts = $user->posts()
+  ->withSum('likes','count')
   ->filter($request->only(['search','unapproved']))
   ->latest()
   ->paginate(6)
@@ -65,5 +67,11 @@ public function show(User $user,Request $request)
     {
       $post->update(['approved'=>!$post->approved]);
       return redirect()->back()->with('status', 'User role updated successfully.');
+    }
+    public function delete(Post $post)
+    {
+      $post = Post::find($post->id);
+      $post->delete();
+      return redirect()->back()->with('status','post deleted successfully');
     }
 }

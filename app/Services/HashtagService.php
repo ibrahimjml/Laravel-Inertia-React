@@ -7,9 +7,9 @@ use App\Models\Post;
 
 class HashtagService
 {
-  public function attachhashtags(Post $post, array $hashtag)
+  public function attachHashtags(Post $post, ?array $tags)
   {
-        foreach ($hashtag as $tag) {
+        foreach ($tags as $tag) {
             $tag = strip_tags(trim($tag));
 
             if ($tag) {
@@ -18,4 +18,20 @@ class HashtagService
             }
         }
   }
+  public function syncHashtags(Post $post, ?array $tags): void
+    {
+        if (!empty($tags)) {
+            $hashtagNames = array_unique(array_filter(array_map('trim', $tags)));
+            $hashtagIds = [];
+
+            foreach ($hashtagNames as $name) {
+                $hashtag = Hashtag::firstOrCreate(['name' => strip_tags($name)]);
+                $hashtagIds[] = $hashtag->id;
+            }
+
+            $post->hashtags()->sync($hashtagIds);
+        } else {
+            $post->hashtags()->detach();
+        }
+    }
 }

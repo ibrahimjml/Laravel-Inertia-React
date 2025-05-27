@@ -11,16 +11,16 @@ class PostObserver
     /**
      * Handle the Post "updated" event.
      */
-    public function updated(Post $post): void
+    public function updating(Post $post): void
     {
-        if ($post->isDirty('image')) {
-        $oldImage = $post->getOriginal('image');
-        $imagePath = public_path('images/' . $oldImage);
+      if ($post->isDirty('image')) {
+            $oldImage = $post->getRawOriginal('image');
+            $imagePath = public_path('images/' . $oldImage);
 
-        if ($oldImage && file_exists($imagePath)) {
-            unlink($imagePath);
+            if ($oldImage && file_exists($imagePath)) {
+                unlink($imagePath);
+            }
         }
-    }
     }
 
     /**
@@ -28,13 +28,13 @@ class PostObserver
      */
     public function deleting(Post $post): void
     {
-        if ($post->image) {
-      $imagePath = public_path('images/' . $post->image);
-      if (file_exists($imagePath)) {
-          unlink($imagePath);  
-      } 
-    }
-    }
+        $originalImage = $post->getRawOriginal('image'); 
+        $imagePath = public_path('images/' . $originalImage);
+
+       if ($originalImage && file_exists($imagePath)) {
+        unlink($imagePath);
+        }
+      }
 
     
 }

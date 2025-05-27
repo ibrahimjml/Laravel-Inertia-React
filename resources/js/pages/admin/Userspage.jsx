@@ -4,6 +4,7 @@ import Selectrole from '../../components/Selectrole'
 import Searchadmin from '../../components/Searchadmin'
 import { route } from 'ziggy-js';
 import Navbar from './partials/Navbar';
+import Paginatelinks from '../../components/Paginatelinks';
 
 export default function Adminpage({users,status,filters}) {
   const [isChecked, setIsChecked] = useState(filters.suspended || false);
@@ -17,7 +18,12 @@ export default function Adminpage({users,status,filters}) {
     const checkedState = !isChecked;
     setIsChecked(checkedState);
 
-    router.get(route('users.page'),{...params}, {
+    const updatedParams = {
+    search: filters.search ?? "",
+    suspended: checkedState ? true : null,
+      };
+
+    router.get(route('users.page'),updatedParams, {
   
       preserveState: true,
       replace: true,
@@ -57,19 +63,23 @@ href={route('users.page', {
 </Link>
 </div>
 )}
+{/* suspend checkbox */}
+<div className='flex gap-2 w-fit ml-auto bg-slate-600 p-2 rounded-md mb-2'>
+  <input id='suspended' type="checkbox" checked={isChecked} onChange={handleCheckbox}/>
+  <label htmlFor="suspended">suspended</label>
+</div>
 </div>
 
       {status && <p className='text-sm bg-green-500'>{status}</p>}
       <div className='bg-white  mx-auto p-8 rounded-lg shadow-lg dark:bg-slate-800 mb-4'>
-      <div className='flex gap-2 w-fit bg-slate-600 p-2 rounded-md mb-2'>
-        <input id='suspended' type="checkbox" checked={isChecked} onChange={handleCheckbox}/>
-          <label htmlFor="suspended">suspended</label>
-    </div>
+
        <table className='w-full mx-auto table-fixed border-collapse overflow-hidden rounded-md text-sm ring-1 ring-slate-300 dark:ring-slate-600 bg-white shadow-lg'>
         <thead className='bg-slate-600 text-slate-300 uppercase text-xs text-left'>
         <tr className="bg-slate-600 text-slate-300 uppercase text-xs text-left">
-                <th className="w-3/6 p-3">User</th>
+                <th className="w-1/6 p-3">User</th>
                 <th className="w-2/6 p-3">Role</th>
+                <th className="w-1/6 p-3 text-center">Following</th>
+                <th className="w-1/6 p-3 text-center">Followers</th>
                 <th className="w-1/6 p-3 text-center">Is Verified</th>
                 <th className="w-1/6 p-3 text-center">Posts</th>
                 <th className="w-1/6 p-3 text-right">View</th>
@@ -78,12 +88,18 @@ href={route('users.page', {
           <tbody >
             {users.data && users.data.map((user)=>(
             <tr key={user.id} className='border-b border-slate-200 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-600 dark:border-slate-600'>
-               <td className="w-3/6 py-5 px-3">
+               <td className="w-1/6 py-5 px-3">
                     <p className="font-bold mb-1">{ user.name }</p>
                     <p className="font-light text-xs">{ user.email }</p>
                 </td>
                 <td className='w-2/6 py-5 px-3 text-left'>
                <Selectrole user={user}/>
+                </td>
+                <td className="w-1/6 py-5 px-3 text-center">
+                 <b>{user.followings_count}</b>
+                </td>
+                <td className="w-1/6 py-5 px-3 text-center">
+                 <b>{user.followers_count}</b>
                 </td>
                 <td className='text-center'>
                   {user.email_verified_at != null && 
@@ -107,7 +123,9 @@ href={route('users.page', {
                   
                 </td>
                 <td className='w-1/6 py-5 px-3 text-right'>
-                  <Link href={route('show.posts',user.id)}>view</Link>
+                  <Link href={route('show.posts',user.id)}>
+                  <i className='fa-solid fa-eye text-blue-500 dark:text-gray-300'></i>
+                  </Link>
                 </td>
             </tr>
               
@@ -116,18 +134,10 @@ href={route('users.page', {
           </tbody>
        </table>
     </div>
-    <div className='flex justify-start mt-4'>
-    {users.links && users.links.map((link, index) => (
-      <Link 
-      key={index} 
-      href={link.url}  
-      dangerouslySetInnerHTML={{__html: link.label}}
-      className={`p-1 mx-1 ${link.active ? "text-red-700 font-extrabold":""} font-semibold`}
-      />
-      
-    
-    ))}
-        </div>
+  {/* pagination */}
+  <div className='flex justify-start mt-4 '>
+  <Paginatelinks posts={users}/>
+</div>
       </>
   )
 }

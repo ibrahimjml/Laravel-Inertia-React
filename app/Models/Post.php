@@ -59,11 +59,7 @@ class Post extends Model
     }
     }
     public function getImageAttribute($value)
-{
-    if ($value) {
-        return asset("images/{$value}");
+    {
+       return $value ? asset("images/{$value}") : asset('storage/images/default.jpg');
     }
-
-    return asset('storage/images/default.jpg');
-}
 }

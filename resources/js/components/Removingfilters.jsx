@@ -6,13 +6,13 @@ export default function Removingfilters({filters,sortValue,username,params}){
 <>
   {filters.tag && (
         <Link 
-        className='flex items-center gap-3 bg-green-500 dark:bg-red-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
+        className='flex items-center gap-3 bg-green-500 dark:bg-red-500 px-3 py-3 text-slate-100 font-semibold rounded-lg'
         href={route('home',{
           ...params,
           tag:null,
           page:null
         }
-      )}><small><b>tag:</b></small>{filters.tag}
+      )}><span><b>tag: </b>{filters.tag}</span>
       <i className='fa-solid fa-close'></i></Link>
       )}
 
@@ -20,37 +20,37 @@ export default function Removingfilters({filters,sortValue,username,params}){
 
 {filters.search && 
         <Link 
-        className='flex items-center gap-3 bg-green-500 dark:bg-red-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
+        className='flex items-center gap-3 bg-green-500 dark:bg-red-500 px-3 py-3 text-slate-100 font-semibold rounded-lg'
         href={route('home',{
         ...params,
         search:null,
         page:null
         }
-      )}><small><b>search:</b></small>{filters.search}  
+      )}><span><b>search: </b>{filters.search}</span>  
       <i className='fa-solid fa-close'></i></Link>
       }
 
     
       {filters.user &&
       <Link 
-      className='flex items-center gap-3 bg-green-500 dark:bg-red-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
+      className='flex items-center gap-3 bg-green-500 dark:bg-red-500 px-3 py-3 text-slate-100 font-semibold rounded-lg'
       href={route('home',{
       ...params,
       user:null,
       page:null
       }
-    )}><small><b>user:</b></small>{username}  
+    )}><span><b>user: </b>{username} </span> 
     <i className='fa-solid fa-close'></i></Link>
       }
   {sortValue && sortValue !== 'latest' &&(
         <Link 
-        className='flex items-center gap-3 bg-green-500 dark:bg-red-500 px-3 py-3 text-slate-200 font-semibold rounded-lg'
+        className='flex items-center gap-3 bg-green-500 dark:bg-red-500 px-3 py-3 text-slate-100 font-semibold rounded-lg'
         href={route('home',{
           ...params,
           sort:null,
           page:null
         }
-      )}><small><b>sort:</b></small>{sortValue}
+      )}><span><b>sort: </b>{sortValue}</span>
       <i className='fa-solid fa-close'></i></Link>
       )}
       </>

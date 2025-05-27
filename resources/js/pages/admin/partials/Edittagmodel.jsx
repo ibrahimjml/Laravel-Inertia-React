@@ -33,7 +33,7 @@ export default function Edittagmodel({ closemodel, tag }) {
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-2">
               Tag Name
             </label>
             <input
@@ -47,7 +47,7 @@ export default function Edittagmodel({ closemodel, tag }) {
             )}
           </div>
 
-          <div className="flex justify-end gap-3">
+          <div className="flex justify-start gap-3">
             <button
               type="button"
               onClick={closemodel}
@@ -60,7 +60,7 @@ export default function Edittagmodel({ closemodel, tag }) {
               disabled={processing}
               className="px-4 py-2 rounded bg-green-500 dark:bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
             >
-              {processing ? 'Updating...' : 'Update'}
+              {processing ? (<i className="fa-solid fa-spinner fa-spin text-white"></i>) : 'Update'}
             </button>
           </div>
         </form>

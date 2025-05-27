@@ -15,7 +15,7 @@ class TagController extends Controller
 
     $tags = Hashtag::with([
                'posts' => fn($q) =>
-                $q->select('posts.id', 'title', 'image','post_hashtag.hashtag_id')
+                $q->select('posts.id', 'title', 'image','approved','post_hashtag.hashtag_id')
               ->take(5)
               ])
               ->withCount([
@@ -60,6 +60,9 @@ class TagController extends Controller
          $fields = $request->validate([
           'name' =>'required|string'
           ]);
+          if(!$hashtag->isDirty('name')) {
+            return back()->withErrors(['name'=>'nothing changed to update']);
+          }
           $hashtag->update($fields);
           $hashtag->save();
           return back()->with('success',"tag {$hashtag->name} updated !");

@@ -1,8 +1,13 @@
-import { Head, useForm } from '@inertiajs/react';
-import React from 'react'
+import { Head, useForm, usePage } from '@inertiajs/react';
+import React, { useState } from 'react'
 
 
 export default function Edit({posts,tags}) {
+  const { props } = usePage();
+  const status = props.flash?.status;
+  const [tagInput, setTagInput] = useState("");
+
+
   const { data, setData,post, processing, errors } = useForm({
     title: posts.title,
     description: posts.description,
@@ -10,15 +15,46 @@ export default function Edit({posts,tags}) {
     tags: tags,
     _method : 'PUT'
   })
+
   const handleupdate=(eo)=>{
-eo.preventDefault();
+  eo.preventDefault();
+  const formData = new FormData();
+    formData.append('title', data.title);
+    formData.append('description', data.description);
+    formData.append('_method', 'PUT');
 
+    if (data.image) {
+      formData.append('image', data.image);
+    }
 
-post(`/posts/${posts.id}`, {
-  ...data,
-  preserveScroll: true,
-})
-  }
+    if (data.tags.length > 0) {
+        data.tags.forEach((tag, index) => {
+       formData.append(`tags[${index}]`, tag);
+      });
+    }
+
+  
+
+    post(`/posts/${posts.id}`, {
+      data: formData,
+      preserveScroll: true,
+      forceFormData: true,
+    });
+    }
+      const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && tagInput.trim() !== '') {
+      e.preventDefault();
+      const newTag = tagInput.trim();
+      if (!data.tags.includes(newTag)) {
+        setData('tags', [...data.tags, newTag]);
+      }
+      setTagInput('');
+    }
+  };
+
+  const removeTag = (indexToRemove) => {
+    setData('tags', data.tags.filter((tag,i) => i !== indexToRemove));
+  };
   return (
     <>
     <Head title={`Edit-${posts.title.slice(0,5)}`}/>
@@ -61,21 +97,45 @@ post(`/posts/${posts.id}`, {
       />
       {errors.image && <small className="text-sm text-red-500">{errors.image}</small>} 
     </div>
-    <div className="flex flex-wrap">
-      <label htmlFor="tags" className="block text-gray-700 dark:text-slate-200 text-sm font-bold mb-2 mt-2 sm:mb-4">
-        hashtag:
-      </label>
-  
-      <input id="tags" type="text" className="rounded-sm p-2 dark:bg-slate-800 border-2 form-input w-full "
-          name="tags" value={data.tags} onChange={(eo)=>{setData('tags',eo.target.value)}}/>
-  {errors.tags && <small className="text-sm text-red-500">{errors.tags}</small>} 
+    {/* Tags Display */}
+          <div className="flex flex-wrap gap-2 my-2">
+            {data.tags.map((tag, index) => (
+              <div key={index} className="flex items-center gap-1 bg-gray-200 text-black px-2 py-1 rounded-full">
+                <span>#{tag}</span>
+                <button
+                  type="button"
+                  onClick={() => removeTag(index)}
+                  className="text-red-500 hover:text-red-700 font-bold ml-1"
+                >
+                  &times;
+                </button>
+              </div>
+            ))}
+          </div>
 
-  </div>
+          {/* Tag Input */}
+          <div className="flex flex-wrap">
+            <label htmlFor="tags" className="block text-gray-700 dark:text-slate-200 text-sm font-bold mb-2 mt-2">
+              Hashtag:
+            </label>
+            <input
+              id="tags"
+              type="text"
+              className="rounded-sm p-2 dark:bg-slate-800 border-2 form-input w-full"
+              placeholder="Press Enter to add hashtag"
+              value={tagInput}
+              onChange={(e) => setTagInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+            />
+            {errors.tags && <small className="text-sm text-red-500">{errors.tags}</small>}
+          </div>
+            {status && <small className="text-sm text-red-500">{status}</small>}
+
     <div className="mt-4 flex justify-center">
       <button type="submit"
       disabled={processing}
       className="w-[200px]  select-none font-bold  p-3 rounded-lg text-xl  no-underline text-gray-100 bg-gray-700 hover:bg-gray-500 sm:py-4">
-      Update
+    {processing ? (<i className="fa-solid fa-spinner fa-spin text-white"></i>) : 'Update'}
       </button>
     </div>
   </form>

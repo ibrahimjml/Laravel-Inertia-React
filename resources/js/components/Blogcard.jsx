@@ -3,7 +3,7 @@ import moment from "moment";
 import { useEffect, useRef, useState } from "react";
 import { route } from "ziggy-js";
 import Wholiked from './Who_liked';
-import { space } from "postcss/lib/list";
+
 
 export default function Blogcard({ post, request, type, id ,auth}) {
   const userCount = post.user_like ?? 0;  

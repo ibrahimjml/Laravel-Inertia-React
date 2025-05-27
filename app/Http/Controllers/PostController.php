@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Middleware\Suspended;
+use App\Http\Requests\PostRequest;
 use App\Models\Hashtag;
 use App\Models\Post;
 use App\Services\HashtagService;
@@ -14,9 +15,10 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Services\PostService;
-
+use App\Traits\ImageUpload;
 class PostController extends Controller implements HasMiddleware
 {
+  use ImageUpload;
     public static function middleware()
     {
       return [
@@ -26,8 +28,8 @@ class PostController extends Controller implements HasMiddleware
 
   public function index(Request $request,PostService $service)
   {
-$auth = Auth::user();
-$sortOption = $request->get('sort','latest');
+         $auth = Auth::user();
+         $sortOption = $request->get('sort','latest');
 
 $posts = Post::whereHas('user',function(Builder $q){
                $q->where('role','!=','suspended');
@@ -103,34 +105,18 @@ public function create( )
 
 
 
-  public function store(Request $request,HashtagService $tags)
+  public function store(PostRequest $request,HashtagService $tags)
   {
-
-
-    $fields = $request->validate([
-      'title' => 'required|string|max:50',
-      'description' => 'required|string',
-      'image' => 'nullable|mimes:jpg,png,jpeg|max:5000000',
-      'tags' => 'nullable|array|max:4',
-      'tags.*' => 'string|max:30',
-
-    ]);
-
-
-    if ($request->hasFile('image')) {
-      $imageFile = $request->file('image');
-      $imageName = uniqid() . '.' . $imageFile->extension();
-
-
-      $imageFile->move(public_path('images'), $imageName);
-
-      $fields['image'] =  $imageName;
-    }
+    Gate::authorize('create',Post::class);
+    $fields = $request->validated();
   
+    if ($newImage = $this->handleImageUpload($request->file('image'))) {
+        $fields['image'] = $newImage;
+    }
 
   $post =  $request->user()->posts()->create($fields);
     if($request->filled('tags')){
-       $tags->attachhashtags($post,$request->input('tags'));
+       $tags->attachHashtags($post,$request->input('tags'));
     }
     return to_route('dashboard')->with('success', 'posst created');
   }
@@ -163,61 +149,39 @@ public function create( )
       'likers' => $likers,
       'morearticles' => $morearticles,
       'canmodify'=>Auth::user()? Auth::user()->can('modify',$post) : false
-      ]
-    );
-    
-    
+      ]);  
   }
-
-
-
   public function edit(Post $post) {
   Gate::authorize('modify',$post);
-  $alltags = $post->hashtags()->pluck('name')->implode(', ');
+  $alltags = $post->hashtags()->pluck('name')->toArray();
     return Inertia::render("Edit",
     ['posts'=>$post,'tags'=>$alltags]
   );
   }
 
 
-  public function update(Request $request, Post $post)
+  public function update(PostRequest $request,Post $post,HashtagService $service)
    {
     Gate::authorize('modify',$post);
 
-    $fields = $request->validate([
-      'title' => 'required|string|max:50',
-      'description' => 'required|string',
-      'image' => 'nullable|mimes:jpg,png,jpeg|max:5000', 
-      'tags' => 'nullable|string',
-  ]);
+    $fields = $request->validated();
 
+    $imageName = $this->handleImageUpload($request->file('image'));
+    if ($imageName) {
+            $fields['image'] = $imageName;
+        } else {
+            unset($fields['image']);
+        }
 
-  if ($request->hasFile('image')) {
-      $imageFile = $request->file('image');
-      $imageName = uniqid() . '.' . $imageFile->extension();
-      $imageFile->move(public_path('images'), $imageName);
-      $fields['image'] = $imageName;
-  }else {
+    $service->syncHashtags($post, $fields['tags'] ?? []);
 
-    $fields['image'] = $post->image;
-}
-    
-  if (!empty($fields['tags'])) {
-      $hashtagNames = array_unique(array_filter(array_map('trim', explode(',', $fields['tags']))));
-      $hashtagIds = [];
-
-      foreach ($hashtagNames as $name) {
-          $hashtag = Hashtag::firstOrCreate(['name' => strip_tags(trim($name))]);
-          $hashtagIds[] = $hashtag->id;
-      }
-      $post->hashtags()->sync($hashtagIds);
-    } else {
-      $post->hashtags()->detach();
+    if(!$post->isDirty()){
+      return redirect('/posts/'.$post->id.'/edit')->with('status', 'Nothing changed to update');
     }
+
     $post->update($fields);
     return to_route('dashboard')->with('success', 'posst updated');
    }
-
 
   public function destroy(Post $post) 
   {

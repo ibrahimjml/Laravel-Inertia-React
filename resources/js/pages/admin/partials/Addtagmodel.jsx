@@ -55,7 +55,7 @@ export default function Addtagmodel({closemodel}) {
               disabled={processing}
               className="px-4 py-2 rounded bg-green-500 dark:bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
             >
-              {processing ? 'Creating...' : 'Create'}
+              {processing ? (<i className="fa-solid fa-spinner fa-spin text-white"></i>) : 'Create'}
             </button>
           </div>
         </form>

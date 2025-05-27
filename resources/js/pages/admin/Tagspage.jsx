@@ -100,6 +100,7 @@ export default function Tagspage({tags,filter}) {
 {/* add tag */}
 <button onClick={openAddModel} className='w-fit ml-auto px-3 py-3 text-white dark:text-white rounded-lg bg-slate-600'>Add Tag</button>
 </div>
+<div className='bg-white mx-auto p-8 flex flex-col items-end gap-2 rounded-lg shadow-lg dark:bg-slate-800 mb-4'>
   <table className='w-full mx-auto table-fixed border-collapse overflow-hidden rounded-md text-sm ring-1 ring-slate-300 dark:ring-slate-600 bg-white shadow-lg'>
   <thead className='bg-slate-600 text-slate-300 uppercase text-xs text-left'>
     <tr className="bg-slate-600 text-slate-300 uppercase text-xs text-left">
@@ -125,17 +126,17 @@ export default function Tagspage({tags,filter}) {
       key={post.id}
       src={post.image}
       alt={post.title}
-      className="w-10 h-10 rounded-full cursor-pointer object-cover border-2 border-green-400 dark:border-blue-600 -ml-5 first:ml-0"
+      className={`w-10 h-10 rounded-full cursor-pointer object-cover border-2 ${ post.approved ? 'border-green-500 ' :'border-yellow-500'}   -ml-5 first:ml-0`}
     />
   ))}
   {tag.posts_count >0 ? (
   <div className='flex items-center gap-1 ml-3'>
         <b>+{tag.approved_posts_count}</b> 
-        <i className='fa-solid fa-check text-green-500 mr-2'></i>
+        <i className='fa-solid fa-check text-green-500 mr-1'></i>
         {tag.unapproved_posts_count > 0 && (
           <>
         {' / '}
-        <b className='ml-2'>+{tag.unapproved_posts_count}</b> 
+        <b className='ml-1'>+{tag.unapproved_posts_count}</b> 
           <i className="fa-solid fa-hourglass-start text-yellow-500"></i>
           </>
         )}
@@ -161,6 +162,7 @@ export default function Tagspage({tags,filter}) {
 })}      
  </tbody>
  </table>
+</div>
  </div>
 
 <div className='flex justify-start items-center mt-4 '>

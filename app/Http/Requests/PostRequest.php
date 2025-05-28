@@ -26,13 +26,14 @@ class PostRequest extends FormRequest
             'description' => 'required|string',
             'image' => 'nullable|mimes:jpg,png,jpeg|max:5000', 
             'tags' => 'nullable|array|max:4',
-            'tags.*' => 'string|max:30',
+            'tags.*' => 'string|max:30|regex:/^[\pL\pN\s]+$/u'
         ];
     }
     public function messages(): array
 {
     return [
         'title.regex' => 'The title may only contain letters, numbers, and spaces.',
+        'tags.*.regex' => 'Each tag may only contain letters, numbers, and spaces.',
     ];
 }
 }

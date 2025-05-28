@@ -3,14 +3,16 @@ import React, { useState } from 'react'
 import { route } from 'ziggy-js'
 import moment from "moment";
 import Morearticles from '../components/Morearticles';
+import Postreportmodel from '../Components/Postreportmodel';
 
 
-export default function Show({ posts,canmodify,tags,morearticles}) {
+export default function Show({ posts,canmodify,tags,morearticles,reportReasons}) {
 
   const [userLikeCount, setUserLikeCount] = useState(posts.user_like ?? 0);
   const [likeTotal, setLikeTotal] = useState(posts.likes_sum_count ?? 0);
   const [isFollowing, setIsFollowing] = useState(posts.user.is_followed ?? false);
   const [showmodel,setshowmodel] = useState(false);
+  const [showReportmodel,setshowReportmodel] = useState(false);
   const { delete: destroy } = useForm();
 
  const togglemodel = ()=> setshowmodel(!showmodel);
@@ -84,7 +86,7 @@ export default function Show({ posts,canmodify,tags,morearticles}) {
               </button>
                 {/* show model  */}
             {showmodel && (
-          <div className={`absolute z-50 ${!canmodify ? 'top-[-70px]':'top-[-170px]'} right-[-6px] border dark:border-slate-200 bg-slate-600 dark:bg-slate-800 text-white rounded-lg overflow-hidden w-40`}>
+          <div className={`absolute z-50 ${!canmodify ? 'top-[-100px]':'top-[-170px]'} right-[-6px] border dark:border-slate-200 bg-slate-600 dark:bg-slate-800 text-white rounded-lg overflow-hidden w-40`}>
             {canmodify &&(
               <>
               <Link href={route('posts.edit',posts.id)} className='block w-full px-6 py-3 hover:bg-slate-700 text-left '>Edit</Link>
@@ -96,6 +98,7 @@ export default function Show({ posts,canmodify,tags,morearticles}) {
           className="block w-full px-6 py-3 hover:bg-slate-700 text-left ">
           {isFollowing ? "Unfollow" : "Follow"}
         </button>
+        <button onClick={()=>{setshowReportmodel(!showReportmodel)}} className="block w-full px-6 py-3 hover:bg-slate-700 text-left ">Report</button>
       </div>
         )}
         </div>
@@ -111,13 +114,18 @@ export default function Show({ posts,canmodify,tags,morearticles}) {
       {morearticles.length >0 && (
         <>
       <p className="text-gray-500 text-lg text-center font-semibold mt-5 uppercase">More Articles</p>
-      <div className='flex justify-center gap-14 items-center mt-4 '>
+      <div className='w-[80%] grid gap-10 mx-auto mt-10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3'>
       { morearticles.map((post) => (
         <Morearticles key={post.id} post={post}/>
       ))}
       </div>
       </>
     )}
+    {/* report model */}
+    { showReportmodel &&(
+
+    <Postreportmodel close={() => setshowReportmodel(false)} reasons={reportReasons} postID={posts.id}/>
+    ) }
     </>
   )
 }

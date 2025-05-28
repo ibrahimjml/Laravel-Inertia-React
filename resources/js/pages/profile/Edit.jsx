@@ -1,7 +1,7 @@
 import React from 'react'
-import Updateinfo from './partials/Updateinfo'
-import Updatepassword from './partials/Updatepassword'
-import DeleteAccount from './partials/DeleteAccount'
+import Updateinfo from './Partials/Updateinfo'
+import Updatepassword from './Partials/Updatepassword'
+import DeleteAccount from './Partials/DeleteAccount'
 
 export default function Edit({user}) {
   return (

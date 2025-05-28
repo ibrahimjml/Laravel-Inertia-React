@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ReportReason;
 use App\Http\Middleware\Suspended;
 use App\Http\Requests\PostRequest;
 use App\Models\Hashtag;
@@ -130,7 +131,12 @@ public function create( )
      $likers = $service->getLikersGrouped($post);
     
      $alltags = $post->hashtags()->pluck('name')->toArray();
-
+     $reasons = collect(ReportReason::cases())->map(function ($case) {
+        return [
+            'name' => $case->name,   
+            'value' => $case->value, 
+        ];
+    });
      $morearticles = Post::query()
            ->with(['user'=> function ($query){
              $query->select('id','name','username');
@@ -148,6 +154,7 @@ public function create( )
       'tags'=>$alltags,
       'likers' => $likers,
       'morearticles' => $morearticles,
+      'reportReasons' => $reasons,
       'canmodify'=>Auth::user()? Auth::user()->can('modify',$post) : false
       ]);  
   }

@@ -13,7 +13,7 @@ class ProfileController extends Controller
 {
     public function index(Request $request)
     {
-      return Inertia::render('profile/Edit',['user'=>$request->user()]);
+      return Inertia::render('Profile/Edit',['user'=>$request->user()]);
     }
 
     public function update(Request $request)

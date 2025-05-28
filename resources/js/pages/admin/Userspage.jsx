@@ -3,7 +3,7 @@ import { Link, router} from '@inertiajs/react'
 import Selectrole from '../../components/Selectrole'
 import Searchadmin from '../../components/Searchadmin'
 import { route } from 'ziggy-js';
-import Navbar from './partials/Navbar';
+import Navbar from './Partials/Navbar';
 import Paginatelinks from '../../components/Paginatelinks';
 
 export default function Adminpage({users,status,filters}) {

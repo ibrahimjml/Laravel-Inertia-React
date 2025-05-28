@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
-import Navbar from './partials/Navbar'
+import Navbar from './Partials/Navbar'
 import { Link, router, useForm } from '@inertiajs/react'
 import Paginatelinks from '../../components/Paginatelinks'
-import Inputsearch from '../../components/Inputsearch'
-import Tagsmodel from '../../components/Tagsmodel'
-import Edittagmodel from './partials/Edittagmodel'
+import Inputsearch from '../../Components/Inputsearch'
+import Edittagmodel from './Partials/Edittagmodel'
 import { route } from 'ziggy-js'
-import Addtagmodel from './partials/Addtagmodel'
-import Removefilters from './partials/Removefilters'
+import Addtagmodel from './Partials/Addtagmodel'
+import Removefilters from './Partials/Removefilters'
+import Relatedpoststags from './Partials/Relatedpoststags'
 
-export default function Tagspage({tags,filter}) {
+export default function Tagspage({tags,filter,relatedPostsByTag}) {
   const [showmodel,setShowmodel] = useState(false);
   const [showeditmodel,setShoweditmodel] = useState(false);
   const [showaddmodel,setShowaddmodel] = useState(false);
@@ -120,7 +120,7 @@ export default function Tagspage({tags,filter}) {
 </span>
 </td>
 <td className='w-2/6 py-5 px-3 '>
-<div onClick={()=>openModel(tag)} className="flex items-center justify-start">
+<div onClick={()=>openModel(tag)} className="flex items-center  bg-slate-300 dark:bg-slate-600 rounded-full w-fit px-4 py-2 justify-start">
   {tag.posts && tag.posts.map(post => (
     <img
       key={post.id}
@@ -129,13 +129,22 @@ export default function Tagspage({tags,filter}) {
       className={`w-10 h-10 rounded-full cursor-pointer object-cover border-2 ${ post.approved ? 'border-green-500 ' :'border-yellow-500'}   -ml-5 first:ml-0`}
     />
   ))}
+{tag.posts_count >5 && (
+<div className="w-10 h-10 rounded-full cursor-pointer bg-slate-100 text-black border-2 -ml-5 flex items-center justify-center">
+  <b>+{tag.posts_count -5}</b>
+</div>
+)}  
   {tag.posts_count >0 ? (
   <div className='flex items-center gap-1 ml-3'>
+        {tag.approved_posts_count > 0 && 
+          <>
         <b>+{tag.approved_posts_count}</b> 
         <i className='fa-solid fa-check text-green-500 mr-1'></i>
+        </>
+        }
+        {tag.approved_posts_count >0 && tag.unapproved_posts_count >0 && <b>{' / '}</b>}
         {tag.unapproved_posts_count > 0 && (
           <>
-        {' / '}
         <b className='ml-1'>+{tag.unapproved_posts_count}</b> 
           <i className="fa-solid fa-hourglass-start text-yellow-500"></i>
           </>
@@ -168,9 +177,9 @@ export default function Tagspage({tags,filter}) {
 <div className='flex justify-start items-center mt-4 '>
 <Paginatelinks posts={tags}/>
 </div>
-{/* tagsmodel */}
+{/* related posts tags model */}
 {showmodel && selectedTag &&
-<Tagsmodel closemodel={closemodel} tag={selectedTag}/>
+<Relatedpoststags closemodel={closemodel} tag={selectedTag}/>
 }
 {/* edit tag model */}
 {showeditmodel && selectedTag &&

@@ -2,8 +2,8 @@ import { Link, router, useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react'
 import { route } from 'ziggy-js';
 import Paginatelinks from '../../components/Paginatelinks';
-import Navbar from './partials/Navbar';
-import Inputsearch from '../../components/Inputsearch';
+import Navbar from './Partials/Navbar';
+import Inputsearch from '../../Components/Inputsearch';
 import moment from "moment";
 
 export default function Userposts({user,posts,filters}) {

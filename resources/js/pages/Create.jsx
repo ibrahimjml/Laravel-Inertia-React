@@ -4,6 +4,8 @@ import { useState } from "react";
 
 export default function Create() {
 const [tagInput, setTagInput] = useState("");
+const [errorTag, seterrorTag] = useState('');
+const tagregex = /^[\p{L}\p{N}\s]+$/u;
   const { data, setData, post, processing, errors } = useForm({
     title: "",
     description: "",
@@ -22,6 +24,12 @@ post(route('posts.store'),{
     if (e.key === "Enter" && tagInput.trim() !== "") {
       e.preventDefault();
       const newTag = tagInput.trim();
+      
+       if (!tagregex.test(newTag)) {
+      seterrorTag('Each tag may only contain letters, numbers, and spaces.');
+      setTagInput("");
+      return;
+    }
       if (!data.tags.includes(newTag)) {
         setData("tags", [...data.tags, newTag]);
       }
@@ -93,6 +101,7 @@ post(route('posts.store'),{
           placeholder="Press Enter to add hashtag"
          />
   {errors.tags && <small className="text-sm text-red-500">{errors.tags}</small>} 
+  {errorTag && <small className="text-sm text-red-500">{errorTag}</small>} 
 
   </div>
     <div className="mt-4 flex justify-center">

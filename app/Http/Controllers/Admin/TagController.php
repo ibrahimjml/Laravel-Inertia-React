@@ -15,7 +15,7 @@ class TagController extends Controller
 
     $tags = Hashtag::with([
                'posts' => fn($q) =>
-                $q->select('posts.id', 'title', 'image','approved','post_hashtag.hashtag_id')
+                $q->select('posts.id', 'posts.title', 'posts.image', 'posts.approved')
               ->take(5)
               ])
               ->withCount([
@@ -40,10 +40,17 @@ class TagController extends Controller
             break;
         }       
         $tags = $tags->paginate(6)->withQueryString();
-      return Inertia::render('admin/Tagspage',[
+      return Inertia::render('Admin/Tagspage',[
         'tags' => $tags,
-        'filter' => request()->only('tag','sort')         
+        'filter' => request()->only('tag','sort')  ,       
       ]);
+    }
+    public function show(Hashtag $hashtag)
+    {
+      $relatedposts = $hashtag->posts()
+      ->select('posts.id', 'posts.title', 'posts.image', 'posts.approved')
+        ->get();
+         return response()->json($relatedposts);
     }
     public function create(Request $request)
     {

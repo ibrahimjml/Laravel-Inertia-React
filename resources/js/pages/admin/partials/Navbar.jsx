@@ -5,11 +5,13 @@ import { route } from "ziggy-js";
 export default function Navbar({user}) {
   return (
   <div className='bg-white flex items-center justify-between mx-auto p-8 rounded-lg shadow-lg dark:bg-slate-800 mb-4'>
-      {user && route().current('show.posts') ? (
-     <p className='text-3xl text-black dark:text-slate-200 capitalize'>{user.name}'s Posts</p>
-     ):(
-   <p className='text-3xl text-black dark:text-slate-200 capitalize'>admin dashboard</p>
-     )}
+    {route().current('tags.page') ? (
+      <p className='text-3xl text-black dark:text-slate-200 capitalize'>tags dashboard</p>
+    ) : route().current('show.posts') && user ? (
+      <p className='text-3xl text-black dark:text-slate-200 capitalize'>{user.name}'s Posts</p>
+    ) : (
+      <p className='text-3xl text-black dark:text-slate-200 capitalize'>admin dashboard</p>
+    )}
       
       <div className="flex gap-2">
         

@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\{
   AdminController,
   TagController,
 };
+use App\Http\Controllers\Admin\PostReportController;
 use Illuminate\Support\Facades\Route;
 
 // posts routes
@@ -33,6 +34,8 @@ Route::resource('posts', PostController::class);
   Route::post('/undo-like', [LikeController::class, 'undo'])->name('undo.like');
   // follow
   Route::post('/togglefollow/{user}',[FollowController::class,'toggle'])->name('togglefollow');
+  // post report
+  Route::post('/post-report', [PostReportController::class, 'store'])->name('post.report');
 });
 
 // admin routes
@@ -46,10 +49,13 @@ Route::middleware(['auth','verified','can:makeAdminActions'])
   Route::put('/approve/post{post}','approve')->name('approve.update');
   Route::delete('/admin/post-user/{post}','delete')->name('post.delete');
   });
-  Route::get('/admin/tags',[TagController::class,'tags'])->name('tags.page');
-  Route::post('/admin/add-tag',[TagController::class,'create'])->name('tag.create');
-  Route::patch('/admin/edit-tag/{hashtag}',[TagController::class,'edit'])->name('tag.edit');
-  Route::delete('/admin/delete-tag/{hashtag}',[TagController::class,'destroy'])->name('tag.delete');
+  Route::controller(TagController::class)->group(function(){
+  Route::get('/admin/tags','tags')->name('tags.page');
+  Route::get('/admin/posts-tag/{hashtag}','show')->name('tags.posts');
+  Route::post('/admin/add-tag','create')->name('tag.create');
+  Route::patch('/admin/edit-tag/{hashtag}','edit')->name('tag.edit');
+  Route::delete('/admin/delete-tag/{hashtag}','destroy')->name('tag.delete');
+  });
 });
 
 

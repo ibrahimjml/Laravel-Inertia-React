@@ -1,5 +1,5 @@
 import React from 'react'
-import Navbar from './partials/Navbar'
+import Navbar from './Partials/Navbar'
 
 export default function Adminpage() {
   return (

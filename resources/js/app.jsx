@@ -2,7 +2,7 @@ import './bootstrap';
 import '../css/app.css'
 import { createInertiaApp } from '@inertiajs/react'
 import { createRoot } from 'react-dom/client'
-import Layout from '@/layouts/Layout'
+import Layout from '@/Layouts/Layout'
 import { SetThemeOnLoad } from './theme';
 
 createInertiaApp({

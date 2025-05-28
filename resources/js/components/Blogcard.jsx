@@ -6,10 +6,11 @@ import Wholiked from './Who_liked';
 
 
 export default function Blogcard({ post, request, type, id ,auth}) {
+  const authUser = auth.user;
   const userCount = post.user_like ?? 0;  
   const totalLikesCount = post.likes_sum_count ?? 0; 
-  const authUser = auth.user;
 
+  const [loadedImages, setLoadedImages] = useState({});
   const [userLikeCount, setUserLikeCount] = useState(userCount);
   const [likeTotal, setLikeTotal] = useState(totalLikesCount);
   const [showmodel,setshowmodel] = useState(false);
@@ -28,6 +29,10 @@ export default function Blogcard({ post, request, type, id ,auth}) {
 
   const togglemodel = ()=> setshowmodel(!showmodel); 
 
+  // loading image
+  const handleImageLoad = (id) => {
+  setLoadedImages(prev => ({ ...prev, [id]: true }));
+  };
 
   const params = {
     ...(request.search && { search: request.search }),
@@ -131,23 +136,37 @@ const handleFollowToggle = () => {
     },
   });
 };
+
 // sync follow state
 useEffect(() => {
   setIsFollowing(post.user.is_followed ?? false);
 }, [post.user.is_followed]);
+
 // close showmodel
 const closeModal = () => setShowLikeModal(false);
 const buttonsCount =(userLikeCount > 0 ? 1 : 0) + (authUser && authUser.id !== post.user.id ? 1 : 0);
+
   return (
     <div className="bg-white dark:border-2 border-slate-600 dark:bg-gray-800 rounded-md shadow-lg overflow-hidden h-full flex flex-col justify-between">
-    
-        <Link href={route("posts.show", post.id)}>
-          <img
-            className="w-full h-48 object-cover object-center"
-            src={post.image}
-            alt={post.title}
-          />
-        </Link>
+  <div className="relative w-full h-48">
+  {!loadedImages[post.id] && (
+    <div className="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700">
+      <i className="fa-solid fa-spinner fa-spin text-gray-400 text-xl"></i>
+    </div>
+  )}
+  <Link href={route("posts.show", post.id)}>
+    <img
+      className={`w-full h-48 object-cover object-center transition-opacity duration-300 ${
+        loadedImages[post.id] ? 'opacity-100' : 'opacity-0'
+      }`}
+      src={post.image}
+      alt={post.title}
+      loading="lazy"
+      onLoad={() => handleImageLoad(post.id)}
+    />
+  </Link>
+</div>
+
         <div className="p-4">
           <h3 className="font-bold text-xl mb-2">{post.title.slice(0, 60)}...</h3>
           <p>Posted : {moment(post.created_at).fromNow()}</p>

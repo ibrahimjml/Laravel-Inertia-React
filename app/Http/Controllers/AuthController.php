@@ -33,7 +33,7 @@ class AuthController extends Controller
     
     public function loginpage()
     {
-      return Inertia::render('auth/Login',['success'=>session('success')]);
+      return Inertia::render('Auth/Login',['success'=>session('success')]);
     }
 
     public function login(Request $request)
@@ -60,7 +60,7 @@ class AuthController extends Controller
 
     public function verify_notice()
     {
-      return Inertia::render('auth/Verifyemail',['message'=>session('message')]);
+      return Inertia::render('Auth/Verifyemail',['message'=>session('message')]);
     }
 
     public function verify_email(EmailVerificationRequest $request)
@@ -77,7 +77,7 @@ class AuthController extends Controller
 
     public function index()
     {
-      return Inertia::render('auth/Confirmpassword');
+      return Inertia::render('Auth/Confirmpassword');
     }
 
     public function confirm(Request $request)
@@ -129,7 +129,7 @@ class AuthController extends Controller
       $user = User::where('email', $resetToken->email)->first();
       if (!empty($user)) {
       
-        return Inertia::render('auth/Resetpass',['token' => $token]);
+        return Inertia::render('Auth/Resetpass',['token' => $token]);
       }
     } else {
       abort(404);

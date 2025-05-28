@@ -14,7 +14,7 @@ class AdminController extends Controller
 {
     public function index(Request $request)
     {
-    return Inertia::render("admin/Adminpage");
+    return Inertia::render("Admin/Adminpage");
     }
    public function users(Request $request)
    {
@@ -26,7 +26,7 @@ class AdminController extends Controller
         ->paginate(5)
         ->withQueryString();
   
-        return Inertia::render('admin/Userspage',
+        return Inertia::render('Admin/Userspage',
         ['users'=>$users,
         'status'=>session('status'),
         'filters'=>$request->only(['search','suspended'])
@@ -57,7 +57,7 @@ public function show(User $user,Request $request)
   ->paginate(6)
   ->withQueryString();
 
-  return Inertia::render('admin/Userposts',
+  return Inertia::render('Admin/Userposts',
   ['user'=>$user,
   'posts'=>$posts,
   'filters'=>$request->only(['search','unapproved'])

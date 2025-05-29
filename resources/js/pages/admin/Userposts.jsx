@@ -1,7 +1,7 @@
 import { Link, router, useForm } from '@inertiajs/react';
-import React, { useEffect, useState } from 'react'
+import  {  useState } from 'react'
 import { route } from 'ziggy-js';
-import Paginatelinks from '../../components/Paginatelinks';
+import Paginatelinks from '../../Components/Paginatelinks';
 import Navbar from './Partials/Navbar'
 import Inputsearch from '../../Components/Inputsearch';
 import moment from "moment";

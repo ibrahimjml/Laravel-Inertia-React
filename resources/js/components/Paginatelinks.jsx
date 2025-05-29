@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react'
-import React from 'react'
+
 
 export default function Paginatelinks({posts}) {
   return (

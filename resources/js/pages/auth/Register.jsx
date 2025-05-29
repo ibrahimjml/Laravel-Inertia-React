@@ -1,8 +1,5 @@
 import { Link } from "@inertiajs/react";
 import { useForm } from '@inertiajs/react'
-
-
-
 import { route } from "ziggy-js";
 
 export default function Register() {

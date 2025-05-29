@@ -1,5 +1,4 @@
 import { Link, useForm, usePage } from '@inertiajs/react';
-import React from 'react'
 import { route } from 'ziggy-js';
 import Paginatelinks from '../../components/Paginatelinks';
 

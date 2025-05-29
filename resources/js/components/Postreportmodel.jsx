@@ -1,5 +1,5 @@
 import { useForm, usePage } from '@inertiajs/react';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export default function Postreportmodel({ close, reasons, postID }) {
   const { props } = usePage();

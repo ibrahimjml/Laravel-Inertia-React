@@ -1,5 +1,4 @@
 import { useForm } from '@inertiajs/react';
-import React from 'react'
 import { route } from 'ziggy-js';
 
 export default function Verifyemail({message}) {

@@ -1,5 +1,4 @@
 import { Link, useForm } from '@inertiajs/react'
-import React from 'react'
 import { route } from 'ziggy-js'
 
 export default function Resetpass({token}) {

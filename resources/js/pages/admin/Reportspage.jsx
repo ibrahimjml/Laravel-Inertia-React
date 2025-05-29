@@ -1,7 +1,7 @@
-import React from 'react'
 import Navbar from './Partials/Navbar'
 import { Link, router } from '@inertiajs/react'
 import { route } from 'ziggy-js'
+import Paginatelinks from '../../Components/Paginatelinks';
 
 export default function Reportspage({reports}) {
   const handeldelete =(reportID)=>{
@@ -44,7 +44,7 @@ export default function Reportspage({reports}) {
                  {report.user.name}
                 </td>
                 <td className="w-1/6 py-5 px-3 text-center">
-                 {report.reason}
+                 {report.reason_label}
                 </td>
                 <td className="w-1/6 py-5 px-3 text-center">
                 {report.other || '--'}
@@ -68,6 +68,10 @@ export default function Reportspage({reports}) {
           </tbody>
        </table>
     </div>
+    <div className='flex justify-start items-center mt-4 '>
+    <Paginatelinks posts={reports}/>
     </div>
+    </div>
+    
   )
 }

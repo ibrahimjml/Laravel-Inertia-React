@@ -1,5 +1,4 @@
 import { useForm, usePage } from '@inertiajs/react'
-import React from 'react'
 import { route } from 'ziggy-js'
 
 export default function Updateinfo({user}) {

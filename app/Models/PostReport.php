@@ -20,4 +20,10 @@ class PostReport extends Model
     {
         return $this->belongsTo(Post::class);
     }
+    public function getReasonLabelAttribute()
+    {
+      return $this->reason instanceof ReportReason ? 
+            $this->reason->label() :
+            ReportReason::from($this->reason)->label();
+    }
 }

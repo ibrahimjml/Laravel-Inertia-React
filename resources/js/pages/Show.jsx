@@ -1,5 +1,5 @@
-import { Head, Link, router, useForm } from '@inertiajs/react'
-import React, { useState } from 'react'
+import { Head, Link, router, useForm, usePage } from '@inertiajs/react'
+import { useState } from 'react'
 import { route } from 'ziggy-js'
 import moment from "moment";
 import Morearticles from '../components/Morearticles';
@@ -7,7 +7,7 @@ import Postreportmodel from '../Components/Postreportmodel';
 
 
 export default function Show({ posts,canmodify,tags,morearticles,reportReasons}) {
-
+  const {auth} = usePage().props;
   const [userLikeCount, setUserLikeCount] = useState(posts.user_like ?? 0);
   const [likeTotal, setLikeTotal] = useState(posts.likes_sum_count ?? 0);
   const [isFollowing, setIsFollowing] = useState(posts.user.is_followed ?? false);
@@ -93,11 +93,14 @@ export default function Show({ posts,canmodify,tags,morearticles,reportReasons})
               <button onClick={() => handleDelete(posts.id)} className='block w-full px-6 py-3 hover:bg-slate-700 text-left '>Delete</button>
               </>
             )}
-        <button
+            {auth.user.id !== posts.user.id &&
+            <button
         onClick={handleFollowToggle}
           className="block w-full px-6 py-3 hover:bg-slate-700 text-left ">
           {isFollowing ? "Unfollow" : "Follow"}
         </button>
+            }
+        
         <button onClick={()=>{setshowReportmodel(!showReportmodel)}} className="block w-full px-6 py-3 hover:bg-slate-700 text-left ">Report</button>
       </div>
         )}

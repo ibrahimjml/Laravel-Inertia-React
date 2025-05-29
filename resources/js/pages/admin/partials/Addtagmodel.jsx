@@ -1,5 +1,4 @@
 import { useForm } from '@inertiajs/react'
-import React from 'react'
 
 export default function Addtagmodel({closemodel}) {
   const { data, setData, post, processing, errors } = useForm({

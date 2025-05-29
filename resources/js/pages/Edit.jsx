@@ -1,5 +1,5 @@
 import { Head, useForm, usePage } from '@inertiajs/react';
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 
 export default function Edit({posts,tags}) {

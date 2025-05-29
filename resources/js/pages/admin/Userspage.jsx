@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import  { useState } from 'react'
 import { Link, router} from '@inertiajs/react'
 import Selectrole from '../../components/Selectrole'
 import Searchadmin from '../../components/Searchadmin'
 import { route } from 'ziggy-js';
 import Navbar from './Partials/Navbar'
-import Paginatelinks from '../../components/Paginatelinks';
+import Paginatelinks from '../../Components/Paginatelinks';
 
 export default function Adminpage({users,status,filters}) {
   const [isChecked, setIsChecked] = useState(filters.suspended || false);

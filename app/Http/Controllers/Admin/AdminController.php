@@ -61,6 +61,10 @@ public function show(User $user,Request $request)
   ->paginate(6)
   ->withQueryString();
   
+   $posts->getCollection()->transform(function ($post) {
+    $post->reports->each->append('reason_label');
+    return $post;
+  });
   return Inertia::render('Admin/Userposts',
   ['user'=>$user,
   'posts'=>$posts,
@@ -82,7 +86,10 @@ public function show(User $user,Request $request)
     {
 
       $reports = PostReport::with(['user', 'post'])->latest()->paginate(6);
-
+        $reports->getCollection()->transform(function ($q) {
+        $q->append('reason_label');
+        return $q;
+  });
       return Inertia::render('Admin/Reportspage',[
         'reports'=> $reports
       ]);

@@ -1,5 +1,4 @@
 import { router, useForm } from '@inertiajs/react';
-import React from 'react'
 import { route } from 'ziggy-js';
 import Inputsearch from './Inputsearch';
 

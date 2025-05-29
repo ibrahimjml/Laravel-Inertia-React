@@ -1,7 +1,7 @@
-import {  Head, Link, router, useForm, usePage } from '@inertiajs/react'
+import {  Head, router, useForm, usePage } from '@inertiajs/react'
 import Blogcard from '../components/Blogcard';
 import { route } from 'ziggy-js';
-import Paginatelinks from '../components/Paginatelinks';
+import Paginatelinks from '../Components/Paginatelinks';
 import Removingfilters from '../components/Removingfilters';
 import Inputsearch from '../Components/Inputsearch';
 

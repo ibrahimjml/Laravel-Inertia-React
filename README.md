@@ -74,7 +74,8 @@ php artisan serve
 - **Users can view who liked**
 - **Toggle Follow/Unfollow**
 
-
-
+### 🚀Coming soon
+- **Comments/replies edit/delete/like** 
+- **notifications** 
 
 

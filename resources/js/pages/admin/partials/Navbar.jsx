@@ -17,6 +17,7 @@ export default function Navbar({user}) {
         
         <Link href={route('admin.page')} className={`block w-full px-6 py-3  rounded-lg tracking-[1px] ${route().current('admin.page') ? 'bg-slate-600 font-bold text-white':'hover:bg-slate-700 hover:text-white'} capitalize`}>Panel</Link>
         <Link href={route('users.page')} className={`block w-full px-6 py-3  rounded-lg tracking-[1px] ${route().current('users.page') ? 'bg-slate-600 font-bold text-white':'hover:bg-slate-700 hover:text-white'} capitalize`}>users</Link>
+        <Link href={route('posts.reports')} className={`block w-full px-6 py-3  rounded-lg tracking-[1px] ${route().current('posts.reports') ? 'bg-slate-600 font-bold text-white':'hover:bg-slate-700 hover:text-white'} capitalize`}>reports</Link>
         <Link href={route('tags.page')} className={`block w-full px-6 py-3  rounded-lg tracking-[1px] ${route().current('tags.page') ? 'bg-slate-600 font-bold text-white':'hover:bg-slate-700 hover:text-white'} capitalize`}>tags</Link>
       </div>
       </div>

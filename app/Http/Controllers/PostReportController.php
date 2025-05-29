@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers;
 
 use App\Enums\ReportReason;
 use App\Http\Controllers\Controller;
@@ -29,6 +29,8 @@ class PostReportController extends Controller
         'reason' => ReportReason::from($fields['reason']),
         'other' => $request->reason === ReportReason::Other->value ? $fields['other'] : null,
     ]);
+    
     return back()->with('success', 'Post reported successfully.');
     }
+
 }

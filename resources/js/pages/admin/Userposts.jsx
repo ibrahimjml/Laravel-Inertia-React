@@ -2,18 +2,23 @@ import { Link, router, useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react'
 import { route } from 'ziggy-js';
 import Paginatelinks from '../../components/Paginatelinks';
-import Navbar from './Partials/Navbar';
+import Navbar from './Partials/Navbar'
 import Inputsearch from '../../Components/Inputsearch';
 import moment from "moment";
+import Reportedusersmodel from './Partials/Reportedusersmodel';
 
 export default function Userposts({user,posts,filters}) {
   const [isChecked, setIsChecked] = useState(filters.unapproved || false); 
   const [loading, setLoading] = useState(null); 
+   const [selectedPost, setSelectedPost] = useState(null)
+   const [showmodel,setShowmodel] = useState(false);
+
 
   const{data,setData,put}=useForm({
     search:filters.search || '',
     unapproved:filters.unapproved || false
   });
+
   const handleclick=(postid)=>{
     setLoading(postid);
     put(route('approve.update',postid),{
@@ -58,7 +63,10 @@ export default function Userposts({user,posts,filters}) {
     preserveScroll:true
   })
  }
-
+const openModel = (Post)=>{
+  setSelectedPost(Post);
+  setShowmodel(true);
+}
   return (
     <>
   <Navbar user={user}/>
@@ -79,6 +87,7 @@ export default function Userposts({user,posts,filters}) {
     <th className="w-3/6 p-3">post detail</th>
     <th className="w-2/6 p-3 text-center">Approved</th>
     <th className="w-2/6 p-3 text-center">likes</th>
+    <th className="w-1/6 p-3 text-center">reported</th>
     <th className="w-2/6 p-3 text-center">createdat</th>
     <th className="w-2/6 p-3 text-center">updatedat</th>
     <th className="w-1/6 p-3 text-right">action</th>
@@ -112,6 +121,12 @@ className={`w-9 h-9 rounded-full border-2 ${
 <td className='w-2/6 py-5 px-3 text-center'>
 <b>+{post.likes_sum_count} <i className='fa-solid fa-heart text-red-400'></i></b>
 </td>
+<td className='w-1/6 py-5 px-3 text-center'>
+<span onClick={()=>openModel(post)} className='cursor-pointer'>
+  {post.reported_count >0 ? (
+    <b>+{post.reported_count}</b>
+  ) : '--'}</span>
+</td>
 <td className='w-2/6 py-5 px-3 text-center'>
 <p>{new Date(post.created_at).toLocaleDateString()}</p>
 </td>
@@ -134,6 +149,10 @@ className={`w-9 h-9 rounded-full border-2 ${
   <div className='flex justify-start mt-4 '>
   <Paginatelinks posts={posts}/>
 </div>
+{/* show reported model */}
+{showmodel &&
+<Reportedusersmodel close={()=>setShowmodel(false)} post={selectedPost}/>
+}
    </>
   )
 }

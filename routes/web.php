@@ -5,13 +5,13 @@ use App\Http\Controllers\{
        FollowController,
        LikeController,
        PostController,
-       ProfileController
+       ProfileController,
+       PostReportController
 };
 use App\Http\Controllers\Admin\{
   AdminController,
   TagController,
 };
-use App\Http\Controllers\Admin\PostReportController;
 use Illuminate\Support\Facades\Route;
 
 // posts routes
@@ -45,9 +45,11 @@ Route::middleware(['auth','verified','can:makeAdminActions'])
   Route::get('/admin','index')->name('admin.page');
   Route::get('/admin/users','users')->name('users.page');
   Route::get('/show/{user}','show')->name('show.posts');
+  Route::get('/admin/posts-reports','reports')->name('posts.reports');
   Route::put('/admin/{user}/role','updaterole')->name('user.updaterole');
   Route::put('/approve/post{post}','approve')->name('approve.update');
   Route::delete('/admin/post-user/{post}','delete')->name('post.delete');
+  Route::delete('/admin/delete-report/{report}','delete_report')->name('delete.report');
   });
   Route::controller(TagController::class)->group(function(){
   Route::get('/admin/tags','tags')->name('tags.page');

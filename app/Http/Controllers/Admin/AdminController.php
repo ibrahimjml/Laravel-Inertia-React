@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Models\PostReport;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -52,11 +53,14 @@ public function show(User $user,Request $request)
 
   $posts = $user->posts()
   ->withSum('likes','count')
+  ->with(['reports'=>function($q){
+    $q->with('user:id,name,username');
+  }])
   ->filter($request->only(['search','unapproved']))
   ->latest()
   ->paginate(6)
   ->withQueryString();
-
+  
   return Inertia::render('Admin/Userposts',
   ['user'=>$user,
   'posts'=>$posts,
@@ -73,5 +77,20 @@ public function show(User $user,Request $request)
       $post = Post::find($post->id);
       $post->delete();
       return redirect()->back()->with('status','post deleted successfully');
+    }
+    public function reports()
+    {
+
+      $reports = PostReport::with(['user', 'post'])->latest()->paginate(6);
+
+      return Inertia::render('Admin/Reportspage',[
+        'reports'=> $reports
+      ]);
+    }
+      public function delete_report(PostReport $report)
+    {
+       $report = PostReport::find($report->id);
+       $report->delete();
+       return redirect()->back()->with('status','report deleted !');
     }
 }

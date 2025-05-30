@@ -11,7 +11,7 @@
 ![schooldash-dahboard-page](https://i.postimg.cc/4d3Ydcnt/Screenshot-2025-05-23-201933.png)
 ![Dashboard Screenshot](https://i.postimg.cc/6qXpDbF9/Screenshot-2025-05-23-191142.png)
 ![Dashboard Screenshot](https://i.postimg.cc/SRhwFNyZ/127-0-0-1-8000-admin-users-1.png)
-![Dashboard Screenshot](https://i.postimg.cc/FKkqYJzW/127-0-0-1-8000-show-2.png)
+![Dashboard Screenshot](https://i.postimg.cc/Prqr3LM6/127-0-0-1-8000-show-2-1.png)
 ![Dashboard Screenshot](https://i.postimg.cc/13SZW9SL/Screenshot-2025-05-29-202150.png)
 ![Dashboard Screenshot](https://i.postimg.cc/Hs99fVxj/127-0-0-1-8000-admin-tags-sort-oldest-2.png)
 ![Dashboard Screenshot](https://i.postimg.cc/0ytdyF7s/127-0-0-1-8000-11.png)
@@ -70,7 +70,7 @@ php artisan serve
 - **Full text search**  
 - **Advanced Filtering Chained filter query**
 - **Sort options popular,following,trendtag**
-- **Users can likes up to 10 times on each post**
+- **30 likes per user on each post**
 - **Users can view who liked**
 - **Toggle Follow/Unfollow**
 

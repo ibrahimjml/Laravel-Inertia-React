@@ -1,8 +1,9 @@
-import { Link, useForm } from '@inertiajs/react';
+import { Link, useForm, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { route } from 'ziggy-js';
 
 export default function Relatedpoststags({ closemodel, tag }) {
+  const { csrf } = usePage().props
   const { put } = useForm();
   const [loading, setLoading] = useState(null); 
   const [posts, setPosts] = useState(null);  
@@ -45,7 +46,7 @@ export default function Relatedpoststags({ closemodel, tag }) {
     fetch(route('tags.posts', tag.id), {
       headers: {
         'Accept': 'application/json',
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        'X-CSRF-TOKEN': csrf
       }
     })
       .then(res => res.json())

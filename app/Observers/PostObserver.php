@@ -3,6 +3,8 @@
 namespace App\Observers;
 
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class PostObserver
 {
@@ -19,6 +21,14 @@ class PostObserver
 
             if ($oldImage && file_exists($imagePath)) {
                 unlink($imagePath);
+                 Log::info('Old image deleted for post', [
+                'post_id' => $post->id,
+                'image' => $oldImage,
+                'user_id' => Auth::id() 
+                    ]);
+            }else{
+              Log::warning('No old image found or file does not exist for deletion', [
+            'post_id' => $post->id,]);
             }
         }
     }
@@ -33,6 +43,14 @@ class PostObserver
 
        if ($originalImage && file_exists($imagePath)) {
         unlink($imagePath);
+         Log::info('Image deleted for post', [
+                'post_id' => $post->id,
+                'image' => $originalImage,
+                'user_id' => Auth::id() 
+            ]);
+        }else{
+          Log::warning('No image found or file does not exist for deletion', [
+            'post_id' => $post->id,]);
         }
       }
 

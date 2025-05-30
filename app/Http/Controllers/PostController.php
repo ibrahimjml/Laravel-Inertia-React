@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Services\PostService;
 use App\Traits\ImageUpload;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
 class PostController extends Controller implements HasMiddleware
 {
   use ImageUpload;
@@ -76,8 +79,7 @@ $posts = Post::whereHas('user',function(Builder $q){
             $posts->latest();
             break;
     }
-
- $post = $posts->paginate(6)->withQueryString();
+    $post = $posts->paginate(6)->withQueryString();
 // Add user_like  per post
 $post->getCollection()->transform(function ($post) use ($service) {
         return $service->transformPost($post);
@@ -114,11 +116,13 @@ public function create( )
     if ($newImage = $this->handleImageUpload($request->file('image'))) {
         $fields['image'] = $newImage;
     }
-
+ DB::transaction(function () use ( $fields, $tags,$request) {
   $post =  $request->user()->posts()->create($fields);
+   Log::info('Post created', ['id' => $post->id,'title'=> $post->title, 'user_id' => Auth::id()]);
     if($request->filled('tags')){
        $tags->attachHashtags($post,$request->input('tags'));
     }
+  });
     return to_route('dashboard')->with('success', 'posst created');
   }
 
@@ -180,13 +184,20 @@ public function create( )
             unset($fields['image']);
         }
 
-    $service->syncHashtags($post, $fields['tags'] ?? []);
-
+    $post->fill($fields);
     if(!$post->isDirty()){
       return redirect('/posts/'.$post->id.'/edit')->with('status', 'Nothing changed to update');
     }
-
+     DB::transaction(function () use ($post, $fields, $service) {    
     $post->update($fields);
+    $service->syncHashtags($post, $fields['tags'] ?? []);
+
+     Log::info('Post updated', [
+        'id' => $post->id,
+        'changes' => $post->getChanges(),
+        'user_id' => Auth::id()
+    ]);
+  });
     return to_route('dashboard')->with('success', 'posst updated');
    }
 
@@ -195,6 +206,7 @@ public function create( )
   Gate::authorize('modify',$post);
 
     $post->delete();
+    Log::info('Post deleted', ['id' => $post->id,'title'=> $post->title, 'user_id' => Auth::id()]);
     return to_route('dashboard')->with('success','post deleted');
   }
 }

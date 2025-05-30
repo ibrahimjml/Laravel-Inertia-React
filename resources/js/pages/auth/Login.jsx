@@ -35,10 +35,7 @@ const recaptchaRef = useRef(null);
     setData("g_recaptcha_response", token);
 
     post('/login',{
-      preserveScroll: true,
-      onSuccess: () => {
-      window.location.reload(); 
-    },
+      preserveScroll: true
     })
 
   }

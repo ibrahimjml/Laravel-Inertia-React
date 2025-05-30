@@ -1,7 +1,7 @@
 import { Link, router, usePage } from "@inertiajs/react";
 import { route } from 'ziggy-js';
 import { useState,useEffect } from "react";
-import Inputsearch from "../Components/Inputsearch"
+
 
 export default function Layout({children}) {
   const {auth} = usePage().props;
@@ -18,11 +18,7 @@ export default function Layout({children}) {
   }, [darkMode]);
   
  const handleLogout = () => {
-  router.post(route('logout'), {}, {
-    onSuccess: () => {
-      window.location.reload(); 
-    },
-  });
+  router.post(route('logout'));
 };
 useEffect(() => {
     const handleScroll = () => {

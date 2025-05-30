@@ -8,44 +8,59 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Inertia\Inertia;
 
 class LikeController extends Controller
 {
     const CACHE_DURATION = 5; // in minutes
-    const MAX_LIKES_PER_USER = 10;
+    const MAX_LIKES_PER_USER = 30;
 
     public function like(Request $request)
     {
         $request->validate([
             'type' => 'required|string',
             'id' => 'required|integer',
-            'count' => 'sometimes|integer|min:1|max:10'
+            'count' => 'required|integer|min:1|max:30'
         ]);
 
         $user = Auth::user();
         $model = $this->resolveLikeable($request->type, $request->id);
         $cacheKey = $this->getCacheKey($model);
 
-        return DB::transaction(function () use ($user, $model, $cacheKey) {
-            $like = Like::firstOrCreate([
-                'user_id' => $user->id,
-                'likeable_id' => $model->id,
-                'likeable_type' => get_class($model),
-            ], [
-                'count' => 1
+        return DB::transaction(function () use ($user,$request, $model, $cacheKey) {
+           $like = Like::firstOrCreate([
+            'user_id' => $user->id,
+            'likeable_id' => $model->id,
+            'likeable_type' => get_class($model),
+        ], ['count' => 0]);
+
+        $newTotal = min($like->count + $request->count, self::MAX_LIKES_PER_USER);
+        if($newTotal >= self::MAX_LIKES_PER_USER){
+          Log::info('max likes hit for',[
+            'user_id'=>Auth::id(),
+            'likeable_type' => get_class($model),
+           'likeable_id' => $model->id,
+           'count' => $newTotal
+          ]);
+        }
+         $like->count = $newTotal;
+         $like->save();
+
+        Log::info('Likes created', [
+           'user_id' => $user->id,
+           'likeable_type' => get_class($model),
+           'likeable_id' => $model->id,
+           'count' => $newTotal
+       ]);
+
+          Cache::forget($cacheKey);
+    
+           return response()->json([
+            'totalLikes' => $this->getCachedTotalLikes($model),
+            'userLikes' => $like->count,
             ]);
-
-            if (!$like->wasRecentlyCreated && $like->count < self::MAX_LIKES_PER_USER) {
-                $like->increment('count');
-            }
-
-            Cache::forget($cacheKey);
-
-            return response()->json([
-                'totalLikes' => $this->getCachedTotalLikes($model),
-                'userLikes' => $like->count
-            ]);
+          
         });
     }
 
@@ -65,7 +80,11 @@ class LikeController extends Controller
             'likeable_id' => $model->id,
             'likeable_type' => get_class($model),
         ])->delete();
-
+       Log::info('Undo like', [
+           'user_id' => $user->id,
+           'likeable_type' => get_class($model),
+           'likeable_id' => $model->id,
+       ]);
         Cache::forget($cacheKey);
 
         return response()->json([

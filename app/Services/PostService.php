@@ -12,7 +12,7 @@ class PostService
     {
         $auth = Auth::user();
         $post->user_like = $post->likes->where('user_id', $auth?->id)->sum('count');
-        $post->user->is_followed = $auth?->isFollowing($post->user);;
+        $post->user->is_followed = $auth && $post->user->followers->contains($auth->id);
 
         return $post;
     }

@@ -11,12 +11,13 @@
 ![schooldash-dahboard-page](https://i.postimg.cc/4d3Ydcnt/Screenshot-2025-05-23-201933.png)
 ![Dashboard Screenshot](https://i.postimg.cc/6qXpDbF9/Screenshot-2025-05-23-191142.png)
 ![Dashboard Screenshot](https://i.postimg.cc/SRhwFNyZ/127-0-0-1-8000-admin-users-1.png)
-![Dashboard Screenshot](https://i.postimg.cc/Prqr3LM6/127-0-0-1-8000-show-2-1.png)
+![Dashboard Screenshot](https://i.postimg.cc/Kjx6G0CS/127-0-0-1-8000-show-2-3.png)
 ![Dashboard Screenshot](https://i.postimg.cc/13SZW9SL/Screenshot-2025-05-29-202150.png)
 ![Dashboard Screenshot](https://i.postimg.cc/Hs99fVxj/127-0-0-1-8000-admin-tags-sort-oldest-2.png)
-![Dashboard Screenshot](https://i.postimg.cc/0ytdyF7s/127-0-0-1-8000-11.png)
+![Dashboard Screenshot](https://i.postimg.cc/RFXRtGNz/127-0-0-1-8000-12.png)
 ![Dashboard Screenshot](https://i.postimg.cc/m2sndQVs/Screenshot-2025-05-26-223512.png)
-![Dashboard Screenshot](https://i.postimg.cc/d3p23F4J/127-0-0-1-8000-posts-10-1.png)
+![Dashboard Screenshot](https://i.postimg.cc/QxnywNNr/127-0-0-1-8000-posts-10-2.png)
+![Dashboard Screenshot](https://i.postimg.cc/QdHRd9Yt/Screenshot-2025-05-31-160114.png)
 
 ## INSTALLATION
 1.📦 Install dependencies

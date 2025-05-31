@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Enums\ReportReason;
 use App\Http\Middleware\Suspended;
 use App\Http\Requests\PostRequest;
-use App\Models\Hashtag;
 use App\Models\Post;
 use App\Services\HashtagService;
 use Illuminate\Database\Eloquent\Builder;
@@ -16,6 +15,7 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use App\Services\PostService;
+use App\Services\SortPostService;
 use App\Traits\ImageUpload;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -30,7 +30,7 @@ class PostController extends Controller implements HasMiddleware
       ];
     }
 
-  public function index(Request $request,PostService $service)
+  public function index(Request $request,PostService $service,SortPostService $sort)
   {
          $auth = Auth::user();
          $sortOption = $request->get('sort','latest');
@@ -46,40 +46,7 @@ $posts = Post::whereHas('user',function(Builder $q){
              ->where('approved',true)
              ->search($request->only(['search','tag','user']));
 
-        switch ($sortOption) {
-        case 'oldest':
-            $posts->oldest();
-            break;
-
-        case 'followings':
-            $followings = $auth?->followings->pluck('id') ?? [];
-            $posts->whereIn('user_id', $followings);
-            break;
-            
-        case 'popular':
-        $posts->orderByDesc('likes_sum_count');
-        break;
-
-        case 'trend':
-            $trendingHashtag = Hashtag::withCount('posts')
-                ->having('posts_count', '>', 2)
-                ->orderByDesc('posts_count')
-                ->first();
-
-            if ($trendingHashtag) {
-                $posts->whereHas('hashtags', function ($query) use ($trendingHashtag) {
-                    $query->where('hashtags.id', $trendingHashtag->id);
-                });
-            } else {
-                $posts->whereRaw('0 = 1'); 
-            }
-            break;
-
-        case 'latest':
-        default:
-            $posts->latest();
-            break;
-    }
+    $posts = $sort->sortPosts($posts,$sortOption, $auth);
     $post = $posts->paginate(6)->withQueryString();
    
    $post->getCollection()->transform(function ($post) use ($service) {

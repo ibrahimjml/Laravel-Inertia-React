@@ -52,8 +52,9 @@ public function show(User $user,Request $request)
 {
 
   $posts = $user->posts()
+  ->withCount('comments')
   ->withSum('likes','count')
-  ->with(['reports'=>function($q){
+  ->with(['comments','reports'=>function($q){
     $q->with('user:id,name,username');
   }])
   ->filter($request->only(['search','unapproved']))

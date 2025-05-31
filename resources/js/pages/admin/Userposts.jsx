@@ -87,6 +87,7 @@ const openModel = (Post)=>{
     <th className="w-3/6 p-3">post detail</th>
     <th className="w-2/6 p-3 text-center">Approved</th>
     <th className="w-2/6 p-3 text-center">likes</th>
+    <th className="w-1/6 p-3 text-center">Comments</th>
     <th className="w-1/6 p-3 text-center">reported</th>
     <th className="w-2/6 p-3 text-center">createdat</th>
     <th className="w-2/6 p-3 text-center">updatedat</th>
@@ -120,6 +121,12 @@ className={`w-9 h-9 rounded-full border-2 ${
 </td>
 <td className='w-2/6 py-5 px-3 text-center'>
 <b>+{post.likes_sum_count} <i className='fa-solid fa-heart text-red-400'></i></b>
+</td>
+<td className='w-1/6 py-5 px-3 text-center'>
+{post.comments_count && 
+<b>+{post.comments_count} <i className='fa-solid fa-comment dark:text-slate-300 text-black'></i></b>
+|| '--'
+}
 </td>
 <td className='w-1/6 py-5 px-3 text-center'>
 <span onClick={()=>openModel(post)} className='cursor-pointer'>

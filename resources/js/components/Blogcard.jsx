@@ -117,7 +117,7 @@ export default function Blogcard({ post, request, type, id, auth }) {
   };
 
   const handleFollowToggle = () => {
-    router.post(route("togglefollow", post.user.id), {
+    router.post(route("togglefollow", post.user.id),{}, {
       preserveState: true,
       preserveScroll: true,
       onSuccess: () => {

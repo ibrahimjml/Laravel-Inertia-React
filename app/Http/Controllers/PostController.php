@@ -126,6 +126,7 @@ public function create( )
       'comments' => $Comments,
       'sort'=>$sort,
       'canmodify'=>Auth::user()? Auth::user()->can('modify',$post) : false,
+      'canreport'=>Auth::user()? Auth::user()->can('report',$post) : false,
       ]);  
   }
   public function edit(Post $post) {

@@ -4,7 +4,7 @@ namespace App\Observers;
 
 use App\Models\PostReport;
 
-class ReportObserver
+class PostReportObserver
 {
     /**
      * Handle the PostReport "created" event.

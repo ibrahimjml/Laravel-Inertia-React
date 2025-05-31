@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\CommentReport;
 use App\Models\Post;
 use App\Models\PostReport;
 use App\Models\User;
@@ -90,15 +91,33 @@ public function show(User $user,Request $request)
         $reports->getCollection()->transform(function ($q) {
         $q->append('reason_label');
         return $q;
-  });
-      return Inertia::render('Admin/Reportspage',[
+      });
+      return Inertia::render('Admin/Postreportspage',[
         'reports'=> $reports
       ]);
-    }
+      }
       public function delete_report(PostReport $report)
-    {
-       $report = PostReport::find($report->id);
+      {
+       $report = PostReport::findOrFail($report->id);
        $report->delete();
        return redirect()->back()->with('status','report deleted !');
-    }
+      }
+
+      public function comment_reports()
+      {
+          $reports = CommentReport::with(['user', 'comment.post','comment.user'])->latest()->paginate(6);
+        $reports->getCollection()->transform(function ($q) {
+        $q->append('reason_label');
+        return $q;
+      });
+      return Inertia::render('Admin/Commentreportpage',[
+        'Commentreports'=> $reports
+      ]);
+      }
+      public function delete_comment_report(CommentReport $report)
+      {
+         $report = CommentReport::find($report->id);
+       $report->delete();
+       return redirect()->back()->with('status','report deleted !');
+      }
 }

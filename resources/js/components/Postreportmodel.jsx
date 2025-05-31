@@ -15,7 +15,7 @@ export default function Postreportmodel({ close, reasons, postID }) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    post(route('post.report'), {
+    post(route('post.report',postID), {
     data: {
     ...data,
     other: selectedReason === 'Other' ? data.other : '',

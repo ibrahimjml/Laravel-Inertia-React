@@ -50,6 +50,7 @@ class PostService
               $comments = $comments->get()->map(function ($comment) {
                     $comment->user_like_count = $comment->likes->first()?->count ?? 0;
                     $comment->can_modify = Auth::user()?->can('modify', $comment);
+                    $comment->can_report = Auth::user()?->can('report', $comment);
                     return $comment;
                 });
 

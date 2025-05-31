@@ -1,14 +1,13 @@
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react'
-import { useEffect, useState } from 'react'
+import {  useState } from 'react'
 import { route } from 'ziggy-js'
 import moment from "moment";
 import Morearticles from '../components/Morearticles';
 import Postreportmodel from '../Components/Postreportmodel';
-import Commentitem from './Comments/Commentsreplies';
 import Commentsmodel from './Comments/Commentsmodel';
 
 
-export default function Show({ posts,canmodify,tags,morearticles,reportReasons}) {
+export default function Show({ posts,canmodify,canreport,tags,morearticles,reportReasons}) {
   const {auth,comments,sort} = usePage().props;
   // const [userLikeCount, setUserLikeCount] = useState(posts.user_like ?? 0);
   // const [likeTotal, setLikeTotal] = useState(posts.likes_sum_count ?? 0);
@@ -107,8 +106,9 @@ const opencomment = ()=>{
           {isFollowing ? "Unfollow" : "Follow"}
         </button>
             }
-        
+        {canreport && 
         <button onClick={()=>{setshowReportmodel(!showReportmodel)}} className="block w-full px-6 py-3 hover:bg-slate-700 text-left ">Report</button>
+        }
       </div>
         )}
         </div>
@@ -158,6 +158,7 @@ const opencomment = ()=>{
      postuserId={posts.user.id}
      comments={comments} 
      onClose={() => setshowCommentmodel(false)} 
+     reasons={reportReasons}
      type="comment"
      sort={sort}
      />

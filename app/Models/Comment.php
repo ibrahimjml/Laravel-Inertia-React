@@ -17,7 +17,10 @@ class Comment extends Model
     public function user(){
       return $this->belongsTo(User::class);
     }
-
+     public function reports()
+    {
+    return $this->hasMany(CommentReport::class);
+    }
     public function parent(){
       return $this->belongsTo(Comment::class,'parent_id');
     }

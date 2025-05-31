@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { router, useForm, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
+import moment from 'moment';
+import Commentreport from './Commentreport';
 
-export default function Commentsreplies({ comment, postId, level = 0 ,type,postuser}) {
+export default function Commentsreplies({ comment, postId, level = 0 ,type,postuser,reasons}) {
   const {csrf } = usePage().props;
   const [likeTotal, setLikeTotal] = useState(comment.likes_sum_count ?? 0);
   const [userLikeCount, setUserLikeCount] = useState(comment.user_like_count ?? 0);
@@ -15,6 +17,7 @@ export default function Commentsreplies({ comment, postId, level = 0 ,type,postu
   const animationTimeoutRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
   const [showModel,setShowModel] = useState(false);
+  const [showReportModel,setShowReportModel] = useState(false);
   const MAX_LIKES = 30;
 
   const { data, setData, post, reset,processing,errors } = useForm({
@@ -71,7 +74,7 @@ export default function Commentsreplies({ comment, postId, level = 0 ,type,postu
   const sendLikes = async (count) => {
 
     try {
-      const response = await fetch(`/comments/${comment.id}/like`, {
+      const response = await fetch(route('comments.likes',comment.id), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -94,7 +97,7 @@ export default function Commentsreplies({ comment, postId, level = 0 ,type,postu
 
   const handleUndo = async () => {
     try {
-      const response = await fetch(`/comments/${comment.id}/undo`, {
+      const response = await fetch(route('comments.undo',comment.id), {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -113,30 +116,36 @@ export default function Commentsreplies({ comment, postId, level = 0 ,type,postu
     }
   };
 
+  const {data: editData,setData: setEditData, put,processing: editProcessing,errors: editErrors,} = useForm({
+    content: comment.content,
+  });
 
+  const openReportModel = ()=>{
+  setShowReportModel(true);
+  setShowReplies(false);
+  setShowModel(false);
+  }
     useEffect(() => {
       return () => {
         clearTimeout(animationTimeoutRef.current);
         clearTimeout(debounceTimer.current);
       };
     }, []);
-    
-const {data: editData,setData: setEditData, put,processing: editProcessing,errors: editErrors,} = useForm({
-  content: comment.content,
-});
 
+const buttonsCount = (userLikeCount > 0 ? 1 : 0) + (comment?.can_modify  ? 2 : 0) + (comment?.can_report ? 1 : 0);
+console.log(buttonsCount);
   return (
     <div
       className={`${level === 0 ? 'border-b border-gray-200 dark:border-b-gray-600 pb-7 mb-4' : 'mt-3 relative pb-2'}`}
-      style={{
-        marginLeft: isReply ? `${level * 10}px` : 0,
-        marginTop: isReply ? '20px' : '3px',
-      }}
-    >
-
+      style={{ marginLeft: isReply ? `${level * 10}px` : 0,}}>
+    
+    {/* report comment model */}
+    {showReportModel &&
+     <Commentreport commentID={comment.id} reasons={reasons} closeModel={()=>{setShowReportModel(false)}}/>
+     }
       {isReply && (
         <div
-          className="absolute left-0 top-0 h-4 w-px bg-gray-400"
+          className="absolute left-0 top-0 h-10 w-px bg-gray-400"
           style={{ transform: 'translateX(-8px)' }}>
         </div>
       )}
@@ -146,39 +155,48 @@ const {data: editData,setData: setEditData, put,processing: editProcessing,error
           <i className="fa-solid fa-user mt-1 text-gray-500"></i>
           <div className="flex flex-col ml-3 w-full">
             <div className='flex gap-2 items-center w-full'>
+            <div className="flex flex-col w-full">
+            <div className="flex items-center gap-2">
               <p className="text-lg font-semibold dark:text-gray-200">
                 {comment.user.name}
               </p>
-
               {postuser === comment.user.id && 
-             <div className='flex items-center gap-1 text-xs'>
-              <b>·</b>
-              <p className=' text-white font-semibold bg-green-500 px-2 w-fit rounded-full text-center'>Author</p>
-             </div>
-                }
-            <div className="relative flex items-center w-full">
-              {(userLikeCount >0 || comment.can_modify) && 
+                <div className="text-xs text-white font-semibold bg-green-500 px-2 w-fit rounded-full text-center">
+                  Author
+                </div>
+              }
+            </div>
+            <span className="text-xs text-gray-500 w-full mb-3">{moment(comment.created_at).fromNow()}</span>
+          </div>
               
+            <div className="relative flex items-center w-full">
+              {(userLikeCount > 0 || comment.can_modify || comment.can_report) && (
             <button onClick={()=>{setShowModel(!showModel)}} className='w-fit ml-auto'>
             <i className="fa-solid fa-ellipsis-vertical"></i>
            </button>
-              }
-
+              )}
              {/* undo likes,edit,delete model */}
              {showModel && (
-              <div className={`absolute z-50 ${comment.can_modify ? 'top-[-140px]':'top-[-70px]'} right-[-6px] border border-black dark:border-slate-200 bg-white dark:bg-dark text-white rounded-lg overflow-hidden w-40`}>
+              <div className={`absolute z-50 ${buttonsCount === 3  ? 'top-[-170px]': buttonsCount === 2 ? 'top-[-110px]':'top-[-70px]'} right-[-6px] border border-black dark:border-slate-200 bg-white dark:bg-dark text-white rounded-lg overflow-hidden w-40`}>
                 {userLikeCount > 0 && (
-                  <button onClick={() => { handleUndo(); setShowModel(false); }} className="block w-full px-6 text-sm py-3 text-black dark:hover:bg-slate-900 text-left">
+                  <button onClick={() => { handleUndo(); setShowModel(false); }} className="block w-full px-6 text-sm py-3 text-black dark:text-white dark:hover:bg-slate-900 ">
                     Undo <small className="text-red-500">+{userLikeCount}</small> Lik{userLikeCount > 1 ? "es" : "e"}
                   </button>
                 )}
+                {comment.can_report && 
+                  <button
+                onClick={openReportModel}
+                 className='className="block w-full px-6 text-sm py-3 text-black dark:text-white dark:hover:bg-slate-900 '>
+                  Report
+                  </button>
+                }
                 {comment.can_modify && 
                 <>
-                <button onClick={() => {setIsEditing(true); setShowModel(false)}} className="block w-full px-6 text-sm py-3 text-black dark:text-blue-600 font-semibold dark:hover:bg-slate-900 text-left">Edit</button>
+                <button onClick={() => {setIsEditing(true); setShowModel(false)}} className="block w-full px-6 text-sm py-3 text-black dark:text-blue-600 font-semibold dark:hover:bg-slate-900 ">Edit</button>
                 <button   onClick={() => {
                   setShowModel(false);
                 if (confirm("Are you sure?")) { router.delete(route('comment.delete', comment.id));}}}
-                className="block w-full px-6 text-sm py-3 dark:text-red-600 text-black font-semibold dark:hover:bg-slate-900 text-left">
+                className="block w-full px-6 text-sm py-3 dark:text-red-600 text-black font-semibold dark:hover:bg-slate-900 ">
                   Delete
                 </button>
                 </>
@@ -265,13 +283,14 @@ const {data: editData,setData: setEditData, put,processing: editProcessing,error
         )}
 
         {/* show replies */}
-        {showReplies && comment.replies?.length > 0 && (
+        {showReplies &&  comment.replies?.length > 0 && (
           <div className="mt-2">
             {comment.replies.map((reply) => (
               <Commentsreplies
                 key={reply.id}
                 comment={reply}
                 postId={postId}
+                reasons={reasons}
                 postuser={postuser}
                 level={level + 1}
                 type={type}

@@ -20,5 +20,8 @@ class CommentPolicy
       return $user->id === $comment->user_id;
     }
 
-    
+    public function report(User $user, Comment $comment): bool
+    {
+      return $comment->user_id !== $user->id;
+    }
 }

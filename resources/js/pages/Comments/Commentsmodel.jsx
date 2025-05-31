@@ -3,7 +3,7 @@ import { router, useForm } from '@inertiajs/react';
 import Commentsreplies from './Commentsreplies';
 import { route } from 'ziggy-js';
 
-export default function Commentsmodel({ postId, comments, onClose,count ,type,canmodify,sort,postuserId}) {
+export default function Commentsmodel({ postId, comments, onClose,count ,type,canmodify,sort,postuserId,reasons}) {
   const { data, setData, post, reset, processing,errors } = useForm({ content: '' });
 
   const submitComment = (e) => {
@@ -85,6 +85,7 @@ useEffect(() => {
                 postuser={postuserId}
                 level={0}
                 type={type}
+                reasons={reasons}
                 canmodify={canmodify}
               />
             ))

@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\{
   AdminController,
   TagController,
 };
+use App\Http\Controllers\CommentController;
 use Illuminate\Support\Facades\Route;
 
 // posts routes
@@ -36,6 +37,12 @@ Route::resource('posts', PostController::class);
   Route::post('/togglefollow/{user}',[FollowController::class,'toggle'])->name('togglefollow');
   // post report
   Route::post('/post-report', [PostReportController::class, 'store'])->name('post.report');
+ // Comments
+  Route::post('/comment/{post}',[CommentController::class,'store'])->name('comment.create');
+  Route::put('/comment/{comment}/edit',[CommentController::class,'update'])->name('comment.update');
+  Route::delete('/comment/{comment}/delete',[CommentController::class,'delete'])->name('comment.delete');
+  Route::post('/comments/{comment}/like', [LikeController::class, 'like']);
+  Route::post('/comments/{comment}/undo', [LikeController::class, 'undo']);
 });
 
 // admin routes

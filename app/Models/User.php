@@ -39,6 +39,12 @@ public function posts()
   {
       return $this->followings()->where('user_id', $user->id)->exists();
   }
+    public function comments(){
+    return $this->hasMany(Comment::class);
+  }
+  public function replies(){
+    return $this->comments()->whereNotNull('parent_id');
+  }
 public function scopeIsSubscriber($query)
 {
   return $query->where('role','subscriber')

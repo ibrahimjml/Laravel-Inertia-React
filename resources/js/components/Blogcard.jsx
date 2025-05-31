@@ -198,13 +198,23 @@ export default function Blogcard({ post, request, type, id, auth }) {
         )}
 
         <div className="relative flex items-center justify-between">
-          <button className="px-2 py-1 rounded transition-all">
-            <i onClick={handleLike} className={`fa-heart mr-2 ${(userLikeCount + pendingLikes > 0) ? "fa-solid text-red-500" : "fa-regular text-red-500 dark:text-red-500"} ${heartAnimation}`}></i>
-            <span onClick={toggleLikeModal}>
-             {pendingLikes > 0 ? Number(likeTotal) + Number(pendingLikes) : likeTotal}
+        <div className="flex items-center gap-3 justify-start">
+            <button className="px-2 py-1 rounded transition-all">
+              <i onClick={handleLike} className={`fa-heart mr-2 ${(userLikeCount + pendingLikes > 0) ? "fa-solid text-red-500" : "fa-regular text-red-500 dark:text-red-500"} ${heartAnimation}`}></i>
+              <span onClick={toggleLikeModal}>
+               {pendingLikes > 0 ? Number(likeTotal) + Number(pendingLikes) : likeTotal}
+              </span>
+            </button>
+            <span onClick={() => router.visit(route('posts.show',post.id))}
+              className="cursor-pointer">
+              {post.comments.length >0 && 
+              <>
+              <i className="fa-solid fa-comment"></i>
+              <b className="ml-1">{post.comments_count}</b>
+              </>
+              }
             </span>
-          </button>
-
+        </div>
           {showLikeEffect &&  (
             <div className="absolute -top-8 -right-2 animate-bounce">
               <div className="text-red-500 text-xl font-bold">+{ userLikeCount + pendingLikes}</div>

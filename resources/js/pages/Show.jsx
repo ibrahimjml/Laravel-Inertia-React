@@ -1,18 +1,21 @@
 import { Head, Link, router, useForm, usePage } from '@inertiajs/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { route } from 'ziggy-js'
 import moment from "moment";
 import Morearticles from '../components/Morearticles';
 import Postreportmodel from '../Components/Postreportmodel';
+import Commentitem from './Comments/Commentsreplies';
+import Commentsmodel from './Comments/Commentsmodel';
 
 
 export default function Show({ posts,canmodify,tags,morearticles,reportReasons}) {
-  const {auth} = usePage().props;
-  const [userLikeCount, setUserLikeCount] = useState(posts.user_like ?? 0);
-  const [likeTotal, setLikeTotal] = useState(posts.likes_sum_count ?? 0);
+  const {auth,comments,sort} = usePage().props;
+  // const [userLikeCount, setUserLikeCount] = useState(posts.user_like ?? 0);
+  // const [likeTotal, setLikeTotal] = useState(posts.likes_sum_count ?? 0);
   const [isFollowing, setIsFollowing] = useState(posts.user.is_followed ?? false);
   const [showmodel,setshowmodel] = useState(false);
   const [showReportmodel,setshowReportmodel] = useState(false);
+  const [showcommentmodel,setshowCommentmodel] = useState(false);
   const { delete: destroy } = useForm();
 
  const togglemodel = ()=> setshowmodel(!showmodel);
@@ -34,6 +37,10 @@ export default function Show({ posts,canmodify,tags,morearticles,reportReasons})
     },
   });
 };
+const opencomment = ()=>{
+  setshowCommentmodel(true);
+}
+
   return (
     <>
     <Head title={posts.title.slice(0,5)}/>
@@ -113,6 +120,21 @@ export default function Show({ posts,canmodify,tags,morearticles,reportReasons})
         <div className='md:w-[50%] mx-auto mt-5 leading-4'>
             <p className="mb-3 font-normal lg:text-xl text-gray-700 dark:text-gray-400">{posts.description}</p>
         </div>
+        {/* like|comment|share model */}
+       <div className="flex  items-center gap-2 mx-auto bg-white dark:bg-dark border-2 dark:border-gray-500 rounded-full w-fit px-4 py-4 divide-x divide-gray-500 dark:divide-gray-400 my-2 text-sm font-medium">
+         <span className="px-2  h-full flex items-center justify-center gap-1 ">
+           <i className="fa-solid fa-heart text-red-500"></i>
+            <b>+{posts.likes_sum_count}</b>
+         </span>
+         <span onClick={opencomment} className="px-2  h-full flex items-center justify-center gap-1 cursor-pointer">
+           <i className="fa-regular fa-comment dark:text-white"></i> 
+           {posts.comments_count >0 && <b>+{posts.comments_count}</b>}
+         </span>
+         <span className="px-2 h-full  py-1 flex items-center justify-center gap-1 ">
+           <i className="fa-solid fa-share dark:text-white"></i> 
+         </span>
+         </div>
+
       {/* more articles */}
       {morearticles.length >0 && (
         <>
@@ -126,9 +148,20 @@ export default function Show({ posts,canmodify,tags,morearticles,reportReasons})
     )}
     {/* report model */}
     { showReportmodel &&(
-
-    <Postreportmodel close={() => setshowReportmodel(false)} reasons={reportReasons} postID={posts.id}/>
-    ) }
+  <Postreportmodel close={() => setshowReportmodel(false)} reasons={reportReasons} postID={posts.id}/>
+    )}
+    {/* comment model */}
+    { showcommentmodel && 
+    <Commentsmodel 
+     count={posts.comments_count} 
+     postId={posts.id}
+     postuserId={posts.user.id}
+     comments={comments} 
+     onClose={() => setshowCommentmodel(false)} 
+     type="comment"
+     sort={sort}
+     />
+    }
     </>
   )
 }

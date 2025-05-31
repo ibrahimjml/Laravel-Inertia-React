@@ -38,10 +38,11 @@ class PostController extends Controller implements HasMiddleware
 $posts = Post::whereHas('user',function(Builder $q){
                $q->where('role','!=','suspended');
              })
-              ->with(['user', 'hashtags', 'likes' => function ($q) {
+              ->with(['user', 'hashtags','comments', 'likes' => function ($q) {
                $q->with('user:id,name,username'); 
               }])
              ->withSum('likes', 'count')
+             ->withCount(('comments'))
              ->where('approved',true)
              ->search($request->only(['search','tag','user']));
 
@@ -80,12 +81,10 @@ $posts = Post::whereHas('user',function(Builder $q){
             break;
     }
     $post = $posts->paginate(6)->withQueryString();
-// Add user_like  per post
-$post->getCollection()->transform(function ($post) use ($service) {
-        return $service->transformPost($post);
-});
+   
+   $post->getCollection()->transform(function ($post) use ($service) {
+           return $service->transformPost($post); });
 
-// get likers
 $userlikes = $post->getCollection()->mapWithKeys(function ($post) use ($service) {
   return [$post->id => $service->getLikersGrouped($post)];
 
@@ -105,9 +104,6 @@ public function create( )
    Gate::authorize('create',Post::class);
   return Inertia::render("Create");
 }
-
-
-
   public function store(PostRequest $request,HashtagService $tags)
   {
     Gate::authorize('create',Post::class);
@@ -126,21 +122,20 @@ public function create( )
     return to_route('dashboard')->with('success', 'posst created');
   }
 
-  public function show(Post $post,PostService $service) 
+  public function show(Post $post,PostService $service,Request $request) 
   {
      Gate::authorize('view',$post);
-     $post->load(['user.followers', 'likes.user', 'hashtags']);
+    $post->load(['user.followers','likes.user','hashtags']);
+    $post->loadCount('comments');
+    $post->loadSum('likes', 'count');
 
      $post = $service->transformPost($post);
      $likers = $service->getLikersGrouped($post);
     
      $alltags = $post->hashtags()->pluck('name')->toArray();
      $reasons = collect(ReportReason::cases())->map(function ($case) {
-        return [
-            'name' => $case->name,   
-            'value' => $case->value, 
-        ];
-    });
+        return [ 'name' => $case->name, 'value' => $case->value ];});
+        
      $morearticles = Post::query()
            ->with(['user'=> function ($query){
              $query->select('id','name','username');
@@ -152,14 +147,18 @@ public function create( )
           ->map(function ($p) use ($service) {
         return $service->transformPost($p);
           });
-          
+    $sort = $request->query('sort', 'New');    
+    $Comments = $service->getComments($post,$sort);
+
       return Inertia::render('Show',
       ['posts'=>$post,
       'tags'=>$alltags,
       'likers' => $likers,
       'morearticles' => $morearticles,
       'reportReasons' => $reasons,
-      'canmodify'=>Auth::user()? Auth::user()->can('modify',$post) : false
+      'comments' => $Comments,
+      'sort'=>$sort,
+      'canmodify'=>Auth::user()? Auth::user()->can('modify',$post) : false,
       ]);  
   }
   public function edit(Post $post) {
@@ -209,4 +208,5 @@ public function create( )
     Log::info('Post deleted', ['id' => $post->id,'title'=> $post->title, 'user_id' => Auth::id()]);
     return to_route('dashboard')->with('success','post deleted');
   }
+  
 }

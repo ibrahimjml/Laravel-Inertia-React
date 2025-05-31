@@ -33,6 +33,9 @@ class Post extends Model
     {
     return $this->hasMany(PostReport::class);
     }
+    public function comments(){
+    return $this->hasMany(Comment::class);
+  }
     public function scopeSearch($query, array $search)
     {
       $query->when(!empty($search['search']), function ($query) use ($search) {

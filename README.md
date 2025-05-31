@@ -71,12 +71,13 @@ php artisan serve
 - **Full text search**  
 - **Advanced Filtering Chained filter query**
 - **Sort options popular,following,trendtag**
-- **30 likes per user on each post**
+- **30 likes per user on each post handling rapid click**
+- **Comments/replies edit/delete/like**
 - **Users can view who liked**
 - **Toggle Follow/Unfollow**
 
 ### 🚀Coming soon
-- **Comments/replies edit/delete/like** 
+- **report on comments** 
 - **notifications** 
 
 

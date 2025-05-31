@@ -65,7 +65,7 @@ php artisan serve
 - **User Dashboard**
 - **Admin Dashboard**
 - **Suspend user action**
-- **Reports on post**
+- **Reports on posts and comments**
 - **Approve/Disapprove posts action**
 - **Edit profile user**
 - **Full text search**  

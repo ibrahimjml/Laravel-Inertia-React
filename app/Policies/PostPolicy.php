@@ -2,38 +2,37 @@
 
 namespace App\Policies;
 
+use App\Enums\UserRole;
 use App\Models\Post;
 use App\Models\User;
 
 
 class PostPolicy
 {
-  public function admin(User $user)
+   public function before(User $user, string $ability): ?bool
     {
-        if ($user->role === 'admin') {
+        if ($user->role === UserRole::Admin) {
             return true;
         }
 
-        return null;
+        return null; 
     }
 
   public function view(?User $user, Post $post): bool
     {
-      if($user->role === 'admin'){
-        return true;
-      }
-        return $post->user->role !== 'suspended' && $post->approved;
+         return $post->user->role !== UserRole::Suspended && $post->approved;
     }
 
     public function create(User $user): bool
     {
-        return $user->role !== 'suspended';
+        return $user->role !== UserRole::Suspended;
     }
 
     public function modify(User $user, Post $post): bool
     {
-      if($user->role === 'admin'){
-        return true;
+      if ($user->role === UserRole::Moderator) {
+        
+        return $post->user->role !== UserRole::Admin;
       }
       return $user->id === $post->user_id;
     }

@@ -2,7 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
+use Dom\Comment;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -36,9 +39,14 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
-            'auth.user' => fn () => $request->user()
-                ? $request->user()->only('id', 'name', 'email','role')
-                : null,
+          'auth.user' => fn () => $request->user()
+                 ? array_merge($request->user()->only('id', 'name', 'email', 'role'),
+               [ 'can' => [
+                'access' => Gate::check('makeAdminActions'),
+                'modifyusers' => $request->user()->can('modify', User::class),
+                 ]
+                ]
+                ): null,
             'flash' => [
             'status' => fn () => $request->session()->get('status'),
             'success' => fn () => $request->session()->get('success'),

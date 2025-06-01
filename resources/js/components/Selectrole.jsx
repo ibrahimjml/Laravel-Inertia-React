@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { router } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 
-export default function SelectRole({ user }) {
+export default function SelectRole({user, roles }) {
   const [selectedRole, setSelectedRole] = useState(user.role);
 
   const handleChange = (e) => {
@@ -22,9 +22,9 @@ export default function SelectRole({ user }) {
       value={selectedRole} 
       onChange={handleChange} 
     >
-      <option value="admin">Admin</option>
-      <option value="subscriber">Subscriber</option>
-      <option value="suspended">Suspended</option>
+      {roles && roles.map(role =>(
+        <option key={role.value} value={role.value}>{role.label}</option>
+      ))}
     </select>
   );
 }

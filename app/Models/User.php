@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\UserRole;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -54,6 +55,12 @@ public function likes()
 {
     return $this->hasMany(Like::class);
 }
+public function getRoleLabelAttribute()
+    {
+      return $this->role instanceof UserRole ? 
+            $this->role->label() :
+            UserRole::from($this->role)->label();
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -74,6 +81,7 @@ public function likes()
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'role' => UserRole::class,
         ];
     }
 

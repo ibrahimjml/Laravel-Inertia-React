@@ -1,13 +1,20 @@
 import  { useState } from 'react'
-import { Link, router} from '@inertiajs/react'
+import { Link, router, usePage} from '@inertiajs/react'
 import Selectrole from '../../components/Selectrole'
 import Searchadmin from '../../components/Searchadmin'
 import { route } from 'ziggy-js';
 import Navbar from './Partials/Navbar'
 import Paginatelinks from '../../Components/Paginatelinks';
+import Create from './Partials/CreateUsermodel';
+import EditUsermodel from './Partials/EditUsermodel';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export default function Adminpage({users,status,filters}) {
+export default function Adminpage({users,roles,status,filters}) {
+  const {auth} = usePage().props;
   const [isChecked, setIsChecked] = useState(filters.suspended || false);
+  const [ShowUserModel,setShowUserModel] = useState(false);
+  const [ShowEditModel,setShowEditModel] = useState(false);
+  const [selectedUser,setSelectedUser] = useState('');
 
     const params = {
       search: filters.search ?? "",
@@ -29,6 +36,17 @@ export default function Adminpage({users,status,filters}) {
       replace: true,
     });
   };
+
+  function openEditModel(user){
+    setSelectedUser(user);
+    setShowEditModel(true);
+  }
+  function handeldelete(userId){
+    if(!confirm(`Are you sure to delete user ${userId}`)){
+      return;
+    }
+    router.delete(route('user.delete',userId))
+  }
   return (
     <>
   <Navbar/>
@@ -45,7 +63,7 @@ href={route('users.page', {
   page: null })}
   className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-green-500 text-white font-semibold dark:bg-red-600">
 <small><b>search:</b></small> {filters.search}
-<i className="fa-solid fa-close"></i>
+<FontAwesomeIcon icon='close' ></FontAwesomeIcon>
 </Link>
 </div>
 )}
@@ -59,15 +77,18 @@ href={route('users.page', {
   page: null })}
   className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-green-500 text-white font-semibold dark:bg-red-600">
 <small><b>suspended:</b></small> {filters.suspended}
-<i className="fa-solid fa-close"></i>
+<FontAwesomeIcon icon='close' ></FontAwesomeIcon>
 </Link>
 </div>
 )}
 {/* suspend checkbox */}
-<div className='flex gap-2 w-fit ml-auto bg-slate-600 p-2 rounded-md mb-2'>
+<div className='flex gap-2 w-fit ml-auto text-white bg-slate-600 p-2 rounded-md mb-2'>
   <input id='suspended' type="checkbox" checked={isChecked} onChange={handleCheckbox}/>
   <label htmlFor="suspended">suspended</label>
 </div>
+  {auth?.user.can?.modifyusers && 
+<button onClick={()=>{setShowUserModel(true)}} className='flex gap-2 w-fit text-white  bg-slate-600 p-2 rounded-md mb-2'>Create</button>
+}
 </div>
 
       {status && <p className='text-sm bg-green-500'>{status}</p>}
@@ -82,7 +103,7 @@ href={route('users.page', {
                 <th className="w-1/6 p-3 text-center">Followers</th>
                 <th className="w-1/6 p-3 text-center">Is Verified</th>
                 <th className="w-1/6 p-3 text-center">Posts</th>
-                <th className="w-1/6 p-3 text-right">View</th>
+                <th className="w-1/6 p-3 text-right">actions</th>
             </tr>
             </thead>
           <tbody >
@@ -93,7 +114,7 @@ href={route('users.page', {
                     <p className="font-light text-xs">{ user.email }</p>
                 </td>
                 <td className='w-2/6 py-5 px-3 text-left'>
-               <Selectrole user={user}/>
+               <Selectrole user={user} roles={roles}/>
                 </td>
                 <td className="w-1/6 py-5 px-3 text-center">
                  <b>{user.followings_count}</b>
@@ -103,29 +124,37 @@ href={route('users.page', {
                 </td>
                 <td className='text-center'>
                   {user.email_verified_at != null && 
-                  <span><i className='fa-solid fa-check text-green-500'></i></span>
+                  <span><FontAwesomeIcon icon='check' className=' text-green-500'></FontAwesomeIcon></span>
                   }
                   {user.email_verified_at === null && 
-                  <span><i className='fa-solid fa-times text-red-500'></i></span>
+                  <span><FontAwesomeIcon icon='times' className=' text-red-500'></FontAwesomeIcon></span>
                   }
                 </td>
                 <td className='w-1/6 py-5 px-3 text-center'>
                 <div className=' flex items-center justify-center gap-6'>
                   <div className='flex items-center gap-2'>
                   {user.posts.filter((l)=>l.approved).length}
-                <i className='fa-solid fa-check text-green-500'></i>
+                  <FontAwesomeIcon icon='check' className=' text-green-500'></FontAwesomeIcon>
                   </div>
                   <div className='flex items-center gap-2'>
                   {user.posts.filter((l)=>!l.approved).length}
-                <i className="fa-solid fa-hourglass-start text-yellow-500"></i>
+                <FontAwesomeIcon icon='hourglass-start' className=" text-yellow-500"></FontAwesomeIcon>
                   </div>
                 </div>
                   
                 </td>
                 <td className='w-1/6 py-5 px-3 text-right'>
-                  <Link href={route('show.posts',user.id)}>
-                  <i className='fa-solid fa-eye text-blue-500 dark:text-gray-300'></i>
+                  <div className='flex gap-4 justify-end'>
+                    <Link href={route('show.posts',user.id)}>
+                  <FontAwesomeIcon icon='eye' className=' text-blue-500 dark:text-gray-300'></FontAwesomeIcon>
                   </Link>
+                  {auth?.user.can?.modifyusers && 
+                   <>
+                  <button  onClick={()=>openEditModel(user)}><FontAwesomeIcon icon='edit' className=' text-blue-500'></FontAwesomeIcon></button>
+                  <button onClick={()=>handeldelete(user.id)}><FontAwesomeIcon icon='trash' className=' text-red-500'></FontAwesomeIcon></button>
+                  </>
+                  }
+             </div>
                 </td>
             </tr>
               
@@ -138,6 +167,13 @@ href={route('users.page', {
   <div className='flex justify-start mt-4 '>
   <Paginatelinks posts={users}/>
 </div>
+{/* create user model */}
+{ShowUserModel && 
+<Create closemodel={()=>setShowUserModel(false)} roles={roles}/>
+}
+{ShowEditModel && 
+<EditUsermodel user={selectedUser} closemodel={()=>setShowEditModel(false)} roles={roles}/>
+}
       </>
   )
 }

@@ -5,6 +5,7 @@ import moment from "moment";
 import Morearticles from '../components/Morearticles';
 import Postreportmodel from '../Components/Postreportmodel';
 import Commentsmodel from './Comments/Commentsmodel';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 export default function Show({ posts,canmodify,canreport,tags,morearticles,reportReasons}) {
@@ -55,11 +56,11 @@ const opencomment = ()=>{
                 <span className="ml-2">
                 <b>·</b>
                 <small className="ml-2">
-                  <i className="fa-solid fa-clock mr-2"></i>{moment(posts.created_at).fromNow()}</small>
+                  <FontAwesomeIcon icon='clock' className="mr-2"></FontAwesomeIcon>{moment(posts.created_at).fromNow()}</small>
               </span>
               </div>
               <span className='flex justify-center items-center pb-3'>
-            <i className="fa-solid fa-user text-gray-600 dark:text-white"></i>
+            <FontAwesomeIcon icon='user' className=" text-gray-600 dark:text-white"></FontAwesomeIcon>
             <button
               className="font-semibold ml-2 text-green-500 dark:text-blue-500"
             >
@@ -88,7 +89,7 @@ const opencomment = ()=>{
             </div> 
             <div className='relative'>
              <button onClick={togglemodel}>
-             <i className="fa-solid fa-ellipsis"></i>
+             <FontAwesomeIcon icon='ellipsis'></FontAwesomeIcon>
               </button>
                 {/* show model  */}
             {showmodel && (
@@ -123,15 +124,15 @@ const opencomment = ()=>{
         {/* like|comment|share model */}
        <div className="flex  items-center gap-2 mx-auto bg-white dark:bg-dark border-2 dark:border-gray-500 rounded-full w-fit px-4 py-4 divide-x divide-gray-500 dark:divide-gray-400 my-2 text-sm font-medium">
          <span className="px-2  h-full flex items-center justify-center gap-1 ">
-           <i className="fa-solid fa-heart text-red-500"></i>
+           <FontAwesomeIcon icon='heart' className=" text-red-500"></FontAwesomeIcon>
             <b>+{posts.likes_sum_count}</b>
          </span>
          <span onClick={opencomment} className="px-2  h-full flex items-center justify-center gap-1 cursor-pointer">
-           <i className="fa-regular fa-comment dark:text-white"></i> 
+           <FontAwesomeIcon icon={['far','comment']} className=" dark:text-white"></FontAwesomeIcon> 
            {posts.comments_count >0 && <b>+{posts.comments_count}</b>}
          </span>
          <span className="px-2 h-full  py-1 flex items-center justify-center gap-1 ">
-           <i className="fa-solid fa-share dark:text-white"></i> 
+           <FontAwesomeIcon icon='share' className=" dark:text-white"></FontAwesomeIcon> 
          </span>
          </div>
 

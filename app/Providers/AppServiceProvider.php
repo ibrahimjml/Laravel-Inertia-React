@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Enums\UserRole;
 use App\Models\Comment;
 use App\Models\CommentReport;
 use App\Models\Post;
@@ -40,7 +41,7 @@ class AppServiceProvider extends ServiceProvider
       CommentReport::observe(CommentReportObserver::class);
       
       Gate::define("makeAdminActions", function ($user) {
-        return $user->email === "admin@mail.ru" || $user->role === 'admin';
+        return in_array($user->role,[UserRole::Admin,UserRole::Moderator], true);
     });
     }
 }

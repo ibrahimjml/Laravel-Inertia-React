@@ -8,6 +8,7 @@ import { route } from 'ziggy-js'
 import Addtagmodel from './Partials/Addtagmodel'
 import Removefilters from './Partials/Removefilters'
 import Relatedpoststags from './Partials/Relatedpoststags'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Tagspage({tags,filter,relatedPostsByTag}) {
   const [showmodel,setShowmodel] = useState(false);
@@ -139,20 +140,20 @@ export default function Tagspage({tags,filter,relatedPostsByTag}) {
         {tag.approved_posts_count > 0 && 
           <>
         <b>+{tag.approved_posts_count}</b> 
-        <i className='fa-solid fa-check text-green-500 mr-1'></i>
+        <FontAwesomeIcon icon='check' className=' text-green-500 mr-1'></FontAwesomeIcon>
         </>
         }
         {tag.approved_posts_count >0 && tag.unapproved_posts_count >0 && <b>{' / '}</b>}
         {tag.unapproved_posts_count > 0 && (
           <>
         <b className='ml-1'>+{tag.unapproved_posts_count}</b> 
-          <i className="fa-solid fa-hourglass-start text-yellow-500"></i>
+          <FontAwesomeIcon icon='hourglass-start' className=" text-yellow-500"></FontAwesomeIcon>
           </>
         )}
         
       </div>
   ):(
-  <span className='ml-3'><i className='fa-solid fa-times text-green-500 dark:text-red-500'></i></span>
+  <span className='ml-3'><FontAwesomeIcon icon='times' className=' text-green-500 dark:text-red-500'></FontAwesomeIcon></span>
   )}
 </div>
 </td>
@@ -161,8 +162,8 @@ export default function Tagspage({tags,filter,relatedPostsByTag}) {
 </td>
 <td className='text-center'>
 <div className='flex gap-4 justify-center'>
-  <button  onClick={()=>openEditModel(tag)}><i className='fa-solid fa-edit text-blue-500'></i></button>
-  <button onClick={()=>handeldelete(tag)}><i className='fa-solid fa-trash text-red-500'></i></button>
+  <button  onClick={()=>openEditModel(tag)}><FontAwesomeIcon icon='edit' className=' text-blue-500'></FontAwesomeIcon></button>
+  <button onClick={()=>handeldelete(tag)}><FontAwesomeIcon icon='trash' className=' text-red-500'></FontAwesomeIcon></button>
 </div>
 </td>
   </tr>

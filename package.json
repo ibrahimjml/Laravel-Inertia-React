@@ -16,6 +16,10 @@
         "vite": "^5.0"
     },
     "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "^6.7.2",
+        "@fortawesome/free-regular-svg-icons": "^6.7.2",
+        "@fortawesome/free-solid-svg-icons": "^6.7.2",
+        "@fortawesome/react-fontawesome": "^0.2.2",
         "@inertiajs/react": "^1.2.0",
         "lodash": "^4.17.21",
         "moment": "^2.30.1",

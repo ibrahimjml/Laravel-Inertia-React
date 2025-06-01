@@ -50,7 +50,7 @@ useEffect(() => {
                 
                 </button>
               <Link href={route('home')} className="hidden lg:block">Home</Link>
-              {auth.user.role === 'admin' && 
+              {auth?.user.can.access  && 
                 <Link href={route('admin.page')} className="hidden lg:block">Dashboard</Link>
                 }
               <div className="relative flex items-center">

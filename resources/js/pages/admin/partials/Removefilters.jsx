@@ -1,5 +1,6 @@
 import { Link } from '@inertiajs/react'
 import { route } from 'ziggy-js'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Removefilters({filter,sortValue,params}) {
   return (
@@ -14,7 +15,7 @@ export default function Removefilters({filter,sortValue,params}) {
       className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-green-500 text-white font-semibold dark:bg-red-600"
     >
       <small><b>search:</b></small> {filter.tag}
-      <i className="fa-solid fa-close"></i>
+      <FontAwesomeIcon icon='close' ></FontAwesomeIcon>
     </Link>
   </div>
 )}
@@ -26,7 +27,7 @@ export default function Removefilters({filter,sortValue,params}) {
       className="inline-flex items-center gap-2 px-3 py-2 rounded-lg bg-green-500 text-white font-semibold dark:bg-red-600"
     >
       <small><b>sort:</b></small> {sortValue}
-      <i className="fa-solid fa-close"></i>
+      <FontAwesomeIcon icon='close' ></FontAwesomeIcon>
     </Link>
   </div>
 )}

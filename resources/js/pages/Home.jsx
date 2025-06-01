@@ -1,9 +1,10 @@
 import {  Head, router, useForm, usePage } from '@inertiajs/react'
-import Blogcard from '../components/Blogcard';
+import Blogcard from '../Components/Blogcard';
 import { route } from 'ziggy-js';
 import Paginatelinks from '../Components/Paginatelinks';
-import Removingfilters from '../components/Removingfilters';
+import Removingfilters from '../Components/Removingfilters';
 import Inputsearch from '../Components/Inputsearch';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Home({ posts, filters }) {
   const {auth} = usePage().props;

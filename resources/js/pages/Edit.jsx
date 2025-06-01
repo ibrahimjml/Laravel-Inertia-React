@@ -1,6 +1,6 @@
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react'
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Edit({posts,tags}) {
   const { props } = usePage();
@@ -135,7 +135,7 @@ export default function Edit({posts,tags}) {
       <button type="submit"
       disabled={processing}
       className="w-[200px]  select-none font-bold  p-3 rounded-lg text-xl  no-underline text-gray-100 bg-gray-700 hover:bg-gray-500 sm:py-4">
-    {processing ? (<i className="fa-solid fa-spinner fa-spin text-white"></i>) : 'Update'}
+    {processing ? (<FontAwesomeIcon icon='spinner' spin className=" text-white"></FontAwesomeIcon>) : 'Update'}
       </button>
     </div>
   </form>

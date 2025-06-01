@@ -13,6 +13,7 @@ use App\Http\Controllers\{
 use App\Http\Controllers\Admin\{
   AdminController,
   TagController,
+    UserController,
 };
 use Illuminate\Support\Facades\Route;
 
@@ -69,8 +70,10 @@ Route::middleware(['auth','verified','can:makeAdminActions'])
   Route::patch('/admin/edit-tag/{hashtag}','edit')->name('tag.edit');
   Route::delete('/admin/delete-tag/{hashtag}','destroy')->name('tag.delete');
   });
+  Route::post('/admin/user/create',[UserController::class,'create'])->name('user.create');
+  Route::put('/admin/update/{user}',[UserController::class,'update'])->name('user.update');
+  Route::delete('/admin/update/{user}',[UserController::class,'delete'])->name('user.delete');
 });
-
 
 
 // auth routes

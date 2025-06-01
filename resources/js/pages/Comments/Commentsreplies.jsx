@@ -5,7 +5,7 @@ import moment from 'moment';
 import Commentreport from './Commentreport';
 
 export default function Commentsreplies({ comment, postId, level = 0 ,type,postuser,reasons}) {
-  const {csrf } = usePage().props;
+  const {csrf,auth } = usePage().props;
   const [likeTotal, setLikeTotal] = useState(comment.likes_sum_count ?? 0);
   const [userLikeCount, setUserLikeCount] = useState(comment.user_like_count ?? 0);
   const [pendingLikes, setPendingLikes] = useState(0);

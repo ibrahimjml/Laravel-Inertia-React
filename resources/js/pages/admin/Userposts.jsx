@@ -6,6 +6,7 @@ import Navbar from './Partials/Navbar'
 import Inputsearch from '../../Components/Inputsearch';
 import moment from "moment";
 import Reportedusersmodel from './Partials/Reportedusersmodel';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Userposts({user,posts,filters}) {
   const [isChecked, setIsChecked] = useState(filters.unapproved || false); 
@@ -111,20 +112,20 @@ className={`w-9 h-9 rounded-full border-2 ${
 <td className='w-2/6 py-5 px-3 text-center'>
 <button onClick={()=>handleclick(post.id)} disabled={loading === post.id}>
 {loading === post.id ? (
-    <i className="fa-solid fa-spinner fa-spin text-gray-400"></i>
+    <FontAwesomeIcon icon='spinner' spin className=" text-gray-400"></FontAwesomeIcon>
   ) : post.approved ? (
-    <i className="fa-solid fa-check text-green-500"></i>
+    <FontAwesomeIcon icon='check' className=" text-green-500"></FontAwesomeIcon>
   ) : (
-    <i className="fa-solid fa-hourglass-start text-yellow-500"></i>
+    <FontAwesomeIcon icon='hourglass-start' className=" text-yellow-500"></FontAwesomeIcon>
   )}
 </button>
 </td>
 <td className='w-2/6 py-5 px-3 text-center'>
-<b>+{post.likes_sum_count} <i className='fa-solid fa-heart text-red-400'></i></b>
+<b>+{post.likes_sum_count} <FontAwesomeIcon icon='heart' className=' text-red-400'></FontAwesomeIcon></b>
 </td>
 <td className='w-1/6 py-5 px-3 text-center'>
 {post.comments_count && 
-<b>+{post.comments_count} <i className='fa-solid fa-comment dark:text-slate-300 text-black'></i></b>
+<b>+{post.comments_count} <FontAwesomeIcon icon='comment' className=' dark:text-slate-300 text-black'></FontAwesomeIcon></b>
 || '--'
 }
 </td>
@@ -142,8 +143,8 @@ className={`w-9 h-9 rounded-full border-2 ${
 </td>
 <td className='w-2/6 py-5 px-3 text-right'>
 <div className='flex gap-4 justify-end'>
-  <Link href={route('posts.show',post.id)}><i className='fa-solid fa-eye text-blue-500 dark:text-gray-300'></i></Link>
-  <button onClick={()=>handeldelete(post.id)}><i className='fa-solid fa-trash text-red-500'></i></button>
+  <Link href={route('posts.show',post.id)}><FontAwesomeIcon icon='eye' className=' text-blue-500 dark:text-gray-300'></FontAwesomeIcon></Link>
+  <button onClick={()=>handeldelete(post.id)}><FontAwesomeIcon icon='trash' className=' text-red-500'></FontAwesomeIcon></button>
 </div>
 </td>
   </tr>

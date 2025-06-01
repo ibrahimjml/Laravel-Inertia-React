@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Enums\UserRole;
 use App\Http\Controllers\Controller;
 use App\Models\CommentReport;
 use App\Models\Post;
@@ -10,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rules\Enum;
 use Inertia\Inertia;
 
 class AdminController extends Controller
@@ -24,12 +26,16 @@ class AdminController extends Controller
         $users = User::with('posts')
         ->withCount(['followers','followings'])
         ->search($request->only(['search','suspended']))
-        ->isSubscriber()
         ->paginate(5)
         ->withQueryString();
-  
+
+      $users->getCollection()->transform(function ($user) {
+       $user->append('role_label');
+       return $user;
+      });
         return Inertia::render('Admin/Userspage',
         ['users'=>$users,
+        'roles'=> UserRole::values(),
         'status'=>session('status'),
         'filters'=>$request->only(['search','suspended'])
       ]);
@@ -38,16 +44,16 @@ class AdminController extends Controller
       }
    }
     public function updaterole(Request $request,User $user)
-{
-
+   {
+     Gate::authorize('updateRole', $user);
     $request->validate([
-        'role' => 'required|string|in:admin,subscriber,suspended',
+        'role' => ['required', new Enum(UserRole::class)],
     ]);
 
     $user->update(['role'=>$request->role]);
 
     return redirect()->back()->with('status', "User role {$request->role} updated successfully.");
-}
+  }
 
 public function show(User $user,Request $request)
 {

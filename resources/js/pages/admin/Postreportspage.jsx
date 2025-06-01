@@ -2,6 +2,7 @@ import Navbar from './Partials/Navbar'
 import { Link, router } from '@inertiajs/react'
 import { route } from 'ziggy-js'
 import Paginatelinks from '../../Components/Paginatelinks';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Reportspage({reports}) {
   const handeldelete =(reportID)=>{
@@ -54,8 +55,8 @@ export default function Reportspage({reports}) {
                 </td>
                 <td className='w-1/6 py-5 px-3 text-right'>
                 <div className='flex gap-4 justify-end'>
-                  <Link href={route('posts.show',report.post.id)}><i className='fa-solid fa-eye text-blue-500 dark:text-gray-300'></i></Link>
-                  <button onClick={()=>{handeldelete(report.id)}}><i className='fa-solid fa-trash text-red-500'></i></button>
+                  <Link href={route('posts.show',report.post.id)}><FontAwesomeIcon icon='eye' className=' text-blue-500 dark:text-gray-300'></FontAwesomeIcon></Link>
+                  <button onClick={()=>{handeldelete(report.id)}}><FontAwesomeIcon icon='trash' className=' text-red-500'></FontAwesomeIcon></button>
                 </div>
                 </td>
             </tr>

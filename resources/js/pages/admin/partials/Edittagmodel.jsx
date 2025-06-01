@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Edittagmodel({ closemodel, tag }) {
   const { data, setData, patch, processing, errors } = useForm({
@@ -24,7 +25,7 @@ export default function Edittagmodel({ closemodel, tag }) {
           onClick={closemodel}
           className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
         >
-          <i className="fa-solid fa-close text-black dark:text-white"></i>
+          <FontAwesomeIcon icon='close' className=" text-black dark:text-white"></FontAwesomeIcon>
         </button>
 
         <h3 className="text-lg font-bold mb-4 text-center">Edit Tag #{tag.name}</h3>
@@ -59,7 +60,7 @@ export default function Edittagmodel({ closemodel, tag }) {
               disabled={processing}
               className="px-4 py-2 rounded bg-green-500 dark:bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
             >
-              {processing ? (<i className="fa-solid fa-spinner fa-spin text-white"></i>) : 'Update'}
+              {processing ? (<FontAwesomeIcon icon='spinner' spin className=" text-white"></FontAwesomeIcon>) : 'Update'}
             </button>
           </div>
         </form>

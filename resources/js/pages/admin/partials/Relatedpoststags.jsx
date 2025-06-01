@@ -1,6 +1,7 @@
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import { route } from 'ziggy-js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Relatedpoststags({ closemodel, tag }) {
   const { csrf } = usePage().props
@@ -64,24 +65,24 @@ export default function Relatedpoststags({ closemodel, tag }) {
           onClick={closemodel}
           className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
         >
-          <i className="fa-solid fa-close text-black dark:text-white"></i>
+          <FontAwesomeIcon icon='close' className=" text-black dark:text-white"></FontAwesomeIcon>
         </button>
         <h3 className="text-lg font-bold mb-4 text-center">Related Posts to #{tag.name}</h3>
         <div className="flex  items-center gap-2 mx-auto bg-slate-300 dark:bg-slate-600 rounded-full w-fit px-4 py-2 divide-x divide-gray-500 dark:divide-gray-400 my-2 text-sm font-medium">
          <span className="px-2 flex items-center justify-center gap-1 ">
-           <i className="fa-solid fa-image text-white"></i> <b>+{tagCounts.posts_count}</b>
+           <FontAwesomeIcon icon='image' className=" text-white"></FontAwesomeIcon> <b>+{tagCounts.posts_count}</b>
          </span>
          <span className="px-2 flex items-center justify-center gap-1 ">
-           <i className="fa-solid fa-check text-green-400"></i> <b>+{tagCounts.approved_count}</b>
+           <FontAwesomeIcon icon='check' className=" text-green-400"></FontAwesomeIcon> <b>+{tagCounts.approved_count}</b>
          </span>
          <span className="px-2 flex items-center justify-center gap-1 ">
-           <i className="fa-solid fa-hourglass text-yellow-400"></i> <b>+{tagCounts.unapproved_count}</b>
+           <FontAwesomeIcon icon='hourglass-start' className="fa-solid fa-hourglass text-yellow-400"></FontAwesomeIcon> <b>+{tagCounts.unapproved_count}</b>
          </span>
          </div>
 
         { posts === null ? (
            <div className="flex justify-center items-center py-10">
-            <i className="fa-solid fa-spinner fa-spin text-gray-500 text-2xl"></i>
+            <FontAwesomeIcon icon='spinner' spin className=" text-gray-500 text-2xl"></FontAwesomeIcon>
           </div>
         ): posts.length === 0 ? (
           <div className="text-center text-gray-500 dark:text-gray-300">No related posts found.</div>
@@ -105,7 +106,7 @@ export default function Relatedpoststags({ closemodel, tag }) {
                     href={route('posts.show', post.id)}
                     className="text-sm text-blue-500 dark:text-gray-300"
                   >
-                    <i className="fa-solid fa-eye"></i>
+                    <FontAwesomeIcon icon='eye'></FontAwesomeIcon>
                   </Link>
                   <button
                     onClick={() => handleClick(post.id)}

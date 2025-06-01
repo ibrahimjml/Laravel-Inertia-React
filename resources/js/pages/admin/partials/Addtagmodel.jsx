@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Addtagmodel({closemodel}) {
   const { data, setData, post, processing, errors } = useForm({
@@ -20,7 +21,7 @@ export default function Addtagmodel({closemodel}) {
           onClick={closemodel}
           className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
         >
-          <i className="fa-solid fa-close text-black dark:text-white"></i>
+          <FontAwesomeIcon icon='close' className=" text-black dark:text-white"></FontAwesomeIcon>
         </button>
         <h3 className="text-lg font-bold mb-4 text-center">Add New Tag</h3>
           {/* Form */}
@@ -54,7 +55,7 @@ export default function Addtagmodel({closemodel}) {
               disabled={processing}
               className="px-4 py-2 rounded bg-green-500 dark:bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
             >
-              {processing ? (<i className="fa-solid fa-spinner fa-spin text-white"></i>) : 'Create'}
+              {processing ? (<FontAwesomeIcon icon='spinner' spin className=" text-white"></FontAwesomeIcon>) : 'Create'}
             </button>
           </div>
         </form>

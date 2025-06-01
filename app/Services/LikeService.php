@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class LikeService
 {
-    const CACHE_DURATION = 5; // in minutes
+    const CACHE_DURATION = 5; 
     const MAX_LIKES_PER_USER = 30;
 
     public function like($model, int $count)

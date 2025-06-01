@@ -79,7 +79,7 @@ export default function Commentreport({commentID,reasons,closeModel}) {
       </button>
         <button
         onClick={closeModel}
-        className="mt-4 bg-red-600 text-white px-4 py-2 rounded disabled:bg-opacity-20">
+        className="mt-4 ml-4 bg-red-600 text-white px-4 py-2 rounded disabled:bg-opacity-20">
         Cancel
       </button>
     </form>

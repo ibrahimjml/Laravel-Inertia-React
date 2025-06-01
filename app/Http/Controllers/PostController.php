@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ReportReason;
 use App\Http\Middleware\Suspended;
 use App\Http\Requests\PostRequest;
+use App\Models\Hashtag;
 use App\Models\Post;
 use App\Services\HashtagService;
 use Illuminate\Database\Eloquent\Builder;
@@ -42,7 +43,7 @@ $posts = Post::whereHas('user',function(Builder $q){
                $q->with('user:id,name,username'); 
               }])
              ->withSum('likes', 'count')
-             ->withCount(('comments'))
+             ->withCount('comments')
              ->where('approved',true)
              ->search($request->only(['search','tag','user']));
 
@@ -69,7 +70,9 @@ $userlikes = $post->getCollection()->mapWithKeys(function ($post) use ($service)
 public function create( )
 {
    Gate::authorize('create',Post::class);
-  return Inertia::render("Create");
+  return Inertia::render("Create",[
+    'alltags' => Hashtag::pluck('name')->toArray(),
+  ]);
 }
   public function store(PostRequest $request,HashtagService $tags)
   {
@@ -131,9 +134,10 @@ public function create( )
   }
   public function edit(Post $post) {
   Gate::authorize('modify',$post);
-  $alltags = $post->hashtags()->pluck('name')->toArray();
+  $tags = $post->hashtags()->pluck('name')->toArray();
+  $alltags = Hashtag::pluck('name')->toArray();
     return Inertia::render("Edit",
-    ['posts'=>$post,'tags'=>$alltags]
+    ['posts'=>$post,'tags'=>$tags,'alltags'=>$alltags]
   );
   }
 
@@ -144,6 +148,9 @@ public function create( )
 
     $fields = $request->validated();
 
+    $tags = $fields['tags'] ?? [];
+    unset($fields['tags']);
+
     $imageName = $this->handleImageUpload($request->file('image'));
     if ($imageName) {
             $fields['image'] = $imageName;
@@ -152,28 +159,33 @@ public function create( )
         }
 
     $post->fill($fields);
-    if(!$post->isDirty()){
+    $currentTags = $post->hashtags->pluck('name')->sort()->values()->toArray();
+    $newTags = collect($tags)->sort()->values()->toArray();
+    $tagsChanged = $currentTags !== $newTags;
+
+    if(!$post->isDirty() && !$tagsChanged) {
       return redirect('/posts/'.$post->id.'/edit')->with('status', 'Nothing changed to update');
     }
-     DB::transaction(function () use ($post, $fields, $service) {    
+     DB::transaction(function () use ($post, $fields, $service,$tags) {    
     $post->update($fields);
-    $service->syncHashtags($post, $fields['tags'] ?? []);
+    $service->syncHashtags($post, $tags);
 
      Log::info('Post updated', [
         'id' => $post->id,
-        'changes' => $post->getChanges(),
+        'title'=> $post->title,
         'user_id' => Auth::id()
     ]);
   });
-    return to_route('dashboard')->with('success', 'posst updated');
+    return to_route('dashboard')->with('success', 'post updated');
    }
 
   public function destroy(Post $post) 
   {
   Gate::authorize('modify',$post);
-
+ DB::transaction(function () use ($post) {
     $post->delete();
-    Log::info('Post deleted', ['id' => $post->id,'title'=> $post->title, 'user_id' => Auth::id()]);
+  Log::info('Post deleted', ['id' => $post->id,'title'=> $post->title, 'user_id' => Auth::id()]);
+ });
     return to_route('dashboard')->with('success','post deleted');
   }
   

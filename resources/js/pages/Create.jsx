@@ -3,7 +3,7 @@ import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
-export default function Create() {
+export default function Create({alltags}) {
 const [tagInput, setTagInput] = useState("");
 const [errorTag, seterrorTag] = useState('');
 const tagregex = /^[\p{L}\p{N}\s]+$/u;
@@ -32,14 +32,27 @@ post(route('posts.store'),{
       return;
     }
       if (!data.tags.includes(newTag)) {
+        if(data.tags.length >= 4) {
+            seterrorTag('you hit the max limit hashtags.');
+            return;
+        }
         setData("tags", [...data.tags, newTag]);
       }
       setTagInput(""); 
     }
   };
-
-  const removeTag = (indexToRemove) => {
-    setData("tags", data.tags.filter((tag, i) => i !== indexToRemove));
+const handleSelectTag = (e) => {
+  const selectedTag = e.target.value;
+  if (selectedTag && !data.tags.includes(selectedTag)) {
+    if (data.tags.length >= 4) {
+      seterrorTag("You hit the max limit hashtags.");
+      return;
+    }
+    setData("tags", [...data.tags, selectedTag]);
+  }
+};
+  const removeTag = (index) => {
+    setData("tags", data.tags.filter((tag, i) => i !== index));
   };
   return (
     <>
@@ -50,9 +63,7 @@ post(route('posts.store'),{
 </div>
 
 <div className="flex justify-center ">
-  <form  className="p-6 w-[70%]" onSubmit={handlecreate}>
-    
-  
+  <form  className="p-6 w-[90%]" onSubmit={handlecreate}>
     <div className="flex flex-wrap">
       <label htmlFor="title" className="block text-gray-700 dark:text-white text-sm font-bold mb-2 sm:mb-4">
         Title:
@@ -80,11 +91,11 @@ post(route('posts.store'),{
       />
       {errors.image && <small className="text-sm text-red-500">{errors.image}</small>} 
     </div>
-    {/* Hashtag chips */}
-      <div className="flex flex-wrap gap-2 mb-2">
+
+      <div className="flex flex-wrap gap-2 mb-2 mt-3">
         {data.tags.map((tag, index) => (
           <div key={index} className="flex items-center gap-1 bg-gray-200 text-black px-2 py-1 rounded-full">
-          <span>#{tag}</span>
+          <span><b>{index +1}.</b> #{tag}</span>
           <button type="button" onClick={() => removeTag(index)} className="text-red-500 hover:text-red-700 font-bold ml-1">&times;</button>
           </div>
           ))}
@@ -101,8 +112,25 @@ post(route('posts.store'),{
          onKeyDown={handleKeyDown}
           placeholder="Press Enter to add hashtag"
          />
-  {errors.tags && <small className="text-sm text-red-500">{errors.tags}</small>} 
-  {errorTag && <small className="text-sm text-red-500">{errorTag}</small>} 
+  <div className="mt-4 mb-2 w-full">
+  <label className="block text-gray-700 dark:text-white text-sm font-bold mb-2">
+    Or choose a tag:
+  </label>
+  <select
+    onChange={handleSelectTag}
+    multiple
+    className="rounded-sm p-2 border-2 form-select w-full text-black dark:bg-Gray"
+  >
+    <option value=''>-- Choose a tag --</option>
+    {alltags.map((tag, index) => (
+      <option key={index} value={tag}>
+        <b>{index +1}.</b> #{tag}
+      </option>
+    ))}
+  </select>
+</div>
+  {errors.tags && <small className="text-sm block text-red-500">{errors.tags}</small>} 
+  {errorTag && <small className="text-sm block text-left text-red-500">{errorTag}</small>} 
 
   </div>
     <div className="mt-4 flex justify-center">

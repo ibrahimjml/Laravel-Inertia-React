@@ -19,6 +19,7 @@
 ![Dashboard Screenshot](https://i.postimg.cc/m2sndQVs/Screenshot-2025-05-26-223512.png)
 ![Dashboard Screenshot](https://i.postimg.cc/QxnywNNr/127-0-0-1-8000-posts-10-2.png)
 ![Dashboard Screenshot](https://i.postimg.cc/QdHRd9Yt/Screenshot-2025-05-31-160114.png)
+![Dashboard Screenshot](https://i.postimg.cc/HnLVkLCK/Screenshot-2025-06-01-215207.png)
 
 ## INSTALLATION
 1.📦 Install dependencies

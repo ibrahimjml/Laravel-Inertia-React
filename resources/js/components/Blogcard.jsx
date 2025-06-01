@@ -3,6 +3,7 @@ import moment from "moment";
 import { useEffect, useRef, useState } from "react";
 import { route } from "ziggy-js";
 import Wholiked from './Who_liked';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Blogcard({ post, request, type, id, auth }) {
   const authUser = auth.user;
@@ -156,7 +157,7 @@ export default function Blogcard({ post, request, type, id, auth }) {
       <div className="relative w-full h-48">
         {!loadedImages[post.id] && (
           <div className="absolute inset-0 flex items-center justify-center bg-gray-200 dark:bg-gray-700">
-            <i className="fa-solid fa-spinner fa-spin text-gray-400 text-xl"></i>
+            <FontAwesomeIcon icon='spinner' spin className=" text-gray-400 text-xl"></FontAwesomeIcon>
           </div>
         )}
         <Link href={route("posts.show", post.id)}>
@@ -175,7 +176,7 @@ export default function Blogcard({ post, request, type, id, auth }) {
         <p>Posted: {moment(post.created_at).fromNow()}</p>
 
         <span>
-          <i className="fa-solid fa-user text-gray-600 dark:text-white"></i>
+          <FontAwesomeIcon icon='user' className=" text-gray-600 dark:text-white"></FontAwesomeIcon>
           <button onClick={() => selectname(post.user.id)} className="font-semibold ml-2 text-green-500 dark:text-blue-500">
             {post.user.name}
           </button>
@@ -200,7 +201,10 @@ export default function Blogcard({ post, request, type, id, auth }) {
         <div className="relative flex items-center justify-between">
         <div className="flex items-center gap-3 justify-start">
             <button className="px-2 py-1 rounded transition-all">
-              <i onClick={handleLike} className={`fa-heart mr-2 ${(userLikeCount + pendingLikes > 0) ? "fa-solid text-red-500" : "fa-regular text-red-500 dark:text-red-500"} ${heartAnimation}`}></i>
+              <FontAwesomeIcon onClick={handleLike}
+               icon={[(userLikeCount + pendingLikes > 0) ? 'fas' : 'far', 'heart']}
+               className={`mr-2 text-red-500 dark:text-red-500 ${heartAnimation}`}/>
+
               <span onClick={toggleLikeModal}>
                {pendingLikes > 0 ? Number(likeTotal) + Number(pendingLikes) : likeTotal}
               </span>
@@ -209,7 +213,7 @@ export default function Blogcard({ post, request, type, id, auth }) {
               className="cursor-pointer">
               {post.comments.length >0 && 
               <>
-              <i className="fa-solid fa-comment"></i>
+              <FontAwesomeIcon icon='comment' ></FontAwesomeIcon>
               <b className="ml-1">{post.comments_count}</b>
               </>
               }
@@ -224,7 +228,7 @@ export default function Blogcard({ post, request, type, id, auth }) {
           <div className="relative flex items-center">
             {buttonsCount >= 1 && (
               <button onClick={toggleModel}>
-                <i className="fa-solid fa-ellipsis"></i>
+                <FontAwesomeIcon icon='ellipsis'></FontAwesomeIcon>
               </button>
             )}
 

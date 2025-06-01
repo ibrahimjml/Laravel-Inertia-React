@@ -1,5 +1,6 @@
 import { Link } from "@inertiajs/react"
 import { route } from "ziggy-js"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Removingfilters({filters,sortValue,username,params}){
   return(
@@ -13,7 +14,7 @@ export default function Removingfilters({filters,sortValue,username,params}){
           page:null
         }
       )}><span><b>tag: </b>{filters.tag}</span>
-      <i className='fa-solid fa-close'></i></Link>
+      <FontAwesomeIcon icon='close' className='fa-solid fa-close'></FontAwesomeIcon></Link>
       )}
 
 
@@ -27,7 +28,7 @@ export default function Removingfilters({filters,sortValue,username,params}){
         page:null
         }
       )}><span><b>search: </b>{filters.search}</span>  
-      <i className='fa-solid fa-close'></i></Link>
+        <FontAwesomeIcon icon='close' className='fa-solid fa-close'></FontAwesomeIcon></Link>
       }
 
     
@@ -40,7 +41,7 @@ export default function Removingfilters({filters,sortValue,username,params}){
       page:null
       }
     )}><span><b>user: </b>{username} </span> 
-    <i className='fa-solid fa-close'></i></Link>
+      <FontAwesomeIcon icon='close' className='fa-solid fa-close'></FontAwesomeIcon></Link>
       }
   {sortValue && sortValue !== 'latest' &&(
         <Link 
@@ -51,7 +52,7 @@ export default function Removingfilters({filters,sortValue,username,params}){
           page:null
         }
       )}><span><b>sort: </b>{sortValue}</span>
-      <i className='fa-solid fa-close'></i></Link>
+        <FontAwesomeIcon icon='close' className='fa-solid fa-close'></FontAwesomeIcon></Link>
       )}
       </>
   )

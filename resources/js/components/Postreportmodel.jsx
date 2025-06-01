@@ -1,5 +1,6 @@
 import { useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Postreportmodel({ close, reasons, postID }) {
   const { props } = usePage();
@@ -35,7 +36,7 @@ export default function Postreportmodel({ close, reasons, postID }) {
           onClick={close}
           className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
         >
-          <i className="fa-solid fa-close text-black dark:text-white"></i>
+          <FontAwesomeIcon icon='close' className=" text-black dark:text-white"></FontAwesomeIcon>
         </button>
         <form onSubmit={handleSubmit}>
           <h2 className="font-bold mb-2">Report This Post</h2>
@@ -75,7 +76,7 @@ export default function Postreportmodel({ close, reasons, postID }) {
           disabled={!selectedReason || (selectedReason === 'Other' && !data.other)}
            >
             {processing ? (
-              <i className="fa-solid fa-spinner fa-spin text-white"></i>
+              <FontAwesomeIcon icon='spinner' spin className=" text-white"></FontAwesomeIcon>
             ) : (
               'Submit report'
             )}

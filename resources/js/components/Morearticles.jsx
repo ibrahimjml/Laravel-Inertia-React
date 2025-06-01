@@ -1,5 +1,6 @@
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Morearticles({post}) {
 
@@ -19,7 +20,7 @@ export default function Morearticles({post}) {
           <h3 className="font-bold text-xl mb-2">{post.title.slice(0, 60)}...</h3>
           
           <span>
-            <i className="fa-solid fa-user text-gray-600 dark:text-white"></i>
+            <FontAwesomeIcon icon='user' className=" text-gray-600 dark:text-white"></FontAwesomeIcon>
             <button
               className="font-semibold ml-2 text-green-500 dark:text-blue-500"
             >

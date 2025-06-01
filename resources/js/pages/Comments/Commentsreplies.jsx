@@ -3,6 +3,7 @@ import { router, useForm, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 import moment from 'moment';
 import Commentreport from './Commentreport';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Commentsreplies({ comment, postId, level = 0 ,type,postuser,reasons}) {
   const {csrf,auth } = usePage().props;
@@ -152,7 +153,7 @@ console.log(buttonsCount);
 
       <div className="pl-2 text-xl ">
         <div className="flex">
-          <i className="fa-solid fa-user mt-1 text-gray-500"></i>
+          <FontAwesomeIcon icon='user' className=" mt-1 text-gray-500"></FontAwesomeIcon>
           <div className="flex flex-col ml-3 w-full">
             <div className='flex gap-2 items-center w-full'>
             <div className="flex flex-col w-full">
@@ -172,7 +173,7 @@ console.log(buttonsCount);
             <div className="relative flex items-center w-full">
               {(userLikeCount > 0 || comment.can_modify || comment.can_report) && (
             <button onClick={()=>{setShowModel(!showModel)}} className='w-fit ml-auto'>
-            <i className="fa-solid fa-ellipsis-vertical"></i>
+            <FontAwesomeIcon icon='ellipsis-vertical'></FontAwesomeIcon>
            </button>
               )}
              {/* undo likes,edit,delete model */}
@@ -249,11 +250,15 @@ console.log(buttonsCount);
         {  comment.replies_count >0 &&
         <span  onClick={() => setShowReplies(!showReplies)}
          className=' text-xs ml-3 cursor-pointer'>
-        <i className='fa-solid fa-comment dark:text-white mr-2'></i>{ comment.replies_count} {showReplies ? "Hide" : "Show"}</span>
+        <FontAwesomeIcon icon='comment' className=' dark:text-white mr-2'></FontAwesomeIcon>{ comment.replies_count} {showReplies ? "Hide" : "Show"}</span>
         }
         
            <button className="px-2 py-1 text-sm ml-2 rounded transition-all">
-              <i onClick={handleLike} className={`fa-thumbs-up mr-2 ${(userLikeCount + pendingLikes > 0) ? "fa-solid " : "fa-regular  "} dark:text-slate-200 ${heartAnimation}`}></i>
+              <FontAwesomeIcon 
+               onClick={handleLike} 
+              icon={[(userLikeCount + pendingLikes > 0) ? 'fas':'far','thumbs-up']} 
+              className={`fa-thumbs-up mr-2  dark:text-slate-200 ${heartAnimation}`}>
+              </FontAwesomeIcon>
               <span >
                {pendingLikes > 0 ? Number(likeTotal) + Number(pendingLikes) : likeTotal}
               </span>
@@ -276,7 +281,7 @@ console.log(buttonsCount);
             <button
               type="submit"
               className="mt-1 block bg-blue-500 text-white px-2 py-1 rounded text-sm">
-              {processing ? (<i className="fa-solid fa-spinner fa-spin text-white"></i>) : 'Reply'}
+              {processing ? (<FontAwesomeIcon icon='spinner' spin className=" text-white"></FontAwesomeIcon>) : 'Reply'}
             </button>
           
           </form>

@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { router, useForm } from '@inertiajs/react';
 import Commentsreplies from './Commentsreplies';
 import { route } from 'ziggy-js';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Commentsmodel({ postId, comments, onClose,count ,type,canmodify,sort,postuserId,reasons}) {
   const { data, setData, post, reset, processing,errors } = useForm({ content: '' });
@@ -42,7 +43,7 @@ useEffect(() => {
         <button
           onClick={onClose}
           className="absolute top-3 right-3 dark:text-white hover:text-gray-500 text-xl">
-          <i className='fa-solid fa-times'></i>
+          <FontAwesomeIcon icon='times'></FontAwesomeIcon>
         </button>
 
         {/* Content */}
@@ -59,7 +60,7 @@ useEffect(() => {
               type="submit"
               className="mt-2 block ml-auto rounded-full bg-blue-500 text-white px-4 py-1 "
             >
-            {processing ? (<i className="fa-solid fa-spinner fa-spin text-white"></i>) : 'Comment'}
+            {processing ? (<FontAwesomeIcon icon='spinner' spin className=" text-white"></FontAwesomeIcon>) : 'Comment'}
             </button>
           </form>
         {/* sort comments */}

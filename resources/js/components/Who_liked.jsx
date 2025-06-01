@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 export default function Wholiked({ likers, closeModal }) {
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center">
@@ -6,14 +8,14 @@ export default function Wholiked({ likers, closeModal }) {
           onClick={closeModal}
           className="absolute top-2 right-2 text-gray-500 hover:text-red-500"
         >
-          <i className="fa-solid fa-close text-black dark:text-white"></i>
+          <FontAwesomeIcon icon='close' className=" text-black dark:text-white"></FontAwesomeIcon>
         </button>
         <h3 className="text-lg font-bold mb-4 text-center">People Who Liked</h3>
         {likers.length > 0 ? (
           <ul className="space-y-2">
             {likers.map((user) => (
               <li key={user.id} className="flex items-center gap-2">
-                <i className="fa-solid fa-user text-gray-600 dark:text-white"></i>
+                <FontAwesomeIcon icon='user' className=" text-gray-600 dark:text-white"></FontAwesomeIcon>
               <div className="flex flex-col ml-2 ">
                   <span>{user.name}</span>
                   <span>@{user.username}</span>

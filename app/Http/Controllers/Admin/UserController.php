@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Enum;
 
 class UserController extends Controller
@@ -21,7 +22,8 @@ class UserController extends Controller
          'password'=>'required|string|confirmed',
          'role' => ['required','string',new Enum(UserRole::class)],
       ]);
-      
+         $fields['password'] = Hash::make($fields['password']);
+         
          User::create($fields);
          return back()->with('success','user created');
     }

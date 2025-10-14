@@ -1,7 +1,7 @@
 import  { useState } from 'react'
 import { Link, router, usePage} from '@inertiajs/react'
-import Selectrole from '../../components/Selectrole'
-import Searchadmin from '../../components/Searchadmin'
+import Selectrole from '../../Components/Selectrole'
+import Searchadmin from '../../Components/Searchadmin'
 import { route } from 'ziggy-js';
 import Navbar from './Partials/Navbar'
 import Paginatelinks from '../../Components/Paginatelinks';

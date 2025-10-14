@@ -1,9 +1,11 @@
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
-import Paginatelinks from '../../components/Paginatelinks';
+import Paginatelinks from '../../Components/Paginatelinks';
+import { toast } from 'react-toastify';
+import { useEffect } from 'react';
 
-export default function Dashboard({posts,suspended,success}) {
-  const {auth} = usePage().props;
+export default function Dashboard({posts,suspended}) {
+  const {auth,flash} = usePage().props;
   const { delete: destroy } = useForm();
 
   const handledelete = (postId) => {
@@ -13,6 +15,11 @@ export default function Dashboard({posts,suspended,success}) {
       });
     }
   }
+   useEffect(() => {
+    if (flash.success) {
+      toast.success(flash.success);
+    }
+  }, [flash]);
   return (
     <>
     <div className='bg-white flex items-center justify-between mx-auto p-8 rounded-lg shadow-lg dark:bg-slate-800 mb-4'>
@@ -24,7 +31,7 @@ export default function Dashboard({posts,suspended,success}) {
       <i class="fa-solid fa-hourglass-start text-yellow-500"></i>
       </div>
     </div>
-    {success && <p className='text-sm text-green-500 mb-3 font-semibold'>{success}</p>}
+  
     {suspended ? (
         <p className='text-red-500 text-center my-6'>Your account is suspended. Please contact support for more information.</p>
       ) : (

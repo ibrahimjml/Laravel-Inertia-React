@@ -2,7 +2,7 @@ import { Head, Link, router, useForm, usePage } from '@inertiajs/react'
 import {  useState } from 'react'
 import { route } from 'ziggy-js'
 import moment from "moment";
-import Morearticles from '../components/Morearticles';
+import Morearticles from '../Components/Morearticles';
 import Postreportmodel from '../Components/Postreportmodel';
 import Commentsmodel from './Comments/Commentsmodel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

@@ -6,7 +6,7 @@ import Commentreport from './Commentreport';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Commentsreplies({ comment, postId, level = 0 ,type,postuser,reasons}) {
-  const {csrf,auth } = usePage().props;
+  const {csrf} = usePage().props;
   const [likeTotal, setLikeTotal] = useState(comment.likes_sum_count ?? 0);
   const [userLikeCount, setUserLikeCount] = useState(comment.user_like_count ?? 0);
   const [pendingLikes, setPendingLikes] = useState(0);
@@ -134,11 +134,11 @@ export default function Commentsreplies({ comment, postId, level = 0 ,type,postu
     }, []);
 
 const buttonsCount = (userLikeCount > 0 ? 1 : 0) + (comment?.can_modify  ? 2 : 0) + (comment?.can_report ? 1 : 0);
-console.log(buttonsCount);
+
   return (
     <div
       className={`${level === 0 ? 'border-b border-gray-200 dark:border-b-gray-600 pb-7 mb-4' : 'mt-3 relative pb-2'}`}
-      style={{ marginLeft: isReply ? `${level * 10}px` : 0,}}>
+      style={{ marginLeft: isReply ? `${level * 10}px` : '0px'}}>
     
     {/* report comment model */}
     {showReportModel &&

@@ -1,17 +1,20 @@
-import { useEffect } from 'react';
-import { router, useForm } from '@inertiajs/react';
+import { useEffect, useRef } from 'react';
+import { router, useForm, usePage } from '@inertiajs/react';
 import Commentsreplies from './Commentsreplies';
 import { route } from 'ziggy-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { toast } from 'react-toastify';
 
 export default function Commentsmodel({ postId, comments, onClose,count ,type,canmodify,sort,postuserId,reasons}) {
+  const {flash}= usePage().props;
   const { data, setData, post, reset, processing,errors } = useForm({ content: '' });
 
   const submitComment = (e) => {
     e.preventDefault();
   post(route('comment.create', postId), {
       preserveScroll:true,
-      onSuccess: () => reset(),
+      onSuccess: () =>  reset(),
+      
     });
   };
     const{data: sortData,setData: setSortData} = useForm({
@@ -34,6 +37,13 @@ useEffect(() => {
     document.body.style.overflow = '';
   };
 }, []);
+const FlashSuccess = useRef(null);
+useEffect(() => {
+  if (flash.success && flash.success !== FlashSuccess.current) {
+    toast.success(flash.success);
+    FlashSuccess.current = flash.success
+  }
+}, [flash.success]);
   return (
     <div className="fixed inset-0 z-50 bg-dark bg-opacity-70 flex justify-end">
 

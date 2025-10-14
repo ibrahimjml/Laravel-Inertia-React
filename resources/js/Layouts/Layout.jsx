@@ -1,7 +1,7 @@
 import { Link, router, usePage } from "@inertiajs/react";
 import { route } from 'ziggy-js';
 import { useState,useEffect } from "react";
-
+import { ToastContainer } from 'react-toastify';
 
 export default function Layout({children}) {
   const {auth} = usePage().props;
@@ -97,6 +97,7 @@ useEffect(() => {
       </header>
       <main className="p-4 pt-24">
         {children}
+        <ToastContainer position="top-right" autoClose={3000} />
       </main>
     </div>
   )

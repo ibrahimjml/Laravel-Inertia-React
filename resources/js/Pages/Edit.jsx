@@ -1,6 +1,7 @@
 import { Head, useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { toast } from 'react-toastify';
 
 export default function Edit({posts,tags,alltags}) {
   const { props } = usePage();
@@ -40,6 +41,9 @@ export default function Edit({posts,tags,alltags}) {
       data: formData,
       preserveScroll: true,
       forceFormData: true,
+      onSuccess:()=>{
+        toast.info(status);
+      }
     });
     }
       const handleKeyDown = (e) => {
@@ -150,8 +154,6 @@ const handleSelectTag = (e) => {
   {errors.tags && <small className="text-sm text-red-500">{errors.tags}</small>}
   {errorTag && <small className="text-sm block text-left text-red-500">{errorTag}</small>} 
   </div>
-  {status && <small className="text-sm text-red-500">{status}</small>}
-
     <div className="mt-4 flex justify-center">
       <button type="submit"
       disabled={processing}

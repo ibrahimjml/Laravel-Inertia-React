@@ -26,24 +26,20 @@ class CommentController extends Controller implements HasMiddleware
         'parent_id'=>'nullable|exists:comments,id'
       ]);
 
-    
-      $fields['content']= strip_tags($fields['content']);
-      $fields['user_id']= Auth::id();
-      $fields['post_id']= $post->id;
-
-        $post->comments()->create([
+      $post->comments()->create([
         'user_id' => Auth::id(),
-        'post_id' => $fields['post_id'],
-        'content' => $fields['content'],
+        'post_id' => $post->id,
+        'content' => strip_tags($fields['content']),
         'parent_id' => $fields['parent_id'] ?? null,
     ]);
 
-      return back()->with('success','comment created');
+    $message = $request->filled('parent_id') ? 'Reply created' : 'Comment created';
+
+      return back()->with('success', $message);
     }
 
     public function update(Request $request, Comment $comment)
    {
-      $comment = Comment::findOrFail($comment->id);
     Gate::authorize('modify', $comment);
     
     $fields = $request->validate([
@@ -61,7 +57,6 @@ class CommentController extends Controller implements HasMiddleware
     }
     public function delete(Comment $comment)
     {
-      $comment = Comment::findOrFail($comment->id);
     Gate::authorize('modify',$comment);
 
      $comment->delete();

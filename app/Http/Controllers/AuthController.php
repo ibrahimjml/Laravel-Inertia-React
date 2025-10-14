@@ -96,7 +96,7 @@ class AuthController extends Controller
 
       public function forgotpage()
       {
-         return Inertia::render('auth/Forgetpassword',['success'=>session('status'),'error'=>session('error')]);
+         return Inertia::render('Auth/Forgetpassword',['success'=>session('status'),'error'=>session('error')]);
       }
 
       public function forgotpass(Request $request)

@@ -28,7 +28,7 @@ Route::middleware('guest')
 ->controller(AuthController::class)
 ->group(function(){
   // Register
-  Route::inertia('/register','auth/Register')->name('register');
+  Route::inertia('/register','Auth/Register')->name('register');
   Route::post('/register','register');
   // Login
   Route::get('/login','loginpage')->name('login');

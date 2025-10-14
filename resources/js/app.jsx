@@ -1,6 +1,7 @@
 import './bootstrap';
 import '../css/app.css'
 import './lib/fontawesome'
+import 'react-toastify/dist/ReactToastify.css';
 import { createInertiaApp } from '@inertiajs/react'
 import { createRoot } from 'react-dom/client'
 import Layout from '@/Layouts/Layout'

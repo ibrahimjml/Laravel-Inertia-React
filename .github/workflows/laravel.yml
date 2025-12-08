@@ -35,8 +35,6 @@ jobs:
       - name: Install Composer dependencies
         run: composer install --optimize-autoloader --no-interaction --prefer-dist
       
-      - name: Run Laravel seeders
-        run: php artisan db:seed 
 
       - name: Install Node dependencies
         run: npm install

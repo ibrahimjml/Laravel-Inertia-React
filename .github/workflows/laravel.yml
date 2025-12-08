@@ -33,7 +33,7 @@ jobs:
           sed -i "s|ADMIN_PASS=.*|APP_URL=${{ secrets.ADMIN_PASS }}|" .env
 
       - name: Install Composer dependencies
-        run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+        run: composer install --optimize-autoloader --no-interaction --prefer-dist
       
       - name: Run Laravel seeders
         run: php artisan db:seed 

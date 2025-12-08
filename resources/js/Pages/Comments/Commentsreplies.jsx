@@ -26,7 +26,7 @@ export default function Commentsreplies({ comment, postId, level = 0 ,type,postu
     parent_id: comment.id,
   });
 
-  const isReply = level > 0;
+  const isReply = level > 0 ;
 
   const submitReply = (e) => {
     e.preventDefault();
@@ -136,20 +136,16 @@ export default function Commentsreplies({ comment, postId, level = 0 ,type,postu
 const buttonsCount = (userLikeCount > 0 ? 1 : 0) + (comment?.can_modify  ? 2 : 0) + (comment?.can_report ? 1 : 0);
 
   return (
-    <div
-      className={`${level === 0 ? 'border-b border-gray-200 dark:border-b-gray-600 pb-7 mb-4' : 'mt-3 relative pb-2'}`}
-      style={{ marginLeft: isReply ? `${level * 10}px` : '0px'}}>
+    <div className={ 'relative mb-4' }>
     
     {/* report comment model */}
     {showReportModel &&
      <Commentreport commentID={comment.id} reasons={reasons} closeModel={()=>{setShowReportModel(false)}}/>
      }
-      {isReply && (
-        <div
-          className="absolute left-0 top-0 h-10 w-px bg-gray-400"
-          style={{ transform: 'translateX(-8px)' }}>
-        </div>
-      )}
+    {isReply && (
+      <div className="absolute top-0 bottom-0 w-px h-8 bg-gray-400"
+            style={{ left: '-8px' }}></div>
+        )}
 
       <div className="pl-2 text-xl ">
         <div className="flex">
@@ -167,9 +163,17 @@ const buttonsCount = (userLikeCount > 0 ? 1 : 0) + (comment?.can_modify  ? 2 : 0
                 </div>
               }
             </div>
+           { comment.parent?.user && ( 
+            <p className="text-sm text-gray-500 dark:text-gray-400"> 
+            Replying to 
+            <span className="font-semibold">
+              @{comment.parent.user.name}
+            </span>
+             </p> )}
+            
             <span className="text-xs text-gray-500 w-full mb-3">{moment(comment.created_at).fromNow()}</span>
           </div>
-              
+                        
             <div className="relative flex items-center w-full">
               {(userLikeCount > 0 || comment.can_modify || comment.can_report) && (
             <button onClick={()=>{setShowModel(!showModel)}} className='w-fit ml-auto'>

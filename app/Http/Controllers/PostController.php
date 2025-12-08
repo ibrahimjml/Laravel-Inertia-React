@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ReportReason;
+use App\Enums\UserRole;
 use App\Http\Middleware\Suspended;
 use App\Http\Requests\PostRequest;
 use App\Models\Hashtag;
@@ -27,7 +28,7 @@ class PostController extends Controller implements HasMiddleware
     public static function middleware()
     {
       return [
-        new Middleware(['auth','verified',Suspended::class])
+        (new Middleware(['auth','verified',Suspended::class]))->except('index')
       ];
     }
 
@@ -78,7 +79,9 @@ public function create( )
   {
     Gate::authorize('create',Post::class);
     $fields = $request->validated();
-  
+    
+    if($request->user()->role === UserRole::Admin) $fields['approved'] = true;
+    
     if ($newImage = $this->handleImageUpload($request->file('image'))) {
         $fields['image'] = $newImage;
     }

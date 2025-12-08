@@ -6,13 +6,14 @@ import { useEffect } from 'react';
 
 export default function Dashboard({posts,suspended}) {
   const {auth,flash} = usePage().props;
-  const { delete: destroy } = useForm();
+  const { post } = useForm();
 
   const handledelete = (postId) => {
     if (confirm('Are you sure you want to delete this post?')) {
-      destroy(route('posts.destroy', postId), {
-        preserveScroll: true,
-      });
+      post(route('posts.destroy', postId),
+        { _method: 'delete' },   
+        { preserveScroll: true } 
+      );
     }
   }
    useEffect(() => {

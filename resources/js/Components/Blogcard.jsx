@@ -200,15 +200,21 @@ export default function Blogcard({ post, request, type, id, auth }) {
 
         <div className="relative flex items-center justify-between">
         <div className="flex items-center gap-3 justify-start">
-            <button className="px-2 py-1 rounded transition-all">
+           { authUser ? (
+             <button className="px-2 py-1 rounded transition-all">
               <FontAwesomeIcon onClick={handleLike}
                icon={[(userLikeCount + pendingLikes > 0) ? 'fas' : 'far', 'heart']}
                className={`mr-2 text-red-500 dark:text-red-500 ${heartAnimation}`}/>
-
-              <span onClick={toggleLikeModal}>
-               {pendingLikes > 0 ? Number(likeTotal) + Number(pendingLikes) : likeTotal}
-              </span>
+               <span onClick={toggleLikeModal}>
+                {pendingLikes > 0 ? Number(likeTotal) + Number(pendingLikes) : likeTotal}
+               </span>
             </button>
+          ) : (
+            <Link href={route('login')} className="px-2 py-1 rounded transition-all">
+              <FontAwesomeIcon icon={['far', 'heart']} className="mr-2 text-red-500 dark:text-red-500"/>
+              <span>{likeTotal}</span>
+            </Link>
+          )}
             <span onClick={() => router.visit(route('posts.show',post.id))}
               className="cursor-pointer">
               {post.comments.length >0 && 

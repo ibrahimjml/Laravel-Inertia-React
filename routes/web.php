@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\{
-    CommentReportController,
-    DashboardController,
+       CommentReportController,
+       DashboardController,
        FollowController,
        LikeController,
        PostController,
@@ -11,15 +11,17 @@ use App\Http\Controllers\{
        CommentController
 };
 use App\Http\Controllers\Admin\{
-  AdminController,
-  TagController,
+    AdminController,
+    TagController,
     UserController,
 };
 use Illuminate\Support\Facades\Route;
 
 // posts routes
 Route::get('/',[PostController::class,'index'])->name('home');
-Route::resource('posts', PostController::class);
+Route::resource('posts', PostController::class)->except('destroy');
+Route::post('/posts/{post}/delete', [PostController::class, 'destroy'])
+    ->name('posts.destroy');
 
   // user routes
   Route::middleware('auth')->group(function(){

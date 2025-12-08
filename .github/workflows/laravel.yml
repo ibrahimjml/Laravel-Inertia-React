@@ -1,6 +1,5 @@
 name: Deploy to InfinityFree
 
-
 on:
   workflow_dispatch:
   push:
@@ -16,13 +15,28 @@ jobs:
 
       - name: Get latest code
         uses: actions/checkout@v4
-      
+
+    
+      - name: Copy .env.example
+        run: cp .env.example .env
+
+    
+      - name: Replace environment values
+        run: |
+          sed -i "s|APP_KEY=.*|APP_KEY=${{ secrets.APP_KEY }}|" .env
+          sed -i "s|DB_HOST=.*|DB_HOST=${{ secrets.DB_HOST }}|" .env
+          sed -i "s|DB_DATABASE=.*|DB_DATABASE=${{ secrets.DB_DATABASE }}|" .env
+          sed -i "s|DB_USERNAME=.*|DB_USERNAME=${{ secrets.DB_USERNAME }}|" .env
+          sed -i "s|DB_PASSWORD=.*|DB_PASSWORD=${{ secrets.DB_PASSWORD }}|" .env
+          sed -i "s|APP_URL=.*|APP_URL=${{ secrets.APP_URL }}|" .env
+          sed -i "s|ADMIN_EMAIL=.*|APP_URL=${{ secrets.ADMIN_EMAIL }}|" .env
+          sed -i "s|ADMIN_PASS=.*|APP_URL=${{ secrets.ADMIN_PASS }}|" .env
 
       - name: Install Composer dependencies
-        run: composer install --no-dev --optimize-autoloader
-
-      - name: Generate key
-        run: php artisan key:generate
+        run: composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist
+      
+      - name: Run Laravel seeders
+        run: php artisan db:seed 
 
       - name: Install Node dependencies
         run: npm install
@@ -30,12 +44,13 @@ jobs:
       - name: Build assets
         run: npm run build
 
+
       - name: Deploy to InfinityFree via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ftpupload.net
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: /htdocs/  
+          server-dir: /htdocs/
           timeout: 86400000
           log-level: standard

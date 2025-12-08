@@ -1,0 +1,43 @@
+name: Deploy to InfinityFree
+
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - deployment
+
+jobs:
+  deploy:
+    name: Deploy via FTP
+    runs-on: ubuntu-latest
+
+    steps:
+
+      - name: Get latest code
+        uses: actions/checkout@v4
+      
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Generate key
+        run: php artisan key:generate
+
+      - name: Install Node dependencies
+        run: npm install
+
+      - name: Build assets
+        run: npm run build
+
+      - name: Deploy to InfinityFree via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftpupload.net
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: /htdocs/  
+          timeout: 86400000
+          log-level: standard

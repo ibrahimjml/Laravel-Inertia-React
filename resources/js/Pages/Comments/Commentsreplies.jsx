@@ -196,7 +196,11 @@ const buttonsCount = (userLikeCount > 0 ? 1 : 0) + (comment?.can_modify  ? 2 : 0
                 <button onClick={() => {setIsEditing(true); setShowModel(false)}} className="block w-full px-6 text-sm py-3 text-black dark:text-blue-600 font-semibold dark:hover:bg-slate-900 ">Edit</button>
                 <button   onClick={() => {
                   setShowModel(false);
-                if (confirm("Are you sure?")) { router.delete(route('comment.delete', comment.id));}}}
+                if (confirm("Are you sure?")) { router.post(route('comment.delete', comment.id),{
+                  _method:"DELETE",
+                  preserveScroll:true
+                });
+              }}}
                 className="block w-full px-6 text-sm py-3 dark:text-red-600 text-black font-semibold dark:hover:bg-slate-900 ">
                   Delete
                 </button>

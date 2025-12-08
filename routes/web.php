@@ -44,7 +44,7 @@ Route::post('/posts/{post}/delete', [PostController::class, 'destroy'])
  // Comments
   Route::post('/comment/{post}',[CommentController::class,'store'])->name('comment.create');
   Route::put('/comment/{comment}/edit',[CommentController::class,'update'])->name('comment.update');
-  Route::delete('/comment/{comment}/delete',[CommentController::class,'delete'])->name('comment.delete');
+  Route::post('/comment/{comment}/delete',[CommentController::class,'delete'])->name('comment.delete');
   Route::post('/comments/{comment}/like', [LikeController::class, 'like'])->name('comments.likes');
   Route::post('/comments/{comment}/undo', [LikeController::class, 'undo'])->name('comments.undo');
   Route::post('/comment/{comment}/report', [CommentReportController::class, 'report'])->name('comment.report');
@@ -60,7 +60,7 @@ Route::middleware(['auth','verified','can:makeAdminActions'])
   Route::get('/admin/posts-reports','reports')->name('posts.reports');
   Route::get('/admin/comments-reports','comment_reports')->name('comments.reports');
   Route::put('/admin/{user}/role','updaterole')->name('user.updaterole');
-  Route::put('/approve/post{post}','approve')->name('approve.update');
+  Route::post('/posts/{post}/approve','approve')->name('approve.update');
   Route::delete('/admin/post-user/{post}','delete')->name('post.delete');
   Route::delete('/admin/delete-report/{report}','delete_report')->name('delete.report');
   Route::delete('/admin/delete-comment/{report}','delete_comment_report')->name('delete.comment.report');

@@ -15,14 +15,15 @@ export default function Userposts({user,posts,filters}) {
    const [showmodel,setShowmodel] = useState(false);
 
 
-  const{data,setData,put}=useForm({
+  const{data,setData,post}=useForm({
     search:filters.search || '',
     unapproved:filters.unapproved || false
   });
 
   const handleclick=(postid)=>{
     setLoading(postid);
-    put(route('approve.update',postid),{
+    post(route('approve.update',postid),{
+      _method: 'PUT',
       preserveScroll: true,
       preserveState: true,
       onSuccess: () => setLoading(null),

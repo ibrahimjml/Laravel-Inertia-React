@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\ForgotPassword;
 use App\Models\User;
-use App\Rules\Recaptcha;
+// use App\Rules\Recaptcha;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -41,7 +41,7 @@ class AuthController extends Controller
           $request->validate([
           'email'=>'required|email',
           'password'=>'required',
-          "g_recaptcha_response" => [ new Recaptcha]
+          // "g_recaptcha_response" => [ new Recaptcha]
          ]);
          $credantials = $request->only('email','password');
          if(Auth::attempt($credantials)){

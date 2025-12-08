@@ -17,8 +17,6 @@ jobs:
       - name: Get latest code
         uses: actions/checkout@v4
       
-      - name: Copy .env
-        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Install Composer dependencies
         run: composer install --no-dev --optimize-autoloader

@@ -51,7 +51,7 @@ useEffect(() => {
                 </button>
               <Link href={route('home')} className="hidden lg:block">Home</Link>
               {auth?.user.can.access  && 
-                <Link href={route('admin.page')} className="hidden lg:block">Dashboard</Link>
+                <Link href={route('admin.page')} className="hidden lg:block">Admin Panel</Link>
                 }
               <div className="relative flex items-center">
                 <div onClick={togglemodel} className="flex gap-1">
@@ -67,7 +67,7 @@ useEffect(() => {
                   <Link href={route('edit.profile')} className="block w-full px-6 py-3 hover:bg-slate-700 text-left">Edit Profile</Link>
                   <Link href={route('home')} className="lg:hidden block w-full px-6 py-3 hover:bg-slate-700 text-left">Home</Link>
                    {auth.user.role === 'admin' && 
-                  <Link href={route('admin.page')} className="lg:hidden block w-full px-6 py-3 hover:bg-slate-700 text-left">Dashboard</Link>
+                  <Link href={route('admin.page')} className="lg:hidden block w-full px-6 py-3 hover:bg-slate-700 text-left">Admin Panel</Link>
                    }
                   <button  onClick={handleLogout}  className="block w-full px-6 py-3 hover:bg-slate-700 text-left">Logout</button>
                </div>

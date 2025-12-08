@@ -1,7 +1,6 @@
 /.phpunit.cache
 /node_modules
 /public/build
-/public/images
 /public/images/*
 !/public/images/default.jpg
 !/public/images/.gitkeep

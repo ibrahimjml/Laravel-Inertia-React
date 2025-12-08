@@ -2,7 +2,7 @@ import { useForm } from '@inertiajs/react'
 import { route } from 'ziggy-js'
 
 export default function Updatepassword() {
-  const { data, setData, put, processing, errors,reset } = useForm({
+  const { data, setData, post, processing, errors,reset } = useForm({
     current_password: "",
     password: "",
     password_confirmation: "",
@@ -10,7 +10,8 @@ export default function Updatepassword() {
   })
   function handlePassword(e) {
     e.preventDefault()
-    put(route('update.password'),{
+    post(route('update.password'),{
+      _method: 'PUT',
       preserveScroll: true,
     onSuccess:() => reset()
     })

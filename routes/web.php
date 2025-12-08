@@ -31,9 +31,9 @@ Route::post('/posts/{post}/delete', [PostController::class, 'destroy'])
   Route::get('/editprofile',[ProfileController::class,'index'])
   ->middleware('password.confirm')
   ->name('edit.profile');
-  Route::patch('/editprofile',[ProfileController::class,'update'])->name('update.profile');
-  Route::put('/editprofile',[ProfileController::class,'password'])->name('update.password');
-  Route::delete('/editprofile',[ProfileController::class,'delete'])->name('delete.account');
+  Route::post('/editprofile',[ProfileController::class,'update'])->name('update.profile');
+  Route::post('/editprofile',[ProfileController::class,'password'])->name('update.password');
+  Route::post('/editprofile',[ProfileController::class,'delete'])->name('delete.account');
   // likes
   Route::post('/like', [LikeController::class, 'like'])->name('like');
   Route::post('/undo-like', [LikeController::class, 'undo'])->name('undo.like');

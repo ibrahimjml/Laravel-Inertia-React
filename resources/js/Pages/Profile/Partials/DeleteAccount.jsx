@@ -8,13 +8,14 @@ export default function DeleteAccount() {
   const toggleModel =()=>{
     setshowmodel(!showmodel);
   }
-  const { data, setData, delete:destroy, processing, errors } = useForm({
+  const { data, setData, post, processing, errors } = useForm({
     current_password: "",
 
   })
   function handlePassword(e) {
     e.preventDefault()
-    destroy(route('delete.account'),{
+    post(route('delete.account'),{
+      _method: 'delete',
       preserveScroll: true,
     
     })

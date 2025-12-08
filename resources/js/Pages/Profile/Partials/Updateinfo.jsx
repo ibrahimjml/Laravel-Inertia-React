@@ -3,7 +3,7 @@ import { route } from 'ziggy-js'
 
 export default function Updateinfo({user}) {
   
-  const { data, setData, patch, processing, errors } = useForm({
+  const { data, setData, post, processing, errors } = useForm({
     name: user.name,
     username: user.username,
     email: user.email,
@@ -11,7 +11,8 @@ export default function Updateinfo({user}) {
   })
   function handleLogin(e) {
     e.preventDefault()
-    patch(route('update.profile'),{
+    post(route('update.profile'),{
+      _method: 'PUT',
       preserveScroll: true,
     
     })

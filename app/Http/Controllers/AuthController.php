@@ -19,6 +19,9 @@ class AuthController extends Controller
 {
     public function register(Request $request)
     {
+      if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
         $credantials = $request->validate([
          'username'=>'required|string|alpha_num|min:5|max:13|unique:users',
          'name'=>'required|string|alpha|min:6|max:15',
@@ -101,6 +104,9 @@ class AuthController extends Controller
 
       public function forgotpass(Request $request)
       {
+          if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
         $fields = $request->validate([
           "email" => ["required", "email", "min:5", "max:50"],
         ]);

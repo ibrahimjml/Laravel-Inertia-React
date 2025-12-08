@@ -78,6 +78,11 @@ public function create( )
   public function store(PostRequest $request,HashtagService $tags)
   {
     Gate::authorize('create',Post::class);
+
+    if(env('IS_DEMO')) {
+      return back()->with('demo', 'Action not allowed in demo mode');
+    }
+
     $fields = $request->validated();
     
     if($request->user()->role === UserRole::Admin) $fields['approved'] = true;

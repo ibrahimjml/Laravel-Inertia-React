@@ -21,6 +21,9 @@ class CommentController extends Controller implements HasMiddleware
     }
     public function store(Post $post,Request $request)
     {
+        if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
         $fields = $request->validate([
         'content'=>'required|string|max:255',
         'parent_id'=>'nullable|exists:comments,id'
@@ -41,7 +44,9 @@ class CommentController extends Controller implements HasMiddleware
     public function update(Request $request, Comment $comment)
    {
     Gate::authorize('modify', $comment);
-    
+      if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
     $fields = $request->validate([
         'content' => 'required|string|max:1000',
     ]);
@@ -58,7 +63,9 @@ class CommentController extends Controller implements HasMiddleware
     public function delete(Comment $comment)
     {
     Gate::authorize('modify',$comment);
-
+       if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
      $comment->delete();
 
     return back()->with('success', 'Comment deleted.');

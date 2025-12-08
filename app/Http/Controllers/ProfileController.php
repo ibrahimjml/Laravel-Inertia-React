@@ -18,6 +18,9 @@ class ProfileController extends Controller
 
     public function update(Request $request)
     {
+        if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
       $fields = $request->validate([
         'username'=>['required','string','alpha_num','min:5','max:13',Rule::unique(User::class)->ignore($request->user()->id)],
          'name'=>'required|string|alpha|min:6|max:15',
@@ -35,6 +38,9 @@ class ProfileController extends Controller
 
     public function password(Request $request)
     {
+        if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
       $fileds = $request->validate([
         'current_password'=>'required|current_password',
         'password'=>'required|min:8|confirmed'
@@ -46,6 +52,9 @@ class ProfileController extends Controller
     }
 
     public function delete(Request $request){
+      if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
        $request->validate([
         'current_password'=>'required|current_password',
       ]);

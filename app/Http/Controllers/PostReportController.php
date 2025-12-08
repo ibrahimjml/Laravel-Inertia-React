@@ -17,6 +17,9 @@ class PostReportController extends Controller
     {
       Gate::authorize("report", $post);  
       
+        if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
        $fields = $request->validate([
          'post_id' => ['required', 'exists:posts,id'],
         'reason' => ['required', new Enum(ReportReason::class)],

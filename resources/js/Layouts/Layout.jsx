@@ -2,8 +2,10 @@ import { Link, router, usePage } from "@inertiajs/react";
 import { route } from 'ziggy-js';
 import { useState,useEffect } from "react";
 import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 export default function Layout({children}) {
+  const {flash} = usePage().props;
   const {auth} = usePage().props;
   const [showmodel,setshowmodel] = useState(false);
    const [darkMode, setDarkMode] = useState(() =>
@@ -11,7 +13,8 @@ export default function Layout({children}) {
   );
   const [showHeader, setShowHeader] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
-
+  
+   // Apply dark mode class to document
     useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
     localStorage.setItem("theme", darkMode ? "dark" : "light");
@@ -20,6 +23,8 @@ export default function Layout({children}) {
  const handleLogout = () => {
   router.post(route('logout'));
 };
+
+// Handle header show/hide on scroll
 useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -32,7 +37,12 @@ useEffect(() => {
   }, [lastScrollY]);
   const togglemodel = ()=> setshowmodel(!showmodel);  
   const switchTheme = () => setDarkMode(prev => !prev);
-  
+
+  // show demo mode toast
+  useEffect(()=>{
+  if (flash?.demo) toast.info(flash.demo);
+  },[flash])
+
   return (
     <div className="max-w-screen">
     <header className={`bg-slate-600 dark:bg-gray-800 px-4 py-5 transition-transform duration-300 z-50 w-full fixed top-0 ${showHeader ? "translate-y-0" : "-translate-y-full"}`}>

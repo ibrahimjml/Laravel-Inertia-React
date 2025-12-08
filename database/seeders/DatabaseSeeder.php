@@ -27,5 +27,9 @@ class DatabaseSeeder extends Seeder
                 $hashtags->random(rand(1, 3))->pluck('id')->toArray()
             );
         });
+        
+        $this->call([
+            AdminSeeder::class,
+        ]);
     }
 }

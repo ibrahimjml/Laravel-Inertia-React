@@ -197,7 +197,6 @@ const buttonsCount = (userLikeCount > 0 ? 1 : 0) + (comment?.can_modify  ? 2 : 0
                 <button   onClick={() => {
                   setShowModel(false);
                 if (confirm("Are you sure?")) { router.post(route('comment.delete', comment.id),{
-                  _method:"DELETE",
                   preserveScroll:true
                 });
               }}}

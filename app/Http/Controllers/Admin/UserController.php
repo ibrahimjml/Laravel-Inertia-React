@@ -14,6 +14,9 @@ class UserController extends Controller
 {
     public function create(Request $request)
     {
+        if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
       Gate::authorize("modify", User::class);
       $fields = $request->validate([
          'username'=>'required|string|alpha_num|min:5|max:13|unique:users',
@@ -29,6 +32,9 @@ class UserController extends Controller
     }
     public function update(Request $request, User $user)
     {
+        if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
         Gate::authorize("modify", User::class);
        $request->validate([
          'username'=>'required|string|alpha_num|min:5|max:13|unique:users,username,'.$user->id,
@@ -46,6 +52,9 @@ class UserController extends Controller
     }
     public function delete(Request $request, User $user)
     {
+        if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
         Gate::authorize("modify", User::class);
       User::destroy($user->id);
       return back()->with('success','user deleted');

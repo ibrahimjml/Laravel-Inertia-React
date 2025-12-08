@@ -16,6 +16,9 @@ class CommentReportController extends Controller
     {
        Gate::authorize('report',$comment);
 
+      if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
        $fields = $request->validate([
          'comment_id' => ['required', 'exists:comments,id'],
          'reason' => ['required', new Enum(ReportReason::class)],

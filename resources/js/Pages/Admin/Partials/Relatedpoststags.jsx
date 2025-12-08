@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Relatedpoststags({ closemodel, tag }) {
   const { csrf } = usePage().props
-  const { put } = useForm();
+  const { post } = useForm();
   const [loading, setLoading] = useState(null); 
   const [posts, setPosts] = useState(null);  
 
@@ -17,7 +17,8 @@ export default function Relatedpoststags({ closemodel, tag }) {
 
   const handleClick = (postId) => {
     setLoading(postId);
-    put(route('approve.update', postId), {
+    post(route('approve.update', postId), {
+      _method: 'PUT',
       preserveScroll: true,
       preserveState: true,
       onSuccess: () => {

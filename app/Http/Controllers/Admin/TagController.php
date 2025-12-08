@@ -54,7 +54,9 @@ class TagController extends Controller
     }
     public function create(Request $request)
     {
-      
+        if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
          $fields = $request->validate([
           'name' =>'required|string'
           ]);
@@ -63,6 +65,9 @@ class TagController extends Controller
     }
     public function edit(Hashtag $hashtag,Request $request)
     {
+        if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
         $hashtag = Hashtag::find($hashtag->id);
          $fields = $request->validate([
           'name' =>'required|string'
@@ -76,6 +81,9 @@ class TagController extends Controller
     }
     public function destroy(Hashtag $hashtag)
     {      
+        if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
            $hashtag = Hashtag::find($hashtag->id);
            $name = $hashtag->name;
            $hashtag->delete();

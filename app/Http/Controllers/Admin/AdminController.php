@@ -45,6 +45,9 @@ class AdminController extends Controller
    }
     public function updaterole(Request $request,User $user)
    {
+      if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
      Gate::authorize('updateRole', $user);
     $request->validate([
         'role' => ['required', new Enum(UserRole::class)],
@@ -81,11 +84,17 @@ public function show(User $user,Request $request)
 }
     public function approve(Post $post)
     {
+        if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
       $post->update(['approved'=>!$post->approved]);
       return redirect()->back()->with('status', 'User role updated successfully.');
     }
     public function delete(Post $post)
     {
+        if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
       $post = Post::find($post->id);
       $post->delete();
       return redirect()->back()->with('status','post deleted successfully');
@@ -104,6 +113,9 @@ public function show(User $user,Request $request)
       }
       public function delete_report(PostReport $report)
       {
+          if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
        $report = PostReport::findOrFail($report->id);
        $report->delete();
        return redirect()->back()->with('status','report deleted !');
@@ -122,6 +134,9 @@ public function show(User $user,Request $request)
       }
       public function delete_comment_report(CommentReport $report)
       {
+          if(env('IS_DEMO')) {
+        return back()->with('demo', 'Action not allowed in demo mode');
+      }
          $report = CommentReport::find($report->id);
        $report->delete();
        return redirect()->back()->with('status','report deleted !');

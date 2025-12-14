@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+/* =============================
+  Custom Scrollbar - Dark Theme 
+================================*/
+
 .scrollbar-dark::-webkit-scrollbar {
   width: 8px;
 }
@@ -16,3 +20,32 @@
   scrollbar-width: thin;
   scrollbar-color: rgba(107, 114, 128, 0.5) transparent; /* Firefox */
 }
+.pattern-bg {
+  position: relative;
+  height: 100%;
+}
+/* =============================
+  Background Pattern 
+================================*/
+.pattern-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(#42434d 0.8px, transparent 0.8px),
+    linear-gradient(90deg, #42434d 0.8px, transparent 0.8px),
+    linear-gradient(#42434d 0.4px, transparent 0.4px),
+    linear-gradient(90deg, #42434d 0.4px, #ffffff 0.4px);
+  background-size: 20px 20px, 20px 20px, 4px 4px, 4px 4px;
+  background-position: -0.8px -0.8px, -0.8px -0.8px, -0.4px -0.4px, -0.4px -0.4px;
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.pattern-bg > * {
+  position: relative;
+  z-index: 1;
+}
+
+

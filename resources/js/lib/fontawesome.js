@@ -3,11 +3,15 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { 
   faComment as faCommentRegular ,
   faHeart as faHeartRegular,
-  faThumbsUp as faThumbsUpRegular
+  faThumbsUp as faThumbsUpRegular,
 } from '@fortawesome/free-regular-svg-icons'
 
 import {
   faUser,
+  faBars,
+  faGauge,
+  faFile,
+  faTag,
   faHeart,
   faThumbsUp,
   faComment,
@@ -30,6 +34,10 @@ import {
 
 library.add(
   faUser,
+  faBars,
+  faGauge,
+  faFile,
+  faTag,
   faHeart,
   faThumbsUp,
   faThumbsUpRegular,

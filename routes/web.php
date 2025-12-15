@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\{
-    CommentReportController,
-    DashboardController,
+       CommentReportController,
+       DashboardController,
        FollowController,
        LikeController,
        PostController,
@@ -11,8 +11,8 @@ use App\Http\Controllers\{
        CommentController
 };
 use App\Http\Controllers\Admin\{
-  AdminController,
-  TagController,
+    AdminController,
+    TagController,
     UserController,
 };
 use Illuminate\Support\Facades\Route;

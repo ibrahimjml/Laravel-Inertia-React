@@ -16,7 +16,7 @@ export default function Addtagmodel({closemodel}) {
     }
   return (
   <div className="fixed inset-0 z-50 bg-black bg-opacity-20 flex items-center justify-center">
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-[40%] max-h-[80vh]  overflow-y-auto relative">
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg w-[80%] lg:w-[40%] max-h-[80vh]  overflow-y-auto relative">
         <button
           onClick={closemodel}
           className="absolute top-2 right-2 text-gray-500 hover:text-red-500"

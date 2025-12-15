@@ -28,7 +28,7 @@ export default function Dashboard({posts,suspended}) {
         <p>Approved</p>
         <i className='fa-solid fa-check text-green-500'></i>
         <p>Pending</p>
-      <i class="fa-solid fa-hourglass-start text-yellow-500"></i>
+      <i className="fa-solid fa-hourglass-start text-yellow-500"></i>
       </div>
     </div>
   
@@ -61,7 +61,7 @@ export default function Dashboard({posts,suspended}) {
                         {post.approved ? (
                         <i className='fa-solid fa-check text-green-500'></i>
                         ) : (
-                          <i class="fa-solid fa-hourglass-start text-yellow-500"></i>
+                          <i className="fa-solid fa-hourglass-start text-yellow-500"></i>
                         )}
                       </div>
                     </td>

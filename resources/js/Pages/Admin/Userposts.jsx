@@ -15,23 +15,15 @@ export default function Userposts({user,posts,filters}) {
    const [showmodel,setShowmodel] = useState(false);
 
 
-<<<<<<< HEAD
   const{data,setData,post}=useForm({
-=======
-  const{data,setData,put}=useForm({
->>>>>>> origin/v1.0.3
     search:filters.search || '',
     unapproved:filters.unapproved || false
   });
 
   const handleclick=(postid)=>{
     setLoading(postid);
-<<<<<<< HEAD
     post(route('approve.update',postid),{
       _method: 'PUT',
-=======
-    put(route('approve.update',postid),{
->>>>>>> origin/v1.0.3
       preserveScroll: true,
       preserveState: true,
       onSuccess: () => setLoading(null),
@@ -90,13 +82,8 @@ const openModel = (Post)=>{
           <label htmlFor="unapproved">Unapproved</label>
     </div>  
 </div>
-<<<<<<< HEAD
-<div className='bg-white mx-auto p-8 flex flex-col items-end gap-2 rounded-lg shadow-lg dark:bg-slate-800 mb-4'>
-<table className='w-full mx-auto table-fixed border-collapse overflow-hidden rounded-md text-sm ring-1 ring-slate-300 dark:ring-slate-600 bg-white shadow-lg'>
-=======
 <div className='bg-white mx-auto p-8 flex flex-col items-end gap-2 rounded-lg shadow-lg dark:bg-slate-800 mb-4 overflow-x-auto scrollbar-dark'>
 <table className='w-full min-w-[900px] mx-auto table-auto border-collapse overflow-hidden rounded-md text-sm ring-1 ring-slate-300 dark:ring-slate-600 bg-white shadow-lg'>
->>>>>>> origin/v1.0.3
 <thead className='bg-slate-600 text-slate-300 uppercase text-xs text-left'>
   <tr className="bg-slate-600 text-slate-300 uppercase text-xs text-left">
     <th className="w-3/6 p-3">post detail</th>

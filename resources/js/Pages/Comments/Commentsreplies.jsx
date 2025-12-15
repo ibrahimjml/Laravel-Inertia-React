@@ -26,11 +26,7 @@ export default function Commentsreplies({ comment, postId, level = 0 ,type,postu
     parent_id: comment.id,
   });
 
-<<<<<<< HEAD
   const isReply = level > 0;
-=======
-  const isReply = level > 0 ;
->>>>>>> origin/v1.0.3
 
   const submitReply = (e) => {
     e.preventDefault();
@@ -140,31 +136,16 @@ export default function Commentsreplies({ comment, postId, level = 0 ,type,postu
 const buttonsCount = (userLikeCount > 0 ? 1 : 0) + (comment?.can_modify  ? 2 : 0) + (comment?.can_report ? 1 : 0);
 
   return (
-<<<<<<< HEAD
-    <div
-      className={`${level === 0 ? 'border-b border-gray-200 dark:border-b-gray-600 pb-7 mb-4' : 'mt-3 relative pb-2'}`}
-      style={{ marginLeft: isReply ? `${level * 10}px` : '0px'}}>
-=======
     <div className={ 'relative mb-4' }>
->>>>>>> origin/v1.0.3
     
     {/* report comment model */}
     {showReportModel &&
      <Commentreport commentID={comment.id} reasons={reasons} closeModel={()=>{setShowReportModel(false)}}/>
      }
-<<<<<<< HEAD
-      {isReply && (
-        <div
-          className="absolute left-0 top-0 h-10 w-px bg-gray-400"
-          style={{ transform: 'translateX(-8px)' }}>
-        </div>
-      )}
-=======
     {isReply && (
       <div className="absolute top-0 bottom-0 w-px h-8 bg-gray-400"
             style={{ left: '-8px' }}></div>
         )}
->>>>>>> origin/v1.0.3
 
       <div className="pl-2 text-xl ">
         <div className="flex">
@@ -182,11 +163,6 @@ const buttonsCount = (userLikeCount > 0 ? 1 : 0) + (comment?.can_modify  ? 2 : 0
                 </div>
               }
             </div>
-<<<<<<< HEAD
-            <span className="text-xs text-gray-500 w-full mb-3">{moment(comment.created_at).fromNow()}</span>
-          </div>
-              
-=======
            { comment.parent?.user && ( 
             <p className="text-sm text-gray-500 dark:text-gray-400"> 
             Replying to 
@@ -198,7 +174,6 @@ const buttonsCount = (userLikeCount > 0 ? 1 : 0) + (comment?.can_modify  ? 2 : 0
             <span className="text-xs text-gray-500 w-full mb-3">{moment(comment.created_at).fromNow()}</span>
           </div>
                         
->>>>>>> origin/v1.0.3
             <div className="relative flex items-center w-full">
               {(userLikeCount > 0 || comment.can_modify || comment.can_report) && (
             <button onClick={()=>{setShowModel(!showModel)}} className='w-fit ml-auto'>
@@ -225,14 +200,10 @@ const buttonsCount = (userLikeCount > 0 ? 1 : 0) + (comment?.can_modify  ? 2 : 0
                 <button onClick={() => {setIsEditing(true); setShowModel(false)}} className="block w-full px-6 text-sm py-3 text-black dark:text-blue-600 font-semibold dark:hover:bg-slate-900 ">Edit</button>
                 <button   onClick={() => {
                   setShowModel(false);
-<<<<<<< HEAD
                 if (confirm("Are you sure?")) { router.post(route('comment.delete', comment.id),{
                   preserveScroll:true
                 });
               }}}
-=======
-                if (confirm("Are you sure?")) { router.delete(route('comment.delete', comment.id));}}}
->>>>>>> origin/v1.0.3
                 className="block w-full px-6 text-sm py-3 dark:text-red-600 text-black font-semibold dark:hover:bg-slate-900 ">
                   Delete
                 </button>

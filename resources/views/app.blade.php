@@ -11,13 +11,7 @@
     @vite('resources/js/app.jsx')
     @inertiaHead
   </head>
-<<<<<<< HEAD
-  <body class="bg-slate-100 text-black dark:bg-dark dark:text-slate-200">
-    @inertia
-
-=======
   <body class="pattern-bg bg-slate-100 text-black dark:bg-dark dark:text-slate-200">
     @inertia
->>>>>>> origin/v1.0.3
   </body>
 </html>

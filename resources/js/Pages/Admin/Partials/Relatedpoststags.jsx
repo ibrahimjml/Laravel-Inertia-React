@@ -5,11 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Relatedpoststags({ closemodel, tag }) {
   const { csrf } = usePage().props
-<<<<<<< HEAD
-  const { post } = useForm();
-=======
   const { put } = useForm();
->>>>>>> origin/v1.0.3
   const [loading, setLoading] = useState(null); 
   const [posts, setPosts] = useState(null);  
 
@@ -21,12 +17,7 @@ export default function Relatedpoststags({ closemodel, tag }) {
 
   const handleClick = (postId) => {
     setLoading(postId);
-<<<<<<< HEAD
-    post(route('approve.update', postId), {
-      _method: 'PUT',
-=======
     put(route('approve.update', postId), {
->>>>>>> origin/v1.0.3
       preserveScroll: true,
       preserveState: true,
       onSuccess: () => {
@@ -69,11 +60,7 @@ export default function Relatedpoststags({ closemodel, tag }) {
 
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-20 flex items-center justify-center">
-<<<<<<< HEAD
-      <div className="relative bg-white dark:bg-gray-800 p-6 rounded-lg w-[40%] max-h-[80vh] overflow-y-auto scrollbar-dark">
-=======
       <div className="relative bg-white dark:bg-gray-800 p-6 rounded-lg w-[80%] lg:w-[40%] max-h-[80vh] overflow-y-auto scrollbar-dark">
->>>>>>> origin/v1.0.3
         <button
           onClick={closemodel}
           className="absolute top-2 right-2 text-gray-500 hover:text-red-500"

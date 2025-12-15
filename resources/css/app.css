@@ -2,8 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-<<<<<<< HEAD
-=======
 @layer base {
   html,
   body,
@@ -19,7 +17,6 @@
   Custom Scrollbar - Dark Theme 
 ================================*/
 @layer components {
->>>>>>> origin/v1.0.3
 .scrollbar-dark::-webkit-scrollbar {
   width: 8px;
 }
@@ -34,8 +31,6 @@
   scrollbar-width: thin;
   scrollbar-color: rgba(107, 114, 128, 0.5) transparent; /* Firefox */
 }
-<<<<<<< HEAD
-=======
 .pattern-bg {
   position: relative;
 }
@@ -65,4 +60,3 @@
 }
 
 
->>>>>>> origin/v1.0.3

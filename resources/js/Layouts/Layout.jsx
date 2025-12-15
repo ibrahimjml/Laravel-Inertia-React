@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { Link, router, usePage } from "@inertiajs/react";
 import { route } from 'ziggy-js';
 import { useState,useEffect } from "react";
@@ -110,5 +111,23 @@ useEffect(() => {
         <ToastContainer position="top-right" autoClose={3000} />
       </main>
     </div>
+=======
+import { ToastContainer } from 'react-toastify';
+import Navbar from '@/Components/Navbar/Navbar';
+import Footer from '@/Components/Footer/Footer';
+
+
+export default function Layout({children}) {
+  
+  return (
+  <div className="container flex flex-col lg:max-w-screen w-[80%] mx-auto">
+    <Navbar/>
+    <main className="pt-24">
+        {children}
+        <ToastContainer position="top-right" autoClose={3000} />
+    </main>
+    <Footer/>
+  </div>
+>>>>>>> origin/v1.0.3
   )
 }

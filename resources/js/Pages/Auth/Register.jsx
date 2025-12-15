@@ -115,4 +115,8 @@ export default function Register() {
 </main>
     </>
   )
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> origin/v1.0.3

@@ -37,6 +37,7 @@ class PostService
     $comments = $post->comments()
                 ->with([
                     'user',
+                    'parent.user',
                     'likes' => fn($q) => $q->where('user_id', Auth::id())
                 ])
                 ->withCount([

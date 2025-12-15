@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 
 export default function Dashboard({posts,suspended}) {
   const {auth,flash} = usePage().props;
+<<<<<<< HEAD
   const { post } = useForm();
 
   const handledelete = (postId) => {
@@ -14,6 +15,15 @@ export default function Dashboard({posts,suspended}) {
         { _method: 'delete' },   
         { preserveScroll: true } 
       );
+=======
+  const { delete: destroy } = useForm();
+
+  const handledelete = (postId) => {
+    if (confirm('Are you sure you want to delete this post?')) {
+      destroy(route('posts.destroy', postId), {
+        preserveScroll: true,
+      });
+>>>>>>> origin/v1.0.3
     }
   }
    useEffect(() => {
@@ -29,7 +39,11 @@ export default function Dashboard({posts,suspended}) {
         <p>Approved</p>
         <i className='fa-solid fa-check text-green-500'></i>
         <p>Pending</p>
+<<<<<<< HEAD
       <i class="fa-solid fa-hourglass-start text-yellow-500"></i>
+=======
+      <i className="fa-solid fa-hourglass-start text-yellow-500"></i>
+>>>>>>> origin/v1.0.3
       </div>
     </div>
   
@@ -62,7 +76,11 @@ export default function Dashboard({posts,suspended}) {
                         {post.approved ? (
                         <i className='fa-solid fa-check text-green-500'></i>
                         ) : (
+<<<<<<< HEAD
                           <i class="fa-solid fa-hourglass-start text-yellow-500"></i>
+=======
+                          <i className="fa-solid fa-hourglass-start text-yellow-500"></i>
+>>>>>>> origin/v1.0.3
                         )}
                       </div>
                     </td>

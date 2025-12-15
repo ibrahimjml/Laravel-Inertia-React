@@ -44,7 +44,12 @@ router.get(route('home',{...params}));
   return (
     <>
     <Head title='Home' />
-    {auth.user && <h1 className="text-2xl text-black dark:text-slate-200 text-center">Welcome to blog, <span className='font-semibold'>{auth.user.name}</span></h1>}
+    {auth.user && 
+    <h1 className="text-2xl text-black dark:text-slate-200 text-center">
+      Welcome to blog,
+      <span className='font-semibold'>&nbsp;{auth.user.name}</span>
+      </h1>}
+      <p className='text-lg text-center text-black/50 dark:text-gray-200/50'>Create and Search Posts, News, tips, and best practices for PHP and any technology.</p>
     <div className="flex gap-3 mt-3 items-center">
 {/* search */}
 <div className="my-4 flex-1">

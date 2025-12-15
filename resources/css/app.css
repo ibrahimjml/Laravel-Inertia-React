@@ -2,10 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  html,
+  body,
+  #app {
+    min-height: 100vh;
+  }
+
+  body {
+    margin-bottom: 0 !important;
+  }
+}
 /* =============================
   Custom Scrollbar - Dark Theme 
 ================================*/
-
+@layer components {
 .scrollbar-dark::-webkit-scrollbar {
   width: 8px;
 }
@@ -22,7 +33,7 @@
 }
 .pattern-bg {
   position: relative;
-  height: 100%;
+}
 }
 /* =============================
   Background Pattern 

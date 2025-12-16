@@ -1,30 +1,31 @@
 import { Link, router, usePage } from "@inertiajs/react";
 import moment from "moment";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { route } from "ziggy-js";
 import Wholiked from './Who_liked';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import LikePostButton from "./Ui/LikePostButton";
+import useLikes from "@/Hooks/useLikes";
 
-export default function Blogcard({ post, request, type, id, auth }) {
+export default function Blogcard({ post, request, auth }) {
   const authUser = auth.user;
-  const { csrf ,likers} = usePage().props
+  const { csrf ,likers} = usePage().props;
+   // Likes Hook
+  const { userLikeCount, displayTotal, pendingLikes, showLikeEffect, heartAnimation, handleLike, handleUndo} = useLikes({
+    type: "post",
+    id: post.id,
+    csrf,
+    initialUserLikes: post.user_like ?? 0,
+    initialTotalLikes: post.likes_sum_count ?? 0,
+   });
+  // post likers
   const postLikers = likers[post.id] || [];
-  const MAX_LIKES = 30;
 
   const [loadedImages, setLoadedImages] = useState({});
-
-  const [userLikeCount, setUserLikeCount] = useState(post.user_like ?? 0);
-  const [likeTotal, setLikeTotal] = useState(post.likes_sum_count ?? 0);
-  const [pendingLikes, setPendingLikes] = useState(0);
-  const [showLikeEffect, setShowLikeEffect] = useState(false);
-  const [heartAnimation, setHeartAnimation] = useState("");
   const [showLikeModal, setShowLikeModal] = useState(false);
   
   const [isFollowing, setIsFollowing] = useState(post.user.is_followed ?? false);
   const [showModel, setShowModel] = useState(false);
-
-  const debounceTimer = useRef(null);
-  const animationTimeoutRef = useRef(null);
 
   const params = {
     ...(request.search && { search: request.search }),
@@ -35,86 +36,6 @@ export default function Blogcard({ post, request, type, id, auth }) {
 
   const handleImageLoad = (id) => {
     setLoadedImages((prev) => ({ ...prev, [id]: true }));
-  };
-
-  const handleLike = () => {
-    if (userLikeCount + pendingLikes >= MAX_LIKES){
-      setShowLikeEffect(false);
-      setHeartAnimation("animate-shake");
-    
-    clearTimeout(animationTimeoutRef.current);
-    animationTimeoutRef.current = setTimeout(() => {
-      setHeartAnimation("");
-    }, 400);
-    return;
-    }
-
-    setHeartAnimation("animate-pop");
-    setShowLikeEffect(true);
-
-    clearTimeout(animationTimeoutRef.current);
-    animationTimeoutRef.current = setTimeout(() => {
-      setHeartAnimation("");
-      setShowLikeEffect(false);
-    }, 400);
-
-// send count likes to backend
-    setPendingLikes((prev) => {
-      const newCount = prev + 1;
-
-      clearTimeout(debounceTimer.current);
-      debounceTimer.current = setTimeout(() => {
-        sendLikes(newCount);
-      }, 1000);
-
-      return newCount;
-    });
-  };
-
-  const sendLikes = async (count) => {
-
-    try {
-      const response = await fetch("/like", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN": csrf,
-        },
-        body: JSON.stringify({ type, id, count }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-         setUserLikeCount(data.userLikes);
-        setLikeTotal(data.totalLikes);
-      }
-    } catch (err) {
-      console.error("Failed to send likes", err);
-    } finally {
-      setPendingLikes(0);
-    }
-  };
-
-  const handleUndo = async () => {
-
-    try {
-      const response = await fetch("/undo-like", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN": csrf,
-        },
-        body: JSON.stringify({ type, id }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUserLikeCount(data.userLikes);
-        setLikeTotal(data.totalLikes);
-      }
-    } catch (error) {
-      console.error("Undo failed", error);
-    }
   };
 
   const handleFollowToggle = () => {
@@ -144,13 +65,6 @@ export default function Blogcard({ post, request, type, id, auth }) {
   useEffect(() => {
     setIsFollowing(post.user.is_followed ?? false);
   }, [post.user.is_followed]);
-
-  useEffect(() => {
-    return () => {
-      clearTimeout(animationTimeoutRef.current);
-      clearTimeout(debounceTimer.current);
-    };
-  }, []);
 
   return (
     <div className="bg-white dark:border-2 border-slate-600 dark:bg-gray-800 rounded-md shadow-lg overflow-hidden h-full flex flex-col justify-between">
@@ -200,31 +114,25 @@ export default function Blogcard({ post, request, type, id, auth }) {
 
         <div className="relative flex items-center justify-between">
         <div className="flex items-center gap-3 justify-start">
-            <button className="px-2 py-1 rounded transition-all">
-              <FontAwesomeIcon onClick={handleLike}
-               icon={[(userLikeCount + pendingLikes > 0) ? 'fas' : 'far', 'heart']}
-               className={`mr-2 text-red-500 dark:text-red-500 ${heartAnimation}`}/>
-
-              <span onClick={toggleLikeModal}>
-               {pendingLikes > 0 ? Number(likeTotal) + Number(pendingLikes) : likeTotal}
-              </span>
-            </button>
+            <LikePostButton
+                 ShowLikers = {toggleLikeModal}
+                 onLike = {handleLike}
+                 displayTotal = {displayTotal}
+                 userLikeCount = {userLikeCount}
+                 pendingLikes = {pendingLikes}
+                 heartAnimation = {heartAnimation}
+                 showLikeEffect = {showLikeEffect}
+            />
             <span onClick={() => router.visit(route('posts.show',post.id))}
-              className="cursor-pointer">
-              {post.comments.length >0 && 
-              <>
-              <FontAwesomeIcon icon='comment' ></FontAwesomeIcon>
-              <b className="ml-1">{post.comments_count}</b>
+                  className="cursor-pointer">
+              { post.comments.length > 0 && 
+               <>
+                 <FontAwesomeIcon icon='comment' ></FontAwesomeIcon>
+                 <b className="ml-1">{post.comments_count}</b>
               </>
               }
             </span>
         </div>
-          {showLikeEffect &&  (
-            <div className="absolute -top-8 -right-2 animate-bounce">
-              <div className="text-red-500 text-xl font-bold">+{ userLikeCount + pendingLikes}</div>
-            </div>
-          )}
-
           <div className="relative flex items-center">
             {buttonsCount >= 1 && (
               <button onClick={toggleModel}>

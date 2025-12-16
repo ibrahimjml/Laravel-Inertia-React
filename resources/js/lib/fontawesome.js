@@ -29,7 +29,8 @@ import {
   faEdit,
   faImage,
   faEye,
-  faClock
+  faClock,
+  faShareFromSquare
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -38,6 +39,7 @@ library.add(
   faGauge,
   faFile,
   faTag,
+  faShareFromSquare,
   faHeart,
   faThumbsUp,
   faThumbsUpRegular,

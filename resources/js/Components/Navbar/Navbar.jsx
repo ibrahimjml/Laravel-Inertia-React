@@ -44,8 +44,8 @@ useEffect(() => {
   `}
 >
       <nav className="flex justify-between items-center gap-4 text-slate-200 font-semibold">
-          <h1 className="text-3xl font-semibold text-gray-800/80 dark:text-white">Inertia Blog</h1>
-          
+          {/* <h1 className="text-3xl font-semibold text-gray-800/80 dark:text-white">Inertia Blog</h1> */}
+          <img src={'IJB.png'} alt="Logo" className="h-12 w-12 rounded-full border-4 dark:border-blue-600/60 border-black/70"/>
             {auth.user ? (
               <div className="space-x-4 pr-5 flex items-center text-black/40 dark:text-white">
                 <button onClick={switchTheme}>
@@ -69,7 +69,7 @@ useEffect(() => {
                 </button>
                 </div>
                 {showmodel && 
-                <div onClick={togglemodel} className="absolute z-50 top-16  -right-4 border dark:border-slate-200 bg-white dark:bg-slate-800 dark:text-white rounded-lg overflow-hidden w-40">
+                <div onClick={togglemodel} className="absolute z-50 top-16  lg:-right-4 -right-10 border dark:border-slate-200 bg-white dark:bg-slate-800 dark:text-white rounded-lg overflow-hidden w-40">
                   <Link href={route('posts.create')} className="block w-full px-6 py-3 dark:hover:bg-slate-700 hover:bg-gray-200/20 text-left text-gray-800/80 dark:text-white">Create Post</Link>
                   <Link href={route('dashboard')} className="block w-full px-6 py-3 dark:hover:bg-slate-700 hover:bg-gray-200/20 text-left text-gray-800/80 dark:text-white">Dashboard</Link>
                   <Link href={route('edit.profile')} className="block w-full px-6 py-3 dark:hover:bg-slate-700 hover:bg-gray-200/20 text-left text-gray-800/80 dark:text-white">Edit Profile</Link>
@@ -91,11 +91,11 @@ useEffect(() => {
               {darkMode ? (
                <i className="fa-solid fa-sun text-yellow-300"></i>
               ) : (
-                <i className="fa-solid fa-moon text-white"></i>
+                <i className="fa-solid fa-moon text-black/40 dark:text-white"></i>
               )}
                 </button>
-                <Link href={route('register')}>Register</Link>
-                <Link href={route('login')}>Login</Link>
+                <Link href={route('register')} className="text-gray-800/80 dark:text-white">Register</Link>
+                <Link href={route('login')} className="text-gray-800/80 dark:text-white">Login</Link>
               </div>
               </>
             )}

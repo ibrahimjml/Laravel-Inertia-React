@@ -33,7 +33,7 @@ useEffect(() => {
   const switchTheme = () => setDarkMode(prev => !prev);
   return (
     <>
-    <header className={`container mx-auto w-[80%] rounded-lg
+    <header className={`container mx-auto lg:w-[80%] rounded-lg
     bg-white dark:bg-gray-800/80 
     backdrop-blur-md backdrop-saturate-150
     border border-white/20 dark:border-white/10
@@ -44,7 +44,7 @@ useEffect(() => {
   `}
 >
       <nav className="flex justify-between items-center gap-4 text-slate-200 font-semibold">
-          <h1 className="text-3xl font-semibold text-gray-800/80 dark:text-white">Inertia Blog</h1>
+          <h1 className="text-3xl font-semibold text-gray-800/80 dark:text-white">Inertia</h1>
           
             {auth.user ? (
               <div className="space-x-4 pr-5 flex items-center text-black/40 dark:text-white">

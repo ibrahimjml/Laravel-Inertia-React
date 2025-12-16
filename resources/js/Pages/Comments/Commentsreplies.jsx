@@ -1,25 +1,29 @@
-import { useEffect, useRef, useState } from 'react';
+import {  useState } from 'react';
 import { router, useForm, usePage } from '@inertiajs/react';
 import { route } from 'ziggy-js';
 import moment from 'moment';
 import Commentreport from './Commentreport';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import useLikes from '@/Hooks/useLikes';
+import LikeCommentButton from '@/Components/LikeCommentButton';
 
 export default function Commentsreplies({ comment, postId, level = 0 ,type,postuser,reasons}) {
   const {csrf} = usePage().props;
-  const [likeTotal, setLikeTotal] = useState(comment.likes_sum_count ?? 0);
-  const [userLikeCount, setUserLikeCount] = useState(comment.user_like_count ?? 0);
-  const [pendingLikes, setPendingLikes] = useState(0);
-  const [showLikeEffect, setShowLikeEffect] = useState(false);
-  const [heartAnimation, setHeartAnimation] = useState("");
+  // Likes Hook
+    const { userLikeCount, displayTotal, pendingLikes, showLikeEffect, heartAnimation, handleLike, handleUndo} = useLikes({
+      type: "comment",
+      id: comment.id,
+      csrf,
+      initialUserLikes: comment.user_like_count ?? 0,
+      initialTotalLikes: comment.likes_sum_count ?? 0,
+     });
+
   const [showReply, setShowReply] = useState(false);
   const [showReplies, setShowReplies] = useState(true);
-  const debounceTimer = useRef(null);
-  const animationTimeoutRef = useRef(null);
+
   const [isEditing, setIsEditing] = useState(false);
   const [showModel,setShowModel] = useState(false);
   const [showReportModel,setShowReportModel] = useState(false);
-  const MAX_LIKES = 30;
 
   const { data, setData, post, reset,processing,errors } = useForm({
     content: '',
@@ -38,85 +42,6 @@ export default function Commentsreplies({ comment, postId, level = 0 ,type,postu
     });
   };
 
-  const handleLike = () => {
-    if (userLikeCount + pendingLikes >= MAX_LIKES){
-      setShowLikeEffect(false);
-      setHeartAnimation("animate-shake");
-    
-    clearTimeout(animationTimeoutRef.current);
-    animationTimeoutRef.current = setTimeout(() => {
-      setHeartAnimation("");
-    }, 400);
-    return;
-    }
-
-    setHeartAnimation("animate-pop");
-    setShowLikeEffect(true);
-
-    clearTimeout(animationTimeoutRef.current);
-    animationTimeoutRef.current = setTimeout(() => {
-      setHeartAnimation("");
-      setShowLikeEffect(false);
-    }, 400);
-
-// send count likes to backend
-    setPendingLikes((prev) => {
-      const newCount = prev + 1;
-
-      clearTimeout(debounceTimer.current);
-      debounceTimer.current = setTimeout(() => {
-        sendLikes(newCount);
-      }, 1000);
-
-      return newCount;
-    });
-  };
-
-  const sendLikes = async (count) => {
-
-    try {
-      const response = await fetch(route('comments.likes',comment.id), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN": csrf,
-        },
-        body: JSON.stringify({ type, id:comment.id, count }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-         setUserLikeCount(data.userLikes);
-        setLikeTotal(data.totalLikes);
-      }
-    } catch (err) {
-      console.error("Failed to send likes", err);
-    } finally {
-      setPendingLikes(0);
-    }
-  };
-
-  const handleUndo = async () => {
-    try {
-      const response = await fetch(route('comments.undo',comment.id), {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "X-CSRF-TOKEN": csrf,
-        },
-        body: JSON.stringify({ type, id:comment.id }),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUserLikeCount(data.userLikes);
-        setLikeTotal(data.totalLikes);
-      }
-    } catch (error) {
-      console.error("Undo failed", error);
-    }
-  };
-
   const {data: editData,setData: setEditData, put,processing: editProcessing,errors: editErrors,} = useForm({
     content: comment.content,
   });
@@ -126,12 +51,7 @@ export default function Commentsreplies({ comment, postId, level = 0 ,type,postu
   setShowReplies(false);
   setShowModel(false);
   }
-    useEffect(() => {
-      return () => {
-        clearTimeout(animationTimeoutRef.current);
-        clearTimeout(debounceTimer.current);
-      };
-    }, []);
+
 
 const buttonsCount = (userLikeCount > 0 ? 1 : 0) + (comment?.can_modify  ? 2 : 0) + (comment?.can_report ? 1 : 0);
 
@@ -260,21 +180,14 @@ const buttonsCount = (userLikeCount > 0 ? 1 : 0) + (comment?.can_modify  ? 2 : 0
         <FontAwesomeIcon icon='comment' className=' dark:text-white mr-2'></FontAwesomeIcon>{ comment.replies_count} {showReplies ? "Hide" : "Show"}</span>
         }
         
-           <button className="px-2 py-1 text-sm ml-2 rounded transition-all">
-              <FontAwesomeIcon 
-               onClick={handleLike} 
-              icon={[(userLikeCount + pendingLikes > 0) ? 'fas':'far','thumbs-up']} 
-              className={`fa-thumbs-up mr-2  dark:text-slate-200 ${heartAnimation}`}>
-              </FontAwesomeIcon>
-              <span >
-               {pendingLikes > 0 ? Number(likeTotal) + Number(pendingLikes) : likeTotal}
-              </span>
-            </button>
-              {showLikeEffect && (
-               <div className="inline-flex items-center justify-center w-7 h-7 px-2 rounded-full dark:bg-red-500 bg-dark animate-bounce">
-                 <div className="text-white text-sm font-bold">+{userLikeCount + pendingLikes}</div>
-               </div>
-             )}
+        <LikeCommentButton
+                 onLike = {handleLike}
+                 displayTotal = {displayTotal}
+                 userLikeCount = {userLikeCount}
+                 pendingLikes = {pendingLikes}
+                 heartAnimation = {heartAnimation}
+                 showLikeEffect = {showLikeEffect}
+        />
       
         {showReply && (
           <form onSubmit={submitReply} className="mt-2">

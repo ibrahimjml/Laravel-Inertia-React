@@ -7,7 +7,7 @@ export default function Morearticles({post}) {
   const [isFollowing, setIsFollowing] = useState(post.user.is_followed ?? false);
   return (
     <>
-    <div className="bg-white dark:border-2 border-slate-600 p-4  dark:bg-dark rounded-md shadow-lg overflow-hidden h-full flex flex-col justify-between">
+    <div className="bg-white dark:border-2 border-slate-600 p-4  dark:bg-gray-800/80 rounded-md shadow-lg overflow-hidden h-full flex flex-col justify-between">
     
         <Link href={route("posts.show", post.id)}>
           <img

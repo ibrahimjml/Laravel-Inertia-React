@@ -15,11 +15,13 @@
 ![Dashboard Screenshot](https://i.postimg.cc/13SZW9SL/Screenshot-2025-05-29-202150.png)
 ![Dashboard Screenshot](https://i.postimg.cc/Hs99fVxj/127-0-0-1-8000-admin-tags-sort-oldest-2.png)
 ![Dashboard Screenshot](https://i.postimg.cc/cCTLqGgm/Screenshot-2025-06-01-212310.png)
-![Dashboard Screenshot](https://i.postimg.cc/RFXRtGNz/127-0-0-1-8000-12.png)
-![Dashboard Screenshot](https://i.postimg.cc/m2sndQVs/Screenshot-2025-05-26-223512.png)
-![Dashboard Screenshot](https://i.postimg.cc/QxnywNNr/127-0-0-1-8000-posts-10-2.png)
-![Dashboard Screenshot](https://i.postimg.cc/QdHRd9Yt/Screenshot-2025-05-31-160114.png)
-![Dashboard Screenshot](https://i.postimg.cc/HnLVkLCK/Screenshot-2025-06-01-215207.png)
+![Blog page](https://i.postimg.cc/2ync7LDT/Screenshot-2026-01-29-172058.png)
+![Show page](https://i.postimg.cc/cJjFqB1w/Screenshot-2026-01-29-172153.png)
+![Create markdown](https://i.postimg.cc/Y9MwF7gW/Screenshot-2026-01-29-172325.png)
+![Edit markdown](https://i.postimg.cc/SQ1wSCTF/Screenshot-2026-01-29-172353.png)
+![code block preview](https://i.postimg.cc/WbnSpvb2/Screenshot-2026-01-29-172230.png)
+![comments model](https://i.postimg.cc/QdHRd9Yt/Screenshot-2025-05-31-160114.png)
+![comment report model](https://i.postimg.cc/HnLVkLCK/Screenshot-2025-06-01-215207.png)
 
 ## INSTALLATION
 1.📦 Install dependencies
@@ -69,17 +71,15 @@ php artisan serve
 - **Suspend user action**
 - **Reports on posts and comments**
 - **Approve/Disapprove posts action**
-- **Edit profile user**
+- **profile settings**
 - **Full text search**  
-- **Advanced Filtering Chained filter query**
-- **Sort options popular,following,trendtag**
-- **30 likes per user on each post handling rapid click**
+- **Advanced Filtering with multi sort options**
+- **Polymorphic like system : handle rapid likes up to 30 on posts and comments**
 - **Comments/replies edit/delete/like/report**
 - **Users can view who liked**
 - **Toggle Follow/Unfollow**
 
 ### 🚀Coming soon
-- **report on comments** 
-- **notifications** 
+- **Realtime notifications + enhancements** 
 
 

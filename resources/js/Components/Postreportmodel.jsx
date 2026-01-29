@@ -2,7 +2,7 @@ import { useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
-export default function Postreportmodel({ close, reasons, postID }) {
+export default function Postreportmodel({ close, reasons, slug , postId}) {
   const { props } = usePage();
   const status = props.flash?.error;
 
@@ -10,13 +10,13 @@ export default function Postreportmodel({ close, reasons, postID }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     reason: '',
     other: '',
-    post_id: postID,
+    post_id: postId,
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    post(route('post.report',postID), {
+    post(route('post.report',slug), {
     data: {
     ...data,
     other: selectedReason === 'Other' ? data.other : '',

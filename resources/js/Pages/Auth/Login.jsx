@@ -11,29 +11,29 @@ const recaptchaRef = useRef(null);
     // g_recaptcha_response: "",
     
   })
- useEffect(() => {
-    const renderRecaptcha = () => {
-      if (window.grecaptcha && recaptchaRef.current) {
-        window.grecaptcha.render(recaptchaRef.current, {
-          sitekey: import.meta.env.VITE_GOOGLE_SITEKEY,
-          callback: (token) => {
-          setData(prev => ({ ...prev, g_recaptcha_response: token }));
-          },
-        });
-      }
-    };
+//  useEffect(() => {
+//     const renderRecaptcha = () => {
+//       if (window.grecaptcha && recaptchaRef.current) {
+//         window.grecaptcha.render(recaptchaRef.current, {
+//           sitekey: import.meta.env.VITE_GOOGLE_SITEKEY,
+//           callback: (token) => {
+//           setData(prev => ({ ...prev, g_recaptcha_response: token }));
+//           },
+//         });
+//       }
+//     };
 
-    // Call render when script is ready
-    if (window.grecaptcha) {
-      renderRecaptcha();
-    } else {
-      window.onloadCallback = renderRecaptcha;
-    }
-  }, []);
+//     // Call render when script is ready
+//     if (window.grecaptcha) {
+//       renderRecaptcha();
+//     } else {
+//       window.onloadCallback = renderRecaptcha;
+//     }
+//   }, []);
   function handleLogin(e) {
     e.preventDefault()
-     const token = grecaptcha.getResponse();
-    setData("g_recaptcha_response", token);
+    //  const token = grecaptcha.getResponse();
+    // setData("g_recaptcha_response", token);
 
     post('/login',{
       preserveScroll: true

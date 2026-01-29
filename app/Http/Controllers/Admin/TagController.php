@@ -15,7 +15,7 @@ class TagController extends Controller
 
     $tags = Hashtag::with([
                'posts' => fn($q) =>
-                $q->select('posts.id', 'posts.title', 'posts.image', 'posts.approved')
+                $q->select('posts.id', 'posts.slug','posts.title', 'posts.image', 'posts.approved')
               ->take(5)
               ])
               ->withCount([
@@ -48,7 +48,7 @@ class TagController extends Controller
     public function show(Hashtag $hashtag)
     {
       $relatedposts = $hashtag->posts()
-      ->select('posts.id', 'posts.title', 'posts.image', 'posts.approved')
+      ->select('posts.id', 'posts.title','posts.slug', 'posts.image', 'posts.approved')
         ->get();
          return response()->json($relatedposts);
     }

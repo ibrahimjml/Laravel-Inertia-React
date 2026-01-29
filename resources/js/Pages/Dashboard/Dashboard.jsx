@@ -8,9 +8,9 @@ export default function Dashboard({posts,suspended}) {
   const {auth,flash} = usePage().props;
   const { delete: destroy } = useForm();
 
-  const handledelete = (postId) => {
+  const handledelete = (postSlug) => {
     if (confirm('Are you sure you want to delete this post?')) {
-      destroy(route('posts.destroy', postId), {
+      destroy(route('posts.destroy', postSlug), {
         preserveScroll: true,
       });
     }
@@ -67,14 +67,14 @@ export default function Dashboard({posts,suspended}) {
                     </td>
                     <td className='w-1/4 py-3 pr-3 text-right text-indigo-500'>
                       {post.approved == true  && 
-                      <Link href={route('posts.show', post.id)}>View</Link>
+                      <Link href={route('posts.show', post.slug)}>View</Link>
                       }
                     </td>
                     <td className='w-1/4 py-3 pr-3 text-right text-indigo-500'>
-                      <Link href={route('posts.edit', post.id)}>Edit</Link>
+                      <Link href={route('posts.edit', post.slug)}>Edit</Link>
                     </td>
                     <td className='w-1/4 py-3 pr-3 text-right text-indigo-500'>
-                      <button type='submit' onClick={() => { handledelete(post.id) }}>Delete</button>
+                      <button type='submit' onClick={() => { handledelete(post.slug) }}>Delete</button>
                     </td>
                   </tr>
                 ))

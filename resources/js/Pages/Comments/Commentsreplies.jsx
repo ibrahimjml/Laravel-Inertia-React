@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import useLikes from '@/Hooks/useLikes';
 import LikeCommentButton from '@/Components/Ui/LikeCommentButton';
 
-export default function Commentsreplies({ comment, postId, level = 0 ,type,postuser,reasons}) {
+export default function Commentsreplies({ comment, slug, level = 0 ,type,postuser,reasons}) {
   const {csrf} = usePage().props;
     // Likes Hook
   const { userLikeCount, displayTotal, pendingLikes, showLikeEffect, heartAnimation, handleLike, handleUndo} = useLikes({
@@ -33,7 +33,7 @@ export default function Commentsreplies({ comment, postId, level = 0 ,type,postu
 
   const submitReply = (e) => {
     e.preventDefault();
-    post(route('comment.create', postId ), {
+    post(route('comment.create', slug ), {
       onSuccess: () => {
         reset();
         setShowReply(false);
@@ -209,7 +209,7 @@ const buttonsCount = (userLikeCount > 0 ? 1 : 0) + (comment?.can_modify  ? 2 : 0
               <Commentsreplies
                 key={reply.id}
                 comment={reply}
-                postId={postId}
+                slug={slug}
                 reasons={reasons}
                 postuser={postuser}
                 level={level + 1}

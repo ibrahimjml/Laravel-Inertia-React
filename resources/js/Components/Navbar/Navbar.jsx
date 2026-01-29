@@ -45,7 +45,7 @@ useEffect(() => {
 >
       <nav className="flex justify-between items-center gap-4 text-slate-200 font-semibold">
           {/* <h1 className="text-3xl font-semibold text-gray-800/80 dark:text-white">Inertia Blog</h1> */}
-          <img src={'IJB.png'} alt="Logo" className="h-12 w-12 rounded-full border-4 dark:border-blue-600/60 border-black/70"/>
+          <img src={'/ibrahim.jpg'} alt="Logo" className="h-12 w-12 rounded-full border-4 dark:border-blue-600/60 border-black/70"/>
             {auth.user ? (
               <div className="space-x-4 pr-5 flex items-center text-black/40 dark:text-white">
                 <button onClick={switchTheme}>

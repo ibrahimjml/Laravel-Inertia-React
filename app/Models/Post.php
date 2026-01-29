@@ -9,15 +9,19 @@ use Illuminate\Support\Facades\Auth;
 class Post extends Model
 {
   use HasFactory;
-
+  const TABLE = 'posts';
     protected $fillable = [
       'title',
+      'slug',
       'description',
       'image',
       'user_id',
       'approved'
     ];
-
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
     public function user()
     {
       return $this->belongsTo(User::class);
@@ -66,6 +70,6 @@ class Post extends Model
     }
     public function getImageAttribute($value)
     {
-       return $value ? asset("images/{$value}") : asset('storage/images/default.jpg');
+       return $value ? asset("storage/images/{$value}") : asset('storage/images/default.jpg');
     }
 }

@@ -74,7 +74,7 @@ export default function Blogcard({ post, request, auth }) {
             <FontAwesomeIcon icon='spinner' spin className=" text-gray-400 text-xl"></FontAwesomeIcon>
           </div>
         )}
-        <Link href={route("posts.show", post.id)}>
+        <Link href={route("posts.show", post.slug)}>
           <img
             className={`w-full h-48 object-cover object-center transition-opacity duration-300 ${loadedImages[post.id] ? "opacity-100" : "opacity-0"}`}
             src={post.image}

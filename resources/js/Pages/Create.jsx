@@ -1,148 +1,227 @@
-import { Head, useForm } from "@inertiajs/react"
+import { Head, useForm, usePage } from "@inertiajs/react";
 import { useState } from "react";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import MarkdownEditor from "@/Components/MarkdownEditor";
+import { ImageUpload } from "@/Apis/ImageUpload";
 
+export default function Create({ alltags }) {
+    const {csrf} = usePage().props;
+    const [tagInput, setTagInput] = useState("");
+    const [errorTag, setErrorTag] = useState("");
+    const [suggestions, setSuggestions] = useState([]);
+    const [preview, setPreview] = useState(null);
 
-export default function Create({alltags}) {
-const [tagInput, setTagInput] = useState("");
-const [errorTag, seterrorTag] = useState('');
-const tagregex = /^[\p{L}\p{N}\s]+$/u;
-  const { data, setData, post, processing, errors } = useForm({
-    title: "",
-    description: "",
-    image: "",
-    tags: [],
-    
-  })
-  const handlecreate=(eo)=>{
-eo.preventDefault();
-post(route('posts.store'),{
-   ...data,
-  tags: data.tags,
-  preserveScroll: true,
-})}
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && tagInput.trim() !== "") {
-      e.preventDefault();
-      const newTag = tagInput.trim();
-      
-       if (!tagregex.test(newTag)) {
-      seterrorTag('Each tag may only contain letters, numbers, and spaces.');
-      setTagInput("");
-      return;
-    }
-      if (!data.tags.includes(newTag)) {
-        if(data.tags.length >= 4) {
-            seterrorTag('you hit the max limit hashtags.');
+    const { data, setData, post, processing, errors } = useForm({
+        title: "",
+        description: "",
+        image: "",
+        tags: [],
+    });
+
+    const handleImageChange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        setData("image", file);
+
+        const reader = new FileReader();
+        reader.onloadend = () => setPreview(reader.result);
+        reader.readAsDataURL(file);
+    };
+
+    const removeImage = () => {
+        setPreview(null);
+        setData("image", null);
+        document.getElementById("coverImage").value = "";
+    };
+    // ----- TAG HANDLERS -----
+    const handleTagInput = (e) => {
+        const val = e.target.value;
+        setTagInput(val);
+
+        // Autocomplete suggestions
+        if (val.trim() === "") {
+            setSuggestions([]);
+        } else {
+            setSuggestions(
+                alltags.filter(
+                    (tag) =>
+                        tag.toLowerCase().includes(val.toLowerCase()) &&
+                        !data.tags.includes(tag),
+                ),
+            );
+        }
+    };
+
+    const addTag = (tag) => {
+        if (data.tags.length >= 4) {
+            setErrorTag("You hit the max limit of 4 tags.");
             return;
         }
-        setData("tags", [...data.tags, newTag]);
-      }
-      setTagInput(""); 
-    }
-  };
-const handleSelectTag = (e) => {
-  const selectedTag = e.target.value;
-  if (selectedTag && !data.tags.includes(selectedTag)) {
-    if (data.tags.length >= 4) {
-      seterrorTag("You hit the max limit hashtags.");
-      return;
-    }
-    setData("tags", [...data.tags, selectedTag]);
-  }
-};
-  const removeTag = (index) => {
-    setData("tags", data.tags.filter((tag, i) => i !== index));
-  };
-  return (
-    <>
-  <Head title="Create"/>
-<div className=" bg-white border mx-auto border-gray-200 rounded-lg shadow md:flex-row md:w-[70%]  dark:border-gray-700 dark:bg-gray-800 "> 
-<div className="container mx-auto pt-[40px]">
-<h1 className=" text-3xl font-bold text-center py-5 capitalize">create post</h1>
-</div>
+        setData("tags", [...data.tags, tag]);
+        setTagInput("");
+        setSuggestions([]);
+        setErrorTag("");
+    };
 
-<div className="flex justify-center ">
-  <form  className="p-6 w-[90%]" onSubmit={handlecreate}>
-    <div className="flex flex-wrap">
-      <label htmlFor="title" className="block text-gray-700 dark:text-white text-sm font-bold mb-2 sm:mb-4">
-        Title:
-      </label>
-  
-      <input id="title" type="text" className="rounded-sm p-2 text-black dark:bg-Gray border-2 form-input w-full "
-          name="title"  value={data.title} onChange={(eo)=>{setData('title',eo.target.value)}}/>
-  
-  {errors.title && <small className="text-sm text-red-500">{errors.title}</small>} 
-  </div>
-    <div>
-      <label htmlFor="description" className="mt-2 block text-gray-700 dark:text-white text-sm font-bold mb-2 sm:mb-4">description :</label>
-      <textarea id="description" name="description" 
-      className="rounded-sm p-2 border-2 text-black form-input w-full dark:bg-Gray"
-      value={data.description} 
-      onChange={(eo)=>{setData('description',eo.target.value)}}
-      ></textarea>
-    {errors.description && <small className="text-sm text-red-500">{errors.description}</small>} 
-    </div>
-    <div>
-      <label htmlFor="image" className="mt-2 block text-gray-700 dark:text-white  text-sm font-bold mb-2 sm:mb-4">image :</label>
-      <input type="file" name="image" 
-      className="rounded-sm p-2 border-2 form-input w-full text-black dark:bg-Gray"
-      onChange={(eo)=>{setData('image',eo.target.files[0])}}
-      />
-      {errors.image && <small className="text-sm text-red-500">{errors.image}</small>} 
-    </div>
+    const removeTag = (index) => {
+        setData(
+            "tags",
+            data.tags.filter((_, i) => i !== index),
+        );
+    };
 
-      <div className="flex flex-wrap gap-2 mb-2 mt-3">
-        {data.tags.map((tag, index) => (
-          <div key={index} className="flex items-center gap-1 bg-gray-200 text-black px-2 py-1 rounded-full">
-          <span><b>{index +1}.</b> #{tag}</span>
-          <button type="button" onClick={() => removeTag(index)} className="text-red-500 hover:text-red-700 font-bold ml-1">&times;</button>
-          </div>
-          ))}
-        </div>
-    <div className="flex flex-wrap">
-      <label htmlFor="tags" className="block text-gray-700 dark:text-white text-sm font-bold mb-2 mt-2 sm:mb-4">
-        hashtag:
-      </label>
-  
-      <input id="tags" type="text"
-        className="rounded-sm p-2 border-2 form-input w-full text-black dark:bg-Gray"
-         value={tagInput} 
-          onChange={(e) => setTagInput(e.target.value)}
-         onKeyDown={handleKeyDown}
-          placeholder="Press Enter to add hashtag"
-         />
-  <div className="mt-4 mb-2 w-full">
-  <label className="block text-gray-700 dark:text-white text-sm font-bold mb-2">
-    Or choose a tag:
-  </label>
-  <select
-    onChange={handleSelectTag}
-    multiple
-    className="rounded-sm p-2 border-2 form-select w-full text-black dark:bg-Gray"
-  >
-    <option value=''>-- Choose a tag --</option>
-    {alltags.map((tag, index) => (
-      <option key={index} value={tag}>
-        <b>{index +1}.</b> #{tag}
-      </option>
-    ))}
-  </select>
-</div>
-  {errors.tags && <small className="text-sm block text-red-500">{errors.tags}</small>} 
-  {errorTag && <small className="text-sm block text-left text-red-500">{errorTag}</small>} 
+    const handleTagKeyDown = (e) => {
+        if (e.key === "Enter" && tagInput.trim() !== "") {
+            e.preventDefault();
+            addTag(tagInput.trim());
+        }
+    };
+// ----- handle editor image upload  -----
+    const handleImageUpload = async () => {
+        try {
+            const { url } = await ImageUpload({ csrf });
+    
+            setData(
+                "description",
+                data.description + `\n![Image description](${url})\n`
+            );
+        } catch (err) {
+            console.error(err);
+        }
+    };
 
-  </div>
-    <div className="mt-4 flex justify-center">
-      <button type="submit"
-      disabled={processing}
-      className="w-[200px]  select-none font-bold  p-3 rounded-lg text-xl  no-underline text-gray-100 bg-gray-700 hover:bg-gray-500 sm:py-4">
-      {processing ? (<FontAwesomeIcon icon='spinner' spin className=" text-white"></FontAwesomeIcon>) : 'Create'}
-      </button>
-    </div>
-  </form>
-</div>
-</div> 
-    </>
-  )
+    // ----- FORM SUBMIT -----
+    const handleCreate = (e) => {
+        e.preventDefault();
+        post(route("posts.store"), {
+            ...data,
+            tags: data.tags,
+            preserveScroll: true,
+        });
+    };
+
+    return (
+        <>
+            <Head title="Create Post" />
+            <div className="max-w-5xl h-[100vh] rounded-md my-4 overflow-y-auto scrollbar-dark bg-white mx-auto space-y-6 flex flex-col">
+                <h1 className="text-4xl font-bold text-black/50 text-left px-10 mb-6">
+                    Create Post
+                </h1>
+
+                <form id="createForm" onSubmit={handleCreate} className="space-y-6 flex flex-col flex-grow">
+                 <div className="flex-grow space-y-6">
+                    {/* Cover image */}
+                    <div className="flex items-center gap-2 ml-10">
+                      {preview && (
+                       <div className="relative w-50 max-w-md">
+                           <img
+                               src={preview}
+                               alt="Cover preview"
+                               className="rounded-md border w-full h-40 object-cover"
+                           />
+                       </div>
+                        )}
+                        <input
+                            type="file"
+                            id="coverImage"
+                            className="hidden"
+                            onChange={handleImageChange}
+                        />
+                        <label
+                            htmlFor="coverImage"
+                            className="border-2 border-black/30 rounded p-2 shadow text-black/70 hover:text-black cursor-pointer"
+                        >
+                            {preview ? "Change" : "Upload cover image"}
+                        </label>
+                        {preview && (
+                         <button
+                        type="button"
+                        onClick={removeImage}
+                        className=" bg-red-500/70 text-white border-2 p-2 shadow text-sm  rounded hover:bg-black"
+                    >
+                        Remove
+                    </button>
+                        )}
+                        {errors.image && (
+                            <p className="text-red-500">{errors.image}</p>
+                        )}
+                    </div>
+                    {/* TITLE */}
+                    <input
+                        type="text"
+                        placeholder="Post title goes here .."
+                        value={data.title}
+                        onChange={(e) => setData("title", e.target.value)}
+                        className="w-full px-10 text-3xl text-black/80 placeholder:text-black/60 font-bold  rounded focus:outline-none "
+                    />
+                    {errors.title && (
+                        <p className="text-red-500">{errors.title}</p>
+                    )}
+
+                    {/* TAGS */}
+                    <div className="space-y-2">
+                        <input
+                            type="text"
+                            placeholder="Add up to 4 tags .."
+                            value={tagInput}
+                            onChange={handleTagInput}
+                            onKeyDown={handleTagKeyDown}
+                            className="w-full px-10 text-black/50 rounded focus:outline-none"
+                        />
+                        {suggestions.length > 0 && (
+                            <div className="border rounded bg-white  shadow p-2 space-y-1 max-h-40 overflow-y-auto">
+                                {suggestions.map((tag, i) => (
+                                    <div
+                                        key={i}
+                                        className="px-10 hover:bg-gray-100 text-black cursor-pointer"
+                                        onClick={() => addTag(tag)}
+                                    >
+                                        #{tag}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                        <div className="flex flex-wrap gap-2 px-10">
+                            {data.tags.map((tag, i) => (
+                                <div
+                                    key={i}
+                                    className="px-3 py-1 bg-gray-200 text-black/60 rounded-full flex items-center gap-1"
+                                >
+                                    #{tag}
+                                    <button
+                                        type="button"
+                                        onClick={() => removeTag(i)}
+                                        className="text-red-500 font-bold"
+                                    >
+                                        &times;
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                        {errorTag && <p className="text-red-500">{errorTag}</p>}
+                    </div>
+
+                  <MarkdownEditor
+                      value={data.description}
+                      onChange={(val) => setData("description", val)}
+                      onImageUpload={handleImageUpload}
+                      error={errors.description}
+                   />
+                </div>
+                </form>
+            </div>
+           {/* SUBMIT */}
+            <div className="w-fit mx-auto my-4 p-3 bg-black/80 dark:bg-blue-800 text-white font-bold rounded hover:bg-gray-800">
+             <button form="createForm" type="submit" disabled={processing}>
+              {processing ? (
+                  <FontAwesomeIcon icon="spinner" spin />
+              ) : (
+                  "Publish"
+              )}
+              </button>
+            </div>
+                  
+        </>
+    );
 }

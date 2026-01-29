@@ -41,7 +41,7 @@ class AuthController extends Controller
           $request->validate([
           'email'=>'required|email',
           'password'=>'required',
-          "g_recaptcha_response" => [ new Recaptcha]
+          // "g_recaptcha_response" => [ new Recaptcha]
          ]);
          $credantials = $request->only('email','password');
          if(Auth::attempt($credantials)){

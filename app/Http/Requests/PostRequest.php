@@ -26,7 +26,8 @@ class PostRequest extends FormRequest
             'description' => 'required|string',
             'image' => 'nullable|mimes:jpg,png,jpeg|max:5000', 
             'tags' => 'nullable|array|max:4',
-            'tags.*' => 'string|max:30|regex:/^[\pL\pN\s]+$/u'
+            'tags.*' => 'string|max:30|regex:/^[\pL\pN\s]+$/u',
+            'remove_image' => 'nullable|boolean',
         ];
     }
     public function messages(): array

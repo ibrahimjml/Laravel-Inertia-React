@@ -20,9 +20,9 @@ export default function Userposts({user,posts,filters}) {
     unapproved:filters.unapproved || false
   });
 
-  const handleclick=(postid)=>{
-    setLoading(postid);
-    put(route('approve.update',postid),{
+  const handleclick=(postSlug)=>{
+    setLoading(postSlug);
+    put(route('approve.update',postSlug),{
       preserveScroll: true,
       preserveState: true,
       onSuccess: () => setLoading(null),
@@ -56,11 +56,11 @@ export default function Userposts({user,posts,filters}) {
       replace: true,
     });
   };
- const handeldelete = (postid)=>{
-  if(!confirm(`Are you sure you want delete post #${postid}` )){
+ const handeldelete = (postSlug)=>{
+  if(!confirm(`Are you sure you want delete post #${postSlug}` )){
     return;
   }
-  router.delete(route('post.delete',postid),{
+  router.delete(route('post.delete',postSlug),{
     preserveScroll:true
   })
  }
@@ -110,8 +110,8 @@ className={`w-9 h-9 rounded-full border-2 ${
 </div>
 </td>
 <td className='w-2/6 py-5 px-3 text-center'>
-<button onClick={()=>handleclick(post.id)} disabled={loading === post.id}>
-{loading === post.id ? (
+<button onClick={()=>handleclick(post.slug)} disabled={loading === post.slug}>
+{loading === post.slug ? (
     <FontAwesomeIcon icon='spinner' spin className=" text-gray-400"></FontAwesomeIcon>
   ) : post.approved ? (
     <FontAwesomeIcon icon='check' className=" text-green-500"></FontAwesomeIcon>
@@ -143,8 +143,8 @@ className={`w-9 h-9 rounded-full border-2 ${
 </td>
 <td className='w-2/6 py-5 px-3 text-right'>
 <div className='flex gap-4 justify-end'>
-  <Link href={route('posts.show',post.id)}><FontAwesomeIcon icon='eye' className=' text-blue-500 dark:text-gray-300'></FontAwesomeIcon></Link>
-  <button onClick={()=>handeldelete(post.id)}><FontAwesomeIcon icon='trash' className=' text-red-500'></FontAwesomeIcon></button>
+  <Link href={route('posts.show',post.slug)}><FontAwesomeIcon icon='eye' className=' text-blue-500 dark:text-gray-300'></FontAwesomeIcon></Link>
+  <button onClick={()=>handeldelete(post.slug)}><FontAwesomeIcon icon='trash' className=' text-red-500'></FontAwesomeIcon></button>
 </div>
 </td>
   </tr>

@@ -61,11 +61,32 @@ public function getRoleLabelAttribute()
             $this->role->label() :
             UserRole::from($this->role)->label();
     }
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
+    public function scopeNotSuspended($query)
+    {
+      return $query->where('role','!=', UserRole::Suspended->value);
+    }
+
+    public function role()
+    {
+      return (string) $this->role;
+    }
+    public function isSubscriber()
+    {
+      return $this->role === UserRole::User;
+    }
+    public function isSuspended()
+    {
+      return $this->role === UserRole::Suspended;
+    }
+    public function isModerator()
+    {
+      return $this->role === UserRole::Moderator;
+    }
+    public function isAdministrator()
+    {
+      return $this->role === UserRole::Admin;
+    }
+
     protected $hidden = [
         'password',
         'remember_token',

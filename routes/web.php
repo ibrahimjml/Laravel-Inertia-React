@@ -20,7 +20,8 @@ use Illuminate\Support\Facades\Route;
 // posts routes
 Route::get('/',[PostController::class,'index'])->name('home');
 Route::resource('posts', PostController::class);
-
+Route::post('/posts/upload-image', [PostController::class, 'uploadImage'])
+    ->name('posts.uploadImage');
   // user routes
   Route::middleware('auth')->group(function(){
   Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');

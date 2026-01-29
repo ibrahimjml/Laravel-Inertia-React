@@ -27,10 +27,16 @@ import {
   faTimes,
   faTrash,
   faEdit,
+  faLink,
+  faListOl,
+  faListUl,
+  faDivide,
   faImage,
+  faUnderline,
+  faLaptopCode,
   faEye,
   faClock,
-  faShareFromSquare
+  faShareFromSquare,
 } from '@fortawesome/free-solid-svg-icons'
 
 library.add(
@@ -58,6 +64,12 @@ library.add(
   faTimes,
   faTrash,
   faEdit,
+  faLink,
+  faListOl,
+  faListUl,
+  faDivide,
+  faUnderline,
+  faLaptopCode,
   faImage,
   faEye,
   faClock

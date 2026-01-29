@@ -15,18 +15,18 @@ export default function Relatedpoststags({ closemodel, tag }) {
   unapproved_count: tag.unapproved_posts_count
   });
 
-  const handleClick = (postId) => {
-    setLoading(postId);
-    put(route('approve.update', postId), {
+  const handleClick = (postSlug) => {
+    setLoading(postSlug);
+    put(route('approve.update', {post: postSlug}), {
       preserveScroll: true,
       preserveState: true,
       onSuccess: () => {
         setPosts(prev =>
           prev.map(post =>
-            post.id === postId ? { ...post, approved: !post.approved } : post
+            post.slug === postSlug ? { ...post, approved: !post.approved } : post
           )
         );
-        const changedPost = posts.find(p => p.id === postId);
+        const changedPost = posts.find(p => p.slug === postSlug);
        if (changedPost) {
        const wasApproved = changedPost.approved;
        setTagCounts(prev => ({
@@ -89,7 +89,7 @@ export default function Relatedpoststags({ closemodel, tag }) {
         ) :(
            <ul className="space-y-4 divide-y divide-gray-300  dark:divide-gray-600 last:border-0">
           {posts.map((post) => (
-            <li key={post.id} className="flex items-center gap-3 pt-3">
+            <li key={post.slug} className="flex items-center gap-3 pt-3">
               <img
                 src={post.image}
                 alt={post.title}
@@ -103,15 +103,15 @@ export default function Relatedpoststags({ closemodel, tag }) {
                 </span>
                 <div className="flex items-center gap-3">
                   <Link
-                    href={route('posts.show', post.id)}
+                    href={route('posts.show', { post: post.slug })}
                     className="text-sm text-blue-500 dark:text-gray-300"
                   >
                     <FontAwesomeIcon icon='eye'></FontAwesomeIcon>
                   </Link>
                   <button
-                    onClick={() => handleClick(post.id)}
-                    disabled={loading === post.id}>
-                    {loading === post.id ? (
+                    onClick={() => handleClick(post.slug)}
+                    disabled={loading === post.slug}>
+                    {loading === post.slug ? (
                       <i className="fa-solid fa-spinner fa-spin text-gray-400"></i>
                     ) : post.approved ? (
                       <i className="fa-solid fa-hourglass-start text-yellow-500"></i>

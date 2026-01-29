@@ -17,31 +17,41 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    public function register(): void
-    {
-        //
-    }
+  /**
+   * Register any application services.
+   */
+  public function register(): void
+  {
+    //
+  }
 
-    /**
-     * Bootstrap any application services.
-     */
-    public function boot(): void
-    {
-
+  /**
+   * Bootstrap any application services.
+   */
+  public function boot(): void
+  {
+    $this->bootEloquentMorphs();
+    $this->bootEvent();
+    $this->bootGates();
+  }
+  public function bootEloquentMorphs()
+  {
     Relation::morphMap([
-      'App\Models\Post' => Post::class,
-     ]);
-
-      Post::observe(PostObserver::class);
-      PostReport::observe(postReportObserver::class);
-      Comment::observe(CommentObserver::class);
-      CommentReport::observe(CommentReportObserver::class);
-      
-      Gate::define("makeAdminActions", function ($user) {
-        return in_array($user->role,[UserRole::Admin,UserRole::Moderator], true);
+      Post::TABLE => Post::class,
+      Comment::TABLE => Comment::class
+    ]);
+  }
+  public function bootEvent()
+  {
+    Post::observe(PostObserver::class);
+    PostReport::observe(postReportObserver::class);
+    Comment::observe(CommentObserver::class);
+    CommentReport::observe(CommentReportObserver::class);
+  }
+  public function bootGates()
+  {
+    Gate::define("makeAdminActions", function ($user) {
+      return in_array($user->role, [UserRole::Admin, UserRole::Moderator], true);
     });
-    }
+  }
 }

@@ -5,13 +5,13 @@ import { route } from 'ziggy-js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { toast } from 'react-toastify';
 
-export default function Commentsmodel({ postId, comments, onClose,count ,type,canmodify,sort,postuserId,reasons}) {
+export default function Commentsmodel({ slug, comments, onClose,count ,type,canmodify,sort,postuserId,reasons}) {
   const {flash}= usePage().props;
   const { data, setData, post, reset, processing,errors } = useForm({ content: '' });
 
   const submitComment = (e) => {
     e.preventDefault();
-  post(route('comment.create', postId), {
+  post(route('comment.create', slug), {
       preserveScroll:true,
       onSuccess: () =>  reset(),
       
@@ -24,7 +24,7 @@ export default function Commentsmodel({ postId, comments, onClose,count ,type,ca
 const handleChange = (e) => {
     const newSort = e.target.value;
     setSortData('sort', newSort);
-    router.get(route('posts.show',postId), {
+    router.get(route('posts.show',slug), {
       sort: newSort
     }, {
       preserveState: true,
@@ -92,7 +92,7 @@ useEffect(() => {
               <Commentsreplies
                 key={comment.id}
                 comment={comment}
-                postId={postId}
+                slug={slug}
                 postuser={postuserId}
                 level={0}
                 type={type}

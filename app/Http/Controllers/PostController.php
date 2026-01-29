@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Services\PostService;
 use App\Services\SortPostService;
 use App\Traits\ImageUpload;
+use App\Traits\SluggableTrait;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -77,9 +78,13 @@ public function create( )
   public function store(PostRequest $request,HashtagService $tags)
   {
     Gate::authorize('create',Post::class);
+    
     $fields = $request->validated();
-  
-    if ($newImage = $this->handleImageUpload($request->file('image'))) {
+
+    $slug = SluggableTrait::handle(
+        \Illuminate\Support\Str::slug($fields['title'])
+    );
+    if ($newImage = $this->handleImageUpload($request->file('image'), $slug)) {
         $fields['image'] = $newImage;
     }
  DB::transaction(function () use ( $fields, $tags,$request) {
@@ -147,16 +152,18 @@ public function create( )
     Gate::authorize('modify',$post);
 
     $fields = $request->validated();
+    unset($fields['image']);
 
     $tags = $fields['tags'] ?? [];
     unset($fields['tags']);
 
-    $imageName = $this->handleImageUpload($request->file('image'));
-    if ($imageName) {
-            $fields['image'] = $imageName;
-        } else {
-            unset($fields['image']);
-        }
+    if ($request->boolean('remove_image') && $post->image) {
+        $fields['image'] = null;
+    }
+  
+   if (!$request->boolean('remove_image') && $request->hasFile('image')) {
+        $fields['image'] = $this->handleImageUpload($request->file('image'), $post->slug);
+    }
 
     $post->fill($fields);
     $currentTags = $post->hashtags->pluck('name')->sort()->values()->toArray();
@@ -164,7 +171,7 @@ public function create( )
     $tagsChanged = $currentTags !== $newTags;
 
     if(!$post->isDirty() && !$tagsChanged) {
-      return redirect('/posts/'.$post->id.'/edit')->with('status', 'Nothing changed to update');
+      return redirect()->back()->with('status', 'Nothing changed to update');
     }
      DB::transaction(function () use ($post, $fields, $service,$tags) {    
     $post->update($fields);
@@ -188,5 +195,21 @@ public function create( )
  });
     return to_route('dashboard')->with('success','post deleted');
   }
-  
+   public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|max:5120', 
+        ]);
+
+        $file = $request->file('image');
+        $filename = str()->random(20) . '.' . $file->getClientOriginalExtension();
+
+        // store in storage/app/public/posts
+        $path = $file->storeAs('posts', $filename, 'public');
+
+        // return full URL
+        $url = asset('storage/' . $path);
+
+        return response()->json(['url' => $url]);
+    }
 }

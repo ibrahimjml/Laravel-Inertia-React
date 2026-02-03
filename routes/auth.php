@@ -29,10 +29,10 @@ Route::middleware('guest')
 ->group(function(){
   // Register
   Route::inertia('/register','Auth/Register')->name('register');
-  Route::post('/register','register');
+  Route::post('/register','register')->name('register.post');
   // Login
   Route::get('/login','loginpage')->name('login');
-  Route::post('/login','login');
+  Route::post('/login','login')->name('login.post');
 
     //Forget password
     Route::get('/forgotpassword','forgotpage')->name('forgot.password');

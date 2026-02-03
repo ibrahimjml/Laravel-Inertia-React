@@ -8,24 +8,36 @@ use App\Http\Controllers\{
        PostController,
        ProfileController,
        PostReportController,
-       CommentController
+       CommentController,
+       LocaleController
 };
 use App\Http\Controllers\Admin\{
     AdminController,
     TagController,
     UserController,
 };
+use App\Http\Middleware\Suspended;
 use Illuminate\Support\Facades\Route;
 
-// posts routes
-Route::get('/',[PostController::class,'index'])->name('home');
+Route::get('/', function () {
+    $locale = session('locale', config('app.locale'));
+    return redirect("/{$locale}");
+});
+Route::group([
+   'prefix' => '{locale}',
+   'middleware' => ['setlocale'],
+  ], function () {
+
 Route::resource('posts', PostController::class);
+Route::post('/locale', LocaleController::class)->name('locale.switch');
+
+Route::get('/',[PostController::class,'index'])->name('home');
 Route::post('/posts/upload-image', [PostController::class, 'uploadImage'])
     ->name('posts.uploadImage');
   // user routes
   Route::middleware('auth')->group(function(){
   Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
-
+  Route::middleware('suspended')->group(function () {
   // prodile edit
   Route::get('/editprofile',[ProfileController::class,'index'])
   ->middleware('password.confirm')
@@ -47,7 +59,8 @@ Route::post('/posts/upload-image', [PostController::class, 'uploadImage'])
   Route::post('/comments/{comment}/like', [LikeController::class, 'like'])->name('comments.likes');
   Route::post('/comments/{comment}/undo', [LikeController::class, 'undo'])->name('comments.undo');
   Route::post('/comment/{comment}/report', [CommentReportController::class, 'report'])->name('comment.report');
-});
+  });
+  });
 
 // admin routes
 Route::middleware(['auth','verified','can:makeAdminActions'])
@@ -75,7 +88,7 @@ Route::middleware(['auth','verified','can:makeAdminActions'])
   Route::put('/admin/update/{user}',[UserController::class,'update'])->name('user.update');
   Route::delete('/admin/update/{user}',[UserController::class,'delete'])->name('user.delete');
 });
-
-
-// auth routes
+    // auth routes
 require __DIR__."/auth.php";
+});
+

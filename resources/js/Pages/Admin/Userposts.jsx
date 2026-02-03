@@ -1,6 +1,6 @@
 import { Link, router, useForm } from '@inertiajs/react';
 import  {  useState } from 'react'
-import { route } from 'ziggy-js';
+import { route } from '@/ziggylocale';
 import Paginatelinks from '../../Components/Paginatelinks';
 import Navbar from './Partials/Navbar'
 import Inputsearch from '../../Components/Inputsearch';
@@ -22,7 +22,7 @@ export default function Userposts({user,posts,filters}) {
 
   const handleclick=(postSlug)=>{
     setLoading(postSlug);
-    put(route('approve.update',postSlug),{
+    put(route('approve.update', { post: postSlug }),{
       preserveScroll: true,
       preserveState: true,
       onSuccess: () => setLoading(null),
@@ -36,7 +36,7 @@ export default function Userposts({user,posts,filters}) {
       search: data.search,
       unapproved: isChecked ? true : null
     };
-    router.get(route('show.posts', user.id),params,{
+    router.get(route('show.posts', { user: user.id }),params,{
       preserveState: true,
       replace: true,
     });
@@ -50,7 +50,7 @@ export default function Userposts({user,posts,filters}) {
       unapproved: checkedState ? true : null
     };
 
-    router.get(route('show.posts', user.id),params, {
+    router.get(route('show.posts', { user: user.id }),params, {
   
       preserveState: true,
       replace: true,
@@ -60,7 +60,7 @@ export default function Userposts({user,posts,filters}) {
   if(!confirm(`Are you sure you want delete post #${postSlug}` )){
     return;
   }
-  router.delete(route('post.delete',postSlug),{
+  router.delete(route('post.delete', { post: postSlug }),{
     preserveScroll:true
   })
  }
@@ -143,7 +143,7 @@ className={`w-9 h-9 rounded-full border-2 ${
 </td>
 <td className='w-2/6 py-5 px-3 text-right'>
 <div className='flex gap-4 justify-end'>
-  <Link href={route('posts.show',post.slug)}><FontAwesomeIcon icon='eye' className=' text-blue-500 dark:text-gray-300'></FontAwesomeIcon></Link>
+  <Link href={route('posts.show', { post: post.slug})}><FontAwesomeIcon icon='eye' className=' text-blue-500 dark:text-gray-300'></FontAwesomeIcon></Link>
   <button onClick={()=>handeldelete(post.slug)}><FontAwesomeIcon icon='trash' className=' text-red-500'></FontAwesomeIcon></button>
 </div>
 </td>

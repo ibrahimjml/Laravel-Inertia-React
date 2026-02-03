@@ -1,5 +1,5 @@
 import { router, useForm } from '@inertiajs/react';
-import { route } from 'ziggy-js';
+import { route } from '@/ziggylocale';
 import Inputsearch from './Inputsearch';
 
 export default function Searchinput({search,suspend}) {

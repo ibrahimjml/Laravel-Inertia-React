@@ -3,9 +3,12 @@ import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import MarkdownEditor from "@/Components/MarkdownEditor";
 import { ImageUpload } from "@/Apis/ImageUpload";
+import { useMessagesT } from "../i18n/helpers/useMessagesT";
+import { route } from "@/ziggylocale";
 
 export default function Create({ alltags }) {
-    const {csrf} = usePage().props;
+    const {csrf, locale} = usePage().props;
+    const m = useMessagesT();
     const [tagInput, setTagInput] = useState("");
     const [errorTag, setErrorTag] = useState("");
     const [suggestions, setSuggestions] = useState([]);
@@ -104,6 +107,16 @@ export default function Create({ alltags }) {
     return (
         <>
             <Head title="Create Post" />
+          <span className="flex items-center justify-center gap-2 my-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+            <FontAwesomeIcon
+              icon="info-circle"
+              className="text-yellow-400 w-4 h-4"
+            />
+            <small>
+              {m("editing_in",{lang: m(`lang.${locale}`)})}
+            </small>
+            </span>
+
             <div className="max-w-5xl h-[100vh] rounded-md my-4 overflow-y-auto scrollbar-dark bg-white mx-auto space-y-6 flex flex-col">
                 <h1 className="text-4xl font-bold text-black/50 text-left px-10 mb-6">
                     Create Post

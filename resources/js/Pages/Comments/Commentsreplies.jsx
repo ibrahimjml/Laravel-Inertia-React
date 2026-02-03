@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { router, useForm, usePage } from '@inertiajs/react';
-import { route } from 'ziggy-js';
+import { route } from '@/ziggylocale';
 import moment from 'moment';
 import Commentreport from './Commentreport';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -33,7 +33,7 @@ export default function Commentsreplies({ comment, slug, level = 0 ,type,postuse
 
   const submitReply = (e) => {
     e.preventDefault();
-    post(route('comment.create', slug ), {
+    post(route('comment.create', {post: slug} ), {
       onSuccess: () => {
         reset();
         setShowReply(false);
@@ -61,11 +61,11 @@ const buttonsCount = (userLikeCount > 0 ? 1 : 0) + (comment?.can_modify  ? 2 : 0
      <Commentreport commentID={comment.id} reasons={reasons} closeModel={()=>{setShowReportModel(false)}}/>
      }
     {isReply && (
-      <div className="absolute top-0 bottom-0 w-px h-8 bg-gray-400"
-            style={{ left: '-8px' }}></div>
+      <div className="absolute top-0 bottom-0 w-px h-8 bg-blue-400"
+            style={{ left: '-4px' }}></div>
         )}
 
-      <div className="pl-2 text-xl ">
+      <div className="pl-2 text-xl">
         <div className="flex">
           <FontAwesomeIcon icon='user' className=" mt-1 text-gray-500"></FontAwesomeIcon>
           <div className="flex flex-col ml-3 w-full">
@@ -83,7 +83,7 @@ const buttonsCount = (userLikeCount > 0 ? 1 : 0) + (comment?.can_modify  ? 2 : 0
             </div>
            { comment.parent?.user && ( 
             <p className="text-sm text-gray-500 dark:text-gray-400"> 
-            Replying to 
+            <FontAwesomeIcon icon='reply' className='mr-1'></FontAwesomeIcon>
             <span className="font-semibold">
               @{comment.parent.user.name}
             </span>
@@ -118,7 +118,7 @@ const buttonsCount = (userLikeCount > 0 ? 1 : 0) + (comment?.can_modify  ? 2 : 0
                 <button onClick={() => {setIsEditing(true); setShowModel(false)}} className="block w-full px-6 text-sm py-3 text-black dark:text-blue-600 font-semibold dark:hover:bg-slate-900 ">Edit</button>
                 <button   onClick={() => {
                   setShowModel(false);
-                if (confirm("Are you sure?")) { router.delete(route('comment.delete', comment.id));}}}
+                if (confirm("Are you sure?")) { router.delete(route('comment.delete', { comment: comment.id }));}}}
                 className="block w-full px-6 text-sm py-3 dark:text-red-600 text-black font-semibold dark:hover:bg-slate-900 ">
                   Delete
                 </button>
@@ -135,7 +135,7 @@ const buttonsCount = (userLikeCount > 0 ? 1 : 0) + (comment?.can_modify  ? 2 : 0
           <form
           onSubmit={(e) => {
             e.preventDefault();
-            put(route('comment.update', comment.id), {
+            put(route('comment.update', { comment: comment.id}), {
               preserveScroll: true,
               onSuccess: () => setIsEditing(false),
             });

@@ -1,6 +1,6 @@
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react'
-import { route } from 'ziggy-js';
+import { route } from '@/ziggylocale';
 
 
 export default function DeleteAccount() {

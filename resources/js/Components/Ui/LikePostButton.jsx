@@ -14,7 +14,7 @@ export default function LikePostButton({
       <button className="px-2 py-1 rounded transition-all">
             <FontAwesomeIcon onClick={onLike}
                icon={[(userLikeCount + pendingLikes > 0) ? 'fas' : 'far', 'heart']}
-               className={`mr-2 text-red-500 dark:text-red-500 ${heartAnimation}`}/>
+               className={`me-2 text-red-500 dark:text-red-500 ${heartAnimation}`}/>
 
           <span onClick={ShowLikers}>
                {displayTotal}

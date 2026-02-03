@@ -1,5 +1,5 @@
 import { Link } from '@inertiajs/react'
-import { route } from 'ziggy-js'
+import { route } from '@/ziggylocale'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Removefilters({filter,sortValue,params}) {

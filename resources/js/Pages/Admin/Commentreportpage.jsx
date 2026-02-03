@@ -1,6 +1,6 @@
 import Navbar from './Partials/Navbar'
 import { Link, router } from '@inertiajs/react'
-import { route } from 'ziggy-js'
+import { route } from '@/ziggylocale'
 import Paginatelinks from '../../Components/Paginatelinks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 

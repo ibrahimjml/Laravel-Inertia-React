@@ -1,5 +1,5 @@
 import { useForm } from '@inertiajs/react'
-import { route } from 'ziggy-js'
+import { route } from '@/ziggylocale'
 
 export default function Confirmpassword() {
   const { data, setData, post, processing, errors,reset } = useForm({

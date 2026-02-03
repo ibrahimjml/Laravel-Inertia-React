@@ -1,6 +1,6 @@
 import { useForm, usePage } from '@inertiajs/react';
 import  { useState } from 'react'
-import { route } from 'ziggy-js';
+import { route } from '@/ziggylocale';
 
 export default function Commentreport({commentID,reasons,closeModel}) {
     const { props } = usePage();

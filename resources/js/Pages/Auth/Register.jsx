@@ -1,6 +1,6 @@
 import { Link } from "@inertiajs/react";
 import { useForm } from '@inertiajs/react'
-import { route } from "ziggy-js";
+import { route } from "@/ziggylocale";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Register() {
@@ -15,7 +15,7 @@ export default function Register() {
   })
   function handleSubmit(e) {
     e.preventDefault()
-    post('/register',{
+    post(route('register.post'),{
       preserveScroll: true,
       onSuccess: () => reset('password'),
     })

@@ -1,6 +1,6 @@
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
-import { route } from 'ziggy-js';
+import { route } from '@/ziggylocale';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 export default function Relatedpoststags({ closemodel, tag }) {
@@ -44,7 +44,7 @@ export default function Relatedpoststags({ closemodel, tag }) {
   };
 
   useEffect(() => {
-    fetch(route('tags.posts', tag.id), {
+    fetch(route('tags.posts', { hashtag: tag.id}), {
       headers: {
         'Accept': 'application/json',
         'X-CSRF-TOKEN': csrf

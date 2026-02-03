@@ -1,6 +1,6 @@
 import { Head, Link, router, useForm, usePage } from "@inertiajs/react";
 import { useState } from "react";
-import { route } from "ziggy-js";
+import { route } from "@/ziggylocale";
 import moment from "moment";
 import Morearticles from "../Components/Morearticles";
 import Postreportmodel from "../Components/Postreportmodel";
@@ -11,6 +11,8 @@ import LikePostButton from "@/Components/Ui/LikePostButton";
 import { faShareFromSquare } from "@fortawesome/free-regular-svg-icons";
 import ReactMarkdown from "react-markdown";
 import rehypeRaw from "rehype-raw";
+import { useMessagesT } from "@/i18n/helpers/useMessagesT";
+
 
 export default function Show({
     posts,
@@ -21,6 +23,8 @@ export default function Show({
     reportReasons,
 }) {
     const { auth, comments, sort, csrf } = usePage().props;
+    const direction = document.documentElement.dir;
+    const m = useMessagesT();
     // Likes Hook
     const {
         userLikeCount,
@@ -49,14 +53,14 @@ export default function Show({
 
     const handleDelete = (postSlug) => {
         if (confirm("Are you sure you want to delete this post?")) {
-            destroy(route("posts.destroy", postSlug), {
+            destroy(route("posts.destroy", { post: postSlug }), {
                 preserveScroll: true,
             });
         }
     };
     const handleFollowToggle = () => {
         router.post(
-            route("togglefollow", posts.user.id),
+            route("togglefollow", { user: posts.user.id }),
             {},
             {
                 preserveState: true,
@@ -93,15 +97,15 @@ export default function Show({
                                 icon="user"
                                 className=" text-gray-600 dark:text-white"
                             ></FontAwesomeIcon>
-                            <button className="font-semibold ml-2 text-green-500 dark:text-blue-500">
+                            <button className="font-semibold ms-2 text-green-500 dark:text-blue-500">
                                 {posts.user.name}
                             </button>
-                            <span className="ml-2">
+                            <span className="ms-2">
                                 <b>·</b>
-                                <small className="ml-2">
+                                <small className="ms-2">
                                     <FontAwesomeIcon
                                         icon="clock"
-                                        className="mr-2"
+                                        className="me-2"
                                     ></FontAwesomeIcon>
                                     {moment(posts.created_at).fromNow()}
                                 </small>
@@ -126,25 +130,25 @@ export default function Show({
                                     </button>
                                 ))}
                         </div>
-                        <div className="relative">
+                        <div className="relative me-2">
                             <button onClick={togglemodel}>
                                 <FontAwesomeIcon icon="ellipsis"></FontAwesomeIcon>
                             </button>
                             {/* show model  */}
                             {showmodel && (
                                 <div
-                                    className={`absolute z-50 ${!canmodify ? "top-[-100px]" : "top-[-250px]"} right-[-6px] border dark:border-slate-200 bg-white dark:bg-slate-800 text-white rounded-lg overflow-hidden w-40`}
+                                    className={`absolute z-50 ${!canmodify ? "top-[-100px]" : "top-[-250px]"} ${direction === "rtl" ? "left-0" : "right-6"} border dark:border-slate-200 bg-white dark:bg-slate-800 text-white rounded-lg overflow-hidden w-40`}
                                 >
                                     {canmodify && (
                                         <>
                                             <Link
                                                 href={route(
                                                     "posts.edit",
-                                                    posts.slug,
+                                                    { post: posts.slug },
                                                 )}
                                                 className="block w-full px-6 py-3 dark:hover:bg-slate-700 hover:bg-gray-200/20 text-gray-800/80 dark:text-white text-left "
                                             >
-                                                Edit
+                                                {m('edit_post')}
                                             </Link>
                                             <button
                                                 onClick={() =>
@@ -152,7 +156,7 @@ export default function Show({
                                                 }
                                                 className="block w-full px-6 py-3 dark:hover:bg-slate-700 hover:bg-gray-200/20 text-gray-800/80 dark:text-white text-left "
                                             >
-                                                Delete
+                                                {m('delete_post')}
                                             </button>
                                         </>
                                     )}
@@ -175,7 +179,7 @@ export default function Show({
                                             }}
                                             className="block w-full px-6 py-3 dark:hover:bg-slate-700 hover:bg-gray-200/20 text-gray-800/80 dark:text-white text-left "
                                         >
-                                            Report
+                                            {m('report')}
                                         </button>
                                     )}
                                     {userLikeCount > 0 && (
@@ -186,8 +190,8 @@ export default function Show({
                                             }}
                                             className="block w-full px-6 py-3 dark:hover:bg-slate-700 hover:bg-gray-200/20 text-gray-800/80 dark:text-white text-left"
                                         >
-                                            Undo{" "}
-                                            <small className="text-red-500">
+                                            {m('undo')}
+                                            <small className="text-red-500 ms-2">
                                                 +{userLikeCount}
                                             </small>{" "}
                                             Lik{userLikeCount > 1 ? "es" : "e"}
@@ -202,14 +206,38 @@ export default function Show({
             <div className="md:w-[50%] mx-auto mt-5 prose dark:prose-invert max-w-none">
                 <ReactMarkdown
                     rehypePlugins={[rehypeRaw]}
-                    components={{
-                        hr: ({ node, ...props }) => (
-                            <hr
-                                className="border-t-2 border-gray-300 dark:border-gray-200/40  my-4"
-                                {...props}
-                            />
-                        ),
-                    }}
+                  components={{
+                            h1: ({ node, ...props }) => (
+                                <h1
+                                    className="text-4xl font-bold my-4"
+                                    {...props}
+                                />
+                            ),
+                            h2: ({ node, ...props }) => (
+                                <h2
+                                    className="text-3xl font-bold my-3"
+                                    {...props}
+                                />
+                            ),
+                            h3: ({ node, ...props }) => (
+                                <h3
+                                    className="text-2xl font-bold my-3"
+                                    {...props}
+                                />
+                            ),
+                            hr: ({ node, ...props }) => (
+                                <hr
+                                    className="border-t-2 border-gray-300 my-4"
+                                    {...props}
+                                />
+                            ),
+                            mark: ({ node, ...props }) => (
+                                <mark
+                                    className="bg-gray-300/50 dark:bg-yellow-300/50 rounded-md px-2"
+                                    {...props}
+                                />
+                            ),
+                        }}
                 >
                     {posts.description}
                 </ReactMarkdown>

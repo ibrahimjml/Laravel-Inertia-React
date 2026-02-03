@@ -28,10 +28,13 @@ class PostController extends Controller implements HasMiddleware
     public static function middleware()
     {
       return [
-        new Middleware(['auth','verified',Suspended::class])
+        new Middleware(['auth','verified','suspended'])
       ];
     }
-
+    public function __construct(protected PostService $service)
+    {
+      $this->service = $service;
+    }
   public function index(Request $request,PostService $service,SortPostService $sort)
   {
          $auth = Auth::user();
@@ -88,7 +91,7 @@ public function create( )
         $fields['image'] = $newImage;
     }
  DB::transaction(function () use ( $fields, $tags,$request) {
-  $post =  $request->user()->posts()->create($fields);
+  $post =  $this->service->create($fields, app()->getLocale());
    Log::info('Post created', ['id' => $post->id,'title'=> $post->title, 'user_id' => Auth::id()]);
     if($request->filled('tags')){
        $tags->attachHashtags($post,$request->input('tags'));
@@ -150,7 +153,6 @@ public function create( )
   public function update(PostRequest $request,Post $post,HashtagService $service)
    {
     Gate::authorize('modify',$post);
-
     $fields = $request->validated();
     unset($fields['image']);
 
@@ -174,7 +176,7 @@ public function create( )
       return redirect()->back()->with('status', 'Nothing changed to update');
     }
      DB::transaction(function () use ($post, $fields, $service,$tags) {    
-    $post->update($fields);
+    $this->service->update($post, $fields, app()->getLocale());
     $service->syncHashtags($post, $tags);
 
      Log::info('Post updated', [
@@ -204,10 +206,8 @@ public function create( )
         $file = $request->file('image');
         $filename = str()->random(20) . '.' . $file->getClientOriginalExtension();
 
-        // store in storage/app/public/posts
         $path = $file->storeAs('posts', $filename, 'public');
 
-        // return full URL
         $url = asset('storage/' . $path);
 
         return response()->json(['url' => $url]);

@@ -1,5 +1,5 @@
 import { Link, useForm } from '@inertiajs/react'
-import { route } from 'ziggy-js'
+import { route } from '@/ziggylocale'
 
 export default function Resetpass({token}) {
   const { data, setData, post, processing,errors,reset } = useForm({
@@ -9,7 +9,7 @@ export default function Resetpass({token}) {
   })
   function handleReset(e) {
     e.preventDefault()
-    post(route('reset.password.post',token),{
+    post(route('reset.password.post',{token: token}),{
       preserveScroll: true,
       onFinish: reset()
     })

@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
-import { route } from "ziggy-js";
+import { route } from "@/ziggylocale";
 
 export default function Navbar({ user }) {
   const [showmodel, setshowmodel] = useState(false);

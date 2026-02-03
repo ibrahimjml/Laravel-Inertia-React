@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { router, useForm, usePage } from '@inertiajs/react';
 import Commentsreplies from './Commentsreplies';
-import { route } from 'ziggy-js';
+import { route } from '@/ziggylocale';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { toast } from 'react-toastify';
 
@@ -11,7 +11,7 @@ export default function Commentsmodel({ slug, comments, onClose,count ,type,canm
 
   const submitComment = (e) => {
     e.preventDefault();
-  post(route('comment.create', slug), {
+  post(route('comment.create', {post: slug}), {
       preserveScroll:true,
       onSuccess: () =>  reset(),
       
@@ -24,7 +24,7 @@ export default function Commentsmodel({ slug, comments, onClose,count ,type,canm
 const handleChange = (e) => {
     const newSort = e.target.value;
     setSortData('sort', newSort);
-    router.get(route('posts.show',slug), {
+    router.get(route('posts.show',{post: slug}), {
       sort: newSort
     }, {
       preserveState: true,
@@ -48,16 +48,20 @@ useEffect(() => {
     <div className="fixed inset-0 z-50 bg-dark bg-opacity-70 flex justify-end">
 
       {/* Slide panel */}
-      <div className="relative w-full max-w-md h-full dark:bg-dark bg-white shadow-xl transform transition-transform duration-300 translate-x-0">
-        <h3 className="text-lg font-semibold ml-3 mt-3">Comments ({count})</h3>
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 dark:text-white hover:text-gray-500 text-xl">
-          <FontAwesomeIcon icon='times'></FontAwesomeIcon>
-        </button>
+      <div className="relative w-full max-w-md h-full dark:bg-dark bg-white shadow-xl transform transition-transform duration-300 translate-x-0 flex flex-col">
+        {/* Header */}
+        <div className="flex-shrink-0 p-3 flex justify-between items-center">
+            <h3 className="text-lg font-semibold">Comments ({count})</h3>
+            <button
+            onClick={onClose}
+            className="dark:text-white hover:text-gray-500 text-xl">
+            <FontAwesomeIcon icon='times'></FontAwesomeIcon>
+            </button>
+        </div>
 
         {/* Content */}
-        <div className="pr-4 overflow-y-auto h-full pt-12 scrollbar-dark">
+        <div className="pr-4 overflow-y-auto flex-grow scrollbar-dark">
+          <div className="pt-4">
           <form onSubmit={submitComment} className="mb-4 border-b border-b-gray-200 dark:border-b-gray-600 pb-4">
             <textarea
               className="w-full ml-3 bg-transparent border-none focus:outline-none focus:ring-0 rounded p-2"
@@ -101,6 +105,7 @@ useEffect(() => {
               />
             ))
           )}
+          </div>
         </div>
       </div>
     </div>

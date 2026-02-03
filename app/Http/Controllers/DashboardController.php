@@ -9,10 +9,11 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-      if ($request->user()->role === 'suspended') {
+      if ($request->user()->role->value === \App\Enums\UserRole::Suspended->value) {
         return Inertia::render('Dashboard/Dashboard', [
             'suspended' => true,
             'posts' => null,
+            'error' => session('error'),
         ]);
     }
 
@@ -20,7 +21,8 @@ class DashboardController extends Controller
     return Inertia::render('Dashboard/Dashboard', [
         'suspended' => false,
         'posts' => $posts,
-        'success'=>session('success')
+        'success' => session('success'),
+        'error' => session('error'),
     ]);
     }
 }

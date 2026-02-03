@@ -1,6 +1,7 @@
 import { useForm, usePage } from '@inertiajs/react';
 import { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { route } from '@/ziggylocale';
 
 export default function Postreportmodel({ close, reasons, slug , postId}) {
   const { props } = usePage();
@@ -16,7 +17,7 @@ export default function Postreportmodel({ close, reasons, slug , postId}) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    post(route('post.report',slug), {
+    post(route('post.report',{ post: slug }), {
     data: {
     ...data,
     other: selectedReason === 'Other' ? data.other : '',

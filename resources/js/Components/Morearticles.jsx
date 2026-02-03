@@ -1,15 +1,15 @@
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { route } from "@/ziggylocale";
 
 export default function Morearticles({post}) {
-
   const [isFollowing, setIsFollowing] = useState(post.user.is_followed ?? false);
   return (
     <>
     <div className="bg-white dark:border-2 border-slate-600 p-4  dark:bg-gray-800/80 rounded-md shadow-lg overflow-hidden h-full flex flex-col justify-between">
     
-        <Link href={route("posts.show", post.id)}>
+        <Link href={route("posts.show", {  post: post.slug} )}>
           <img
             className="w-full h-48 object-cover object-center"
             src={post.image}

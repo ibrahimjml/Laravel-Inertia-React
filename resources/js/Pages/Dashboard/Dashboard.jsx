@@ -1,5 +1,5 @@
 import { Link, useForm, usePage } from '@inertiajs/react';
-import { route } from 'ziggy-js';
+import { route } from '@/ziggylocale';
 import Paginatelinks from '../../Components/Paginatelinks';
 import { toast } from 'react-toastify';
 import { useEffect } from 'react';
@@ -10,7 +10,7 @@ export default function Dashboard({posts,suspended}) {
 
   const handledelete = (postSlug) => {
     if (confirm('Are you sure you want to delete this post?')) {
-      destroy(route('posts.destroy', postSlug), {
+      destroy(route('posts.destroy', { post: postSlug }), {
         preserveScroll: true,
       });
     }
@@ -18,6 +18,9 @@ export default function Dashboard({posts,suspended}) {
    useEffect(() => {
     if (flash.success) {
       toast.success(flash.success);
+    }
+    if (flash.error) {
+      toast.error(flash.error);
     }
   }, [flash]);
   return (
@@ -67,11 +70,11 @@ export default function Dashboard({posts,suspended}) {
                     </td>
                     <td className='w-1/4 py-3 pr-3 text-right text-indigo-500'>
                       {post.approved == true  && 
-                      <Link href={route('posts.show', post.slug)}>View</Link>
+                      <Link href={route('posts.show', { post: post.slug })}>View</Link>
                       }
                     </td>
                     <td className='w-1/4 py-3 pr-3 text-right text-indigo-500'>
-                      <Link href={route('posts.edit', post.slug)}>Edit</Link>
+                      <Link href={route('posts.edit', { post: post.slug })}>Edit</Link>
                     </td>
                     <td className='w-1/4 py-3 pr-3 text-right text-indigo-500'>
                       <button type='submit' onClick={() => { handledelete(post.slug) }}>Delete</button>

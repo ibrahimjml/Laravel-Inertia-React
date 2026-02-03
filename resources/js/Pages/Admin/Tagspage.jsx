@@ -4,7 +4,7 @@ import { Link, router, useForm } from '@inertiajs/react'
 import Paginatelinks from '../../Components/Paginatelinks'
 import Inputsearch from '../../Components/Inputsearch'
 import Edittagmodel from './Partials/Edittagmodel'
-import { route } from 'ziggy-js'
+import { route } from '@/ziggylocale'
 import Addtagmodel from './Partials/Addtagmodel'
 import Removefilters from './Partials/Removefilters'
 import Relatedpoststags from './Partials/Relatedpoststags'
@@ -58,7 +58,7 @@ export default function Tagspage({tags,filter,relatedPostsByTag}) {
       if(!confirm(`Are you sure want to delete #${tag.name} ?`)){
         return;
       }
-      router.delete(route('tag.delete',tag.id),{
+      router.delete(route('tag.delete', { hashtag: tag.id}),{
         preserveScroll:true
       })
     }

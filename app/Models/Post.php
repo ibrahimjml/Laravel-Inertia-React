@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\PostHasTranslation;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
 class Post extends Model
 {
-  use HasFactory;
+  use HasFactory, PostHasTranslation;
   const TABLE = 'posts';
     protected $fillable = [
       'title',

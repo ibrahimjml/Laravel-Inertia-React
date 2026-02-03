@@ -12,7 +12,10 @@ use App\Observers\CommentReportObserver;
 use App\Observers\PostObserver;
 use App\Observers\PostReportObserver;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -33,6 +36,8 @@ class AppServiceProvider extends ServiceProvider
     $this->bootEloquentMorphs();
     $this->bootEvent();
     $this->bootGates();
+    $this->debugDB();
+    URL::defaults(['locale' => app()->getLocale()]);
   }
   public function bootEloquentMorphs()
   {
@@ -53,5 +58,17 @@ class AppServiceProvider extends ServiceProvider
     Gate::define("makeAdminActions", function ($user) {
       return in_array($user->role, [UserRole::Admin, UserRole::Moderator], true);
     });
+  }
+  public function debugDB()
+  {
+    if (! $this->app->isProduction()) {
+      DB::listen(function ($query) {
+        Log::debug("SQL Query", [
+          'sql' => $query->sql,
+          'bindings' => $query->bindings,
+          'time' => $query->time,
+        ]);
+      });
+    }
   }
 }

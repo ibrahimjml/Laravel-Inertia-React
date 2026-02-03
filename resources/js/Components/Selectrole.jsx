@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { router } from '@inertiajs/react';
-import { route } from 'ziggy-js';
+import { route } from '@/ziggylocale';
 
 export default function SelectRole({user, roles }) {
   const [selectedRole, setSelectedRole] = useState(user.role);
@@ -10,7 +10,7 @@ export default function SelectRole({user, roles }) {
     setSelectedRole(newRole); 
 
   
-    router.put(route('user.updaterole', user.id), {
+    router.put(route('user.updaterole', { user: user.id }), {
       role: newRole,  
       preserveState: true,  
     });

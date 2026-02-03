@@ -1,6 +1,6 @@
 import Navbar from './Partials/Navbar'
 import { Link, router } from '@inertiajs/react'
-import { route } from 'ziggy-js'
+import { route } from '@/ziggylocale'
 import Paginatelinks from '../../Components/Paginatelinks';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -9,7 +9,7 @@ export default function Reportspage({reports}) {
     if(!confirm('Are you sure deleting this report ?')){
       return;
     }
-    router.delete(route('delete.report',reportID))
+  router.delete(route('delete.report', { report: reportID}))
   }
   return (
     <div>
@@ -55,7 +55,7 @@ export default function Reportspage({reports}) {
                 </td>
                 <td className='w-1/6 py-5 px-3 text-right'>
                 <div className='flex gap-4 justify-end'>
-                  <Link href={route('posts.show',report.post.id)}><FontAwesomeIcon icon='eye' className=' text-blue-500 dark:text-gray-300'></FontAwesomeIcon></Link>
+                  <Link href={route('posts.show',{ post: report.post.slug})}><FontAwesomeIcon icon='eye' className=' text-blue-500 dark:text-gray-300'></FontAwesomeIcon></Link>
                   <button onClick={()=>{handeldelete(report.id)}}><FontAwesomeIcon icon='trash' className=' text-red-500'></FontAwesomeIcon></button>
                 </div>
                 </td>

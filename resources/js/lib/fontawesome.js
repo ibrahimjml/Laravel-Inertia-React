@@ -34,6 +34,10 @@ import {
   faImage,
   faUnderline,
   faLaptopCode,
+  faHighlighter,
+  faReply,
+  faInfoCircle,
+  faFilter,
   faEye,
   faClock,
   faShareFromSquare,
@@ -69,8 +73,12 @@ library.add(
   faListUl,
   faDivide,
   faUnderline,
+  faReply,
   faLaptopCode,
+  faHighlighter,
   faImage,
   faEye,
+  faInfoCircle,
+  faFilter,
   faClock
 )

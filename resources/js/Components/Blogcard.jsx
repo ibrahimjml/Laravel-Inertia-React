@@ -1,15 +1,18 @@
 import { Link, router, usePage } from "@inertiajs/react";
 import moment from "moment";
-import { useEffect, useState } from "react";
-import { route } from "ziggy-js";
+import { use, useEffect, useState } from "react";
+import { route } from "@/ziggylocale";
 import Wholiked from './Who_liked';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import LikePostButton from "./Ui/LikePostButton";
 import useLikes from "@/Hooks/useLikes";
+import { useMessagesT } from "@/i18n/helpers/useMessagesT";
 
 export default function Blogcard({ post, request, auth }) {
   const authUser = auth.user;
-  const { csrf ,likers} = usePage().props;
+  const { csrf, likers} = usePage().props;
+  const direction = document.documentElement.dir;
+  const m = useMessagesT();
    // Likes Hook
   const { userLikeCount, displayTotal, pendingLikes, showLikeEffect, heartAnimation, handleLike, handleUndo} = useLikes({
     type: "post",
@@ -39,7 +42,7 @@ export default function Blogcard({ post, request, auth }) {
   };
 
   const handleFollowToggle = () => {
-    router.post(route("togglefollow", post.user.id),{}, {
+    router.post(route("togglefollow", { user: post.user.id }),{}, {
       preserveState: true,
       preserveScroll: true,
       onSuccess: () => {
@@ -74,7 +77,7 @@ export default function Blogcard({ post, request, auth }) {
             <FontAwesomeIcon icon='spinner' spin className=" text-gray-400 text-xl"></FontAwesomeIcon>
           </div>
         )}
-        <Link href={route("posts.show", post.slug)}>
+        <Link href={route("posts.show", {  post: post.slug} )}>
           <img
             className={`w-full h-48 object-cover object-center transition-opacity duration-300 ${loadedImages[post.id] ? "opacity-100" : "opacity-0"}`}
             src={post.image}
@@ -87,17 +90,17 @@ export default function Blogcard({ post, request, auth }) {
 
       <div className="p-4">
         <h3 className="font-bold text-xl mb-2">{post.title.slice(0, 60)}...</h3>
-        <p>Posted: {moment(post.created_at).fromNow()}</p>
+        <p>{m('posted')} : {moment(post.created_at).fromNow()}</p>
 
         <span>
           <FontAwesomeIcon icon='user' className=" text-gray-600 dark:text-white"></FontAwesomeIcon>
-          <button onClick={() => selectname(post.user.id)} className="font-semibold ml-2 text-green-500 dark:text-blue-500">
+          <button onClick={() => selectname(post.user.id)} className="font-semibold ms-2 text-green-500 dark:text-blue-500">
             {post.user.name}
           </button>
           {isFollowing && (
-            <span className="ml-2">
+            <span className="ms-2">
               <b>·</b>
-              <small className="ml-2">Following</small>
+              <small className="ms-2">Following</small>
             </span>
           )}
         </span>
@@ -123,12 +126,12 @@ export default function Blogcard({ post, request, auth }) {
                  heartAnimation = {heartAnimation}
                  showLikeEffect = {showLikeEffect}
             />
-            <span onClick={() => router.visit(route('posts.show',post.id))}
+            <span onClick={() => router.visit(route('posts.show',{ post: post.slug}))}
                   className="cursor-pointer">
               { post.comments.length > 0 && 
                <>
                  <FontAwesomeIcon icon='comment' ></FontAwesomeIcon>
-                 <b className="ml-1">{post.comments_count}</b>
+                 <b className="ms-1">{post.comments_count}</b>
               </>
               }
             </span>
@@ -141,10 +144,11 @@ export default function Blogcard({ post, request, auth }) {
             )}
 
             {showModel && (
-              <div className={`absolute z-50 ${buttonsCount === 2 ? "top-[-120px]" : "top-[-70px]"} right-[-6px] border dark:border-slate-200 bg-slate-600 dark:bg-slate-800 text-white rounded-lg overflow-hidden w-40`}>
+              <div className={`absolute z-50 ${buttonsCount === 2 ? "top-[-120px]" : "top-[-70px]"} ${direction === "rtl" ? "left-0" : "right-6" } border dark:border-slate-200 bg-slate-600 dark:bg-slate-800 text-white rounded-lg overflow-hidden w-40`}>
                 {userLikeCount > 0 && (
                   <button onClick={() => { handleUndo(); setShowModel(false); }} className="block w-full px-6 py-3 hover:bg-slate-700 text-left">
-                    Undo <small className="text-red-500">+{userLikeCount}</small> Lik{userLikeCount > 1 ? "es" : "e"}
+                  {m('undo')}
+                    <small className="text-red-500 ms-1">+{userLikeCount}</small> Lik{userLikeCount > 1 ? "es" : "e"}
                   </button>
                 )}
                 {authUser && authUser.id !== post.user.id && (

@@ -1,14 +1,14 @@
 import {  Head, router, useForm, usePage } from '@inertiajs/react'
 import Blogcard from '../Components/Blogcard';
-import { route } from 'ziggy-js';
+import { route } from '@/ziggylocale';
 import Paginatelinks from '../Components/Paginatelinks';
 import Removingfilters from '../Components/Removingfilters';
 import Inputsearch from '../Components/Inputsearch';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useMessagesT } from '@/i18n/helpers/useMessagesT';
 
 export default function Home({ posts, filters }) {
   const {auth} = usePage().props;
-
+  const m = useMessagesT();
   const{data,setData} = useForm({
     search: filters.search || '',
     sort: filters.sort || 'latest',
@@ -46,9 +46,9 @@ router.get(route('home',{...params}));
     <Head title='Home' />
     {auth.user && 
     <h1 className="text-2xl text-black dark:text-slate-200 text-center">
-      Blog
+      {m("blog")}
       </h1>}
-      <p className='text-lg text-center text-black/50 dark:text-gray-200/50'>Create and Search Posts, News, tips, and best practices for PHP and any technology.</p>
+      <p className='text-lg text-center text-black/50 dark:text-gray-200/50'>{m("Create_and_Search_Posts_News_tips_and_best_practices_for_PHP_and_any_technology")}</p>
     <div className="flex gap-3 mt-3 items-center">
 {/* search */}
 <div className="my-4 flex-1">
@@ -63,11 +63,11 @@ router.get(route('home',{...params}));
     onChange={handleChange}
     className="block w-full h-12 px-4 py-2  border border-gray-300 rounded-lg dark:bg-gray-800/80 dark:text-white dark:border-gray-600 cursor-pointer"
     >
-    <option value="latest">Latest</option>
-    <option value="oldest">Oldest</option>
-    <option value="popular">Popular</option>
-    <option value="followings">Followings</option>
-    <option value="trend">Trending</option>
+    <option value="latest">{m('latest')}</option>
+    <option value="oldest">{m('oldest')}</option>
+    <option value="popular">{m('popular')}</option>
+    <option value="followings">{m('followings')}</option>
+    <option value="trend">{m('trending')}</option>
   </select>
 </div>
       </div>

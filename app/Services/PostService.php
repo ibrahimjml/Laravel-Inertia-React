@@ -3,11 +3,16 @@
 namespace App\Services;
 
 use App\Models\Post;
+use App\Models\PostTranslation;
 use Illuminate\Support\Facades\Auth ;
 use Illuminate\Support\Facades\DB;
 
 class PostService
 {
+    public function __construct(protected string $defaultLocale = 'en')
+    {
+        $this->defaultLocale = $defaultLocale; 
+    }
   public function transformPost(Post $post)
     {
         $auth = Auth::user();
@@ -67,4 +72,40 @@ private function nestedComments($comments)
 
     return $grouped[null] ?? collect(); 
   }
+ public function create(array $data, string $locale)
+    {
+        
+            if ($locale === $this->defaultLocale) {
+                $post = Post::create(array_merge($data, [
+                    'user_id' => Auth::id(),
+                ]));
+            } else {
+                $post = Post::create([
+                    'user_id' => Auth::id(),
+                    'title' => $data['title'] ?? '',
+                    'description' => $data['description'] ?? '',
+                    'image' => $data['image'] ?? null,
+                ]);
+
+                PostTranslation::create([
+                    'post_id' => $post->id,
+                    'lang' => $locale,
+                    'title' => $data['title'],
+                    'description' => $data['description'],
+                ]);
+            }
+
+            return $post;
+    }
+  public function update(Post $post, array $data, string $locale)
+    {
+            if ($locale === $this->defaultLocale) {
+                $post->update($data);
+            } else {
+                $translation = $post->translations()->firstOrNew(['lang' => $locale]);
+                $translation->title = $data['title'];
+                $translation->description = $data['description'];
+                $translation->save();
+            }
+    }
 }

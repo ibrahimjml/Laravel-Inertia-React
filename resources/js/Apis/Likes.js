@@ -1,4 +1,4 @@
-import { route } from "ziggy-js";
+import { route } from "@/ziggylocale";
 
 export async function sendLikes({ type, id, count, csrf }) {
   const res = await fetch(type === 'post' 

@@ -1,9 +1,11 @@
 import { Link, useForm } from "@inertiajs/react"
 import { useEffect, useRef } from "react";
-import { route } from "ziggy-js";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { route } from "@/ziggylocale";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useAuthT } from "@/i18n/helpers/useAuthT";
 
 export default function Login({success}) {
+  const a = useAuthT();
 const recaptchaRef = useRef(null);
   const { data, setData, post, processing, errors } = useForm({
     email: "",
@@ -35,7 +37,7 @@ const recaptchaRef = useRef(null);
     //  const token = grecaptcha.getResponse();
     // setData("g_recaptcha_response", token);
 
-    post('/login',{
+    post(route('login.post'),{
       preserveScroll: true
     })
 
@@ -49,14 +51,14 @@ const recaptchaRef = useRef(null);
             <section className="flex flex-col break-words bg-white sm:border-1 sm:rounded-lg  sm:shadow-lg">
 
                 <header className=" font-bold text-center bg-gray-200 text-gray-700 py-5 px-6 sm:py-6 sm:px-8 sm:rounded-t-md">
-                    Login
+                    {a('login')}
                 </header>
 
                 <form className=" w-full px-6 space-y-6 sm:px-10 sm:space-y-8" onSubmit={handleLogin}>
 
                     <div className="flex flex-wrap">
                         <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2 mt-4 sm:mb-4">
-                          E-Mail Address:
+                          {a('email_address')} :
                         </label>
 
                         <input id="email" type="email"
@@ -68,7 +70,7 @@ const recaptchaRef = useRef(null);
 
                     <div className="flex flex-wrap">
                         <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2 sm:mb-4">
-                          Password:
+                          {a('pass')} :
                         </label>
 
                         <input id="password" type="password"
@@ -84,18 +86,18 @@ const recaptchaRef = useRef(null);
                         <button type="submit"
                         disabled={processing}
                             className="w-full select-none font-bold whitespace-no-wrap p-3 rounded-lg text-base leading-normal no-underline text-gray-100 bg-gray-700 hover:bg-gray-500 sm:py-4">
-                        {processing ? (<FontAwesomeIcon icon='spinner' spin className=" text-white"></FontAwesomeIcon>) : 'Login'}
+                        {processing ? (<FontAwesomeIcon icon='spinner' spin className=" text-white"></FontAwesomeIcon>) : a('login')}
                         </button>
                         
                         <p className="w-full text-xs text-center text-gray-700 my-6 sm:text-sm sm:my-8">
-                            Dont have an account ?
+                            {a('dont_have_an_account')}?
                             <Link className="text-gray-500 ml-2 hover:text-blue-700 no-underline hover:underline" href={route('register')}>
-                              Register
+                              {a('register')}
                             </Link>
                         </p>
                         <p className="text-center mb-2">
                       <Link className="text-gray-500 text-center mb-2 hover:text-blue-700 no-underline hover:underline" href={route('forgot.password')}>
-                              Forgot your Password ?
+                              {a('forgot_your_password')} ?
                               </Link>
                     </p>
                     </div>

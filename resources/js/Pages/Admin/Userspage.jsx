@@ -2,7 +2,7 @@ import  { useState } from 'react'
 import { Link, router, usePage} from '@inertiajs/react'
 import Selectrole from '../../Components/Selectrole'
 import Searchadmin from '../../Components/Searchadmin'
-import { route } from 'ziggy-js';
+import { route } from '@/ziggylocale';
 import Navbar from './Partials/Navbar'
 import Paginatelinks from '../../Components/Paginatelinks';
 import Create from './Partials/CreateUsermodel';
@@ -45,7 +45,7 @@ export default function Adminpage({users,roles,status,filters}) {
     if(!confirm(`Are you sure to delete user ${userId}`)){
       return;
     }
-    router.delete(route('user.delete',userId))
+    router.delete(route('user.delete', { user: userId }))
   }
   return (
     <>
@@ -145,7 +145,7 @@ href={route('users.page', {
                 </td>
                 <td className='w-1/6 py-5 px-3 text-right'>
                   <div className='flex gap-4 justify-end'>
-                    <Link href={route('show.posts',user.id)}>
+                    <Link href={route('show.posts', { user: user.id})}>
                   <FontAwesomeIcon icon='eye' className=' text-blue-500 dark:text-gray-300'></FontAwesomeIcon>
                   </Link>
                   {auth?.user.can?.modifyusers && 

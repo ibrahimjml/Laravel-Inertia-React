@@ -105,15 +105,17 @@ class AuthController extends Controller
           "email" => ["required", "email", "min:5", "max:50"],
         ]);
     
-        $user = User::where('email', '=', $fields['email'])->first();
-        if (!empty($user)) {
+        $user = User::where('email', $fields['email'])->first();
+        if ($user) {
     
           $token = Str::random(40);
           DB::table('password_reset_tokens')->updateOrInsert(
-            ['email' => $user->email,
-            'token' => $token,
-            'created_at' => now()]
-          );
+        ['email' => $user->email],
+            [
+                   'token' => $token,
+                   'created_at' => now()
+                 ]
+               );
           $user->save();
           Mail::to($user->email)->send(new ForgotPassword($user, $token));
           return back()->with('status', 'please check your email');

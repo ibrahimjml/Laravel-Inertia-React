@@ -8,17 +8,17 @@
 </p>
 
 
-![schooldash-dahboard-page](https://i.postimg.cc/4d3Ydcnt/Screenshot-2025-05-23-201933.png)
+![login page](https://i.postimg.cc/4d3Ydcnt/Screenshot-2025-05-23-201933.png)
 ![Dashboard Screenshot](https://i.postimg.cc/6qXpDbF9/Screenshot-2025-05-23-191142.png)
 ![Dashboard Screenshot](https://i.postimg.cc/pXY6HXdx/127-0-0-1-8000-admin-users.png)
 ![Dashboard Screenshot](https://i.postimg.cc/Kjx6G0CS/127-0-0-1-8000-show-2-3.png)
 ![Dashboard Screenshot](https://i.postimg.cc/13SZW9SL/Screenshot-2025-05-29-202150.png)
 ![Dashboard Screenshot](https://i.postimg.cc/Hs99fVxj/127-0-0-1-8000-admin-tags-sort-oldest-2.png)
 ![Dashboard Screenshot](https://i.postimg.cc/cCTLqGgm/Screenshot-2025-06-01-212310.png)
-![Blog page](https://i.postimg.cc/2ync7LDT/Screenshot-2026-01-29-172058.png)
-![Show page](https://i.postimg.cc/cJjFqB1w/Screenshot-2026-01-29-172153.png)
-![Create markdown](https://i.postimg.cc/Y9MwF7gW/Screenshot-2026-01-29-172325.png)
-![Edit markdown](https://i.postimg.cc/SQ1wSCTF/Screenshot-2026-01-29-172353.png)
+![Blog page](https://i.postimg.cc/Kv9qCFbk/Screenshot-2026-02-03-141340.png)
+![Show page](https://i.postimg.cc/vZJzdZND/Screenshot-2026-02-03-141459.png)
+![Create markdown](https://i.postimg.cc/DwXr5Kyd/Screenshot-2026-02-03-141556.png)
+![Edit markdown](https://i.postimg.cc/D00sX9MQ/Screenshot-2026-02-03-141654.png)
 ![code block preview](https://i.postimg.cc/WbnSpvb2/Screenshot-2026-01-29-172230.png)
 ![comments model](https://i.postimg.cc/QdHRd9Yt/Screenshot-2025-05-31-160114.png)
 ![comment report model](https://i.postimg.cc/HnLVkLCK/Screenshot-2025-06-01-215207.png)
@@ -65,6 +65,7 @@ php artisan serve
 
 ### Features
 - **Login with Recaptcha v2** 
+- **Multilingual suport**
 - **Toggle dark/light mode** 
 - **User Dashboard**
 - **Admin Dashboard**
